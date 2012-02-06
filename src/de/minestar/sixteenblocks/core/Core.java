@@ -12,8 +12,6 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 
 public class Core extends JavaPlugin {
-
-    private String pluginName = "16Blocks";
     private Listener baseListener, blockListener, chatListener, movementListener;
     private AreaManager areaManager;
     private WorldManager worldManager;
@@ -26,7 +24,7 @@ public class Core extends JavaPlugin {
     @Override
     public void onEnable() {
         // SET NAME
-        Console.setPluginName(this.pluginName);
+        Console.setPluginName(this.getDescription().getName());
 
         // STARTUP
         this.createManager();

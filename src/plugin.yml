@@ -1,0 +1,3 @@
+name: 16Blocks
+main: de.minestar.sixteenblocks.core.Core
+version: 1.0
