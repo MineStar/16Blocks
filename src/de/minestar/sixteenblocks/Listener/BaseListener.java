@@ -29,6 +29,8 @@ import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 
 public class BaseListener implements Listener {
 
@@ -67,6 +69,16 @@ public class BaseListener implements Listener {
     @EventHandler
     public void onStructureGrow(StructureGrowEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        event.getWorld().setSpawnLocation(0, 6, 0);
+    }
+
+    @EventHandler
+    public void onWorldInit(WorldInitEvent event) {
+        event.getWorld().setSpawnLocation(0, 6, 0);
     }
 
     // ////////////////////////////////////////////////

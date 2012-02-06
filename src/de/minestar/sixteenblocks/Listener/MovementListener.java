@@ -1,12 +1,13 @@
 package de.minestar.sixteenblocks.Listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.core.TextUtils;
 
 public class MovementListener implements Listener {
 
@@ -38,8 +39,15 @@ public class MovementListener implements Listener {
         // CHECK IF THE PLAYER CAN GO THERE
         if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockZ())) {
             event.setTo(event.getFrom().clone());
-            event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to go here.");
+            TextUtils.sendError(event.getPlayer(), "You are not allowed to go here.");
             return;
+        }
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockZ())) {
+            event.setTo(new Location(event.getTo().getWorld(), 0, 6, 0));
         }
     }
 }

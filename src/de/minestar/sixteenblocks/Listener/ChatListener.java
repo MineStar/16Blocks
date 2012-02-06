@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import de.minestar.sixteenblocks.core.TextUtils;
+
 public class ChatListener implements Listener {
 
     private int chatPauseTimeInSeconds = 5;
@@ -18,7 +20,7 @@ public class ChatListener implements Listener {
         if (!event.getPlayer().isOp() && lastChatList.containsKey(event.getPlayer().getName())) {
             long lastChatEvent = lastChatList.get(event.getPlayer().getName());
             if (lastChatEvent + (this.chatPauseTimeInSeconds * 1000) < System.currentTimeMillis()) {
-                event.getPlayer().sendMessage(ChatColor.RED + "You can only chat every " + this.chatPauseTimeInSeconds + " seconds.");
+                TextUtils.sendError(event.getPlayer(), "You can only chat every " + this.chatPauseTimeInSeconds + " seconds.");
                 event.setCancelled(true);
             }
         }

@@ -1,12 +1,11 @@
 package de.minestar.sixteenblocks.Manager;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import de.minestar.sixteenblocks.core.Console;
+import de.minestar.sixteenblocks.core.TextUtils;
 
 public class AreaManager {
     private HashMap<String, SkinArea> areaList = new HashMap<String, SkinArea>();
@@ -20,6 +19,7 @@ public class AreaManager {
     public AreaManager() {
         this.loadAreas();
     }
+
     // ////////////////////////////////////////////////
     //
     // PERSISTENCE
@@ -29,7 +29,7 @@ public class AreaManager {
     // TODO: PLACE PERSISTENCE-METHODS HERE
     // I THINK WE SHOULD USE MySQL
     private void loadAreas() {
-        Console.log("Areas loaded.", Level.FINE);
+        TextUtils.logInfo("Areas loaded.");
     }
 
     // ////////////////////////////////////////////////

@@ -18,20 +18,20 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Console.logInfo("Disabled!");
+        TextUtils.logInfo("Disabled!");
     }
 
     @Override
     public void onEnable() {
         // SET NAME
-        Console.setPluginName(this.getDescription().getName());
+        TextUtils.setPluginName(this.getDescription().getName());
 
         // STARTUP
         this.createManager();
         this.registerListeners();
 
         // INFO
-        Console.logInfo("Enabled!");
+        TextUtils.logInfo("Enabled!");
     }
 
     private void createManager() {
