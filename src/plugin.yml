@@ -1,3 +1,11 @@
 name: 16Blocks
 main: de.minestar.sixteenblocks.core.Core
 version: 1.0
+commands:
+  spawn:
+    description: Takes you to the spawn
+    usage: /spawn
+  info:
+    description: Takes you to the infowall
+    usage: /info   
+    

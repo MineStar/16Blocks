@@ -37,8 +37,8 @@ public class MovementListener implements Listener {
             return;
 
         // CHECK IF THE PLAYER CAN GO THERE
-        if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockZ())) {
-            event.setTo(event.getFrom().clone());
+        if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
+            event.setTo(worldManager.getCorrectedResetLocation(event.getFrom()));
             TextUtils.sendError(event.getPlayer(), "You are not allowed to go here.");
             return;
         }
@@ -46,7 +46,7 @@ public class MovementListener implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockZ())) {
+        if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
             event.setTo(new Location(event.getTo().getWorld(), 0, 6, 0));
         }
     }

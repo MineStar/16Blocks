@@ -7,6 +7,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.core.TextUtils;
+import de.minestar.sixteenblocks.units.ZoneXZ;
 
 public class BlockListener implements Listener {
 
@@ -18,7 +19,9 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer().getName(), event.getBlock())) {
+        ZoneXZ thisZone = ZoneXZ.fromPoint(event.getBlock().getX(), event.getBlock().getZ());
+        TextUtils.sendInfo(event.getPlayer(), "AreaX / AreaZ : " + thisZone.getX() + " / " + thisZone.getZ());
+        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
@@ -26,7 +29,9 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer().getName(), event.getBlock())) {
+        ZoneXZ thisZone = ZoneXZ.fromPoint(event.getBlock().getX(), event.getBlock().getZ());
+        TextUtils.sendInfo(event.getPlayer(), "AreaX / AreaZ : " + thisZone.getX() + " / " + thisZone.getZ());
+        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }

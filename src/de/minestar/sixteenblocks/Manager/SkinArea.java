@@ -1,24 +1,31 @@
 package de.minestar.sixteenblocks.Manager;
 
+import org.bukkit.entity.Player;
+
+import de.minestar.sixteenblocks.units.ZoneXZ;
+
 public class SkinArea {
-    private static int areaSizeX = 32, areaSizeZ = 32;
-    private static int minimumY = 5;
+    private final String areaOwner;
+    private final ZoneXZ coordinates;
 
-    private int areaX = 0, areaZ = 0;
-    private int realX = areaX * areaSizeX, realZ = areaZ * areaSizeZ, realEndX = realX + areaSizeX, realEndZ = realZ + areaSizeZ;
-
-    public SkinArea(int areaX, int areaZ) {
-        this.areaX = areaX;
-        this.areaZ = areaZ;
-        this.realX = this.areaX * areaSizeX;
-        this.realZ = this.areaZ * areaSizeZ;
-        this.realEndX = this.realX + areaSizeX - 1;
-        this.realEndZ = this.realZ + areaSizeZ - 1;
+    public SkinArea(int x, int z, String areaOwner) {
+        this.coordinates = ZoneXZ.fromCoordinates(x, z);
+        this.areaOwner = areaOwner;
     }
 
-    public boolean isInArea(int x, int y, int z) {
-        if (y < minimumY || x < this.realX || x > this.realEndX || z < this.realZ || z > this.realEndZ)
-            return false;
-        return true;
+    public String getAreaOwner() {
+        return areaOwner;
+    }
+
+    public boolean isAreaOwner(String playerName) {
+        return this.getAreaOwner().equalsIgnoreCase(playerName);
+    }
+
+    public boolean isAreaOwner(Player player) {
+        return this.isAreaOwner(player.getName());
+    }
+
+    public ZoneXZ getZoneXZ() {
+        return this.coordinates;
     }
 }
