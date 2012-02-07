@@ -7,6 +7,12 @@ public class WorldManager {
     private static int minX = -tempSize, maxX = tempSize;
     private static int minZ = -tempSize, maxZ = tempSize;
 
+    // private StructureManager structureManager;
+
+    public WorldManager(StructureManager structureManager) {
+        // this.structureManager = structureManager;
+    }
+
     public boolean canGoTo(int x, int y, int z) {
         if (x < minX || x > maxX || z < minZ || z > maxZ || y < 1 || y > 127)
             return false;

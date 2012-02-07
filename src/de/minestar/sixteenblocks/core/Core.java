@@ -9,12 +9,14 @@ import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 
 public class Core extends JavaPlugin {
     private Listener baseListener, blockListener, chatListener, movementListener;
     private AreaManager areaManager;
     private WorldManager worldManager;
+    private StructureManager structureManager;
 
     @Override
     public void onDisable() {
@@ -36,13 +38,14 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.areaManager = new AreaManager();
-        this.worldManager = new WorldManager();
+        this.structureManager = new StructureManager(this.areaManager);
+        this.worldManager = new WorldManager(this.structureManager);
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager);
+        this.blockListener = new BlockListener(this.areaManager, this.structureManager);
         this.chatListener = new ChatListener();
         this.movementListener = new MovementListener(this.worldManager);
 
