@@ -7,6 +7,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.core.TextUtils;
+import de.minestar.sixteenblocks.structures.StructureSocket;
 import de.minestar.sixteenblocks.units.ZoneXZ;
 
 public class BlockListener implements Listener {
@@ -21,6 +22,9 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         ZoneXZ thisZone = ZoneXZ.fromPoint(event.getBlock().getX(), event.getBlock().getZ());
         TextUtils.sendInfo(event.getPlayer(), "AreaX / AreaZ : " + thisZone.getX() + " / " + thisZone.getZ());
+
+        new StructureSocket().createStructure(event.getBlock().getWorld(), thisZone.getX() * AreaManager.getAreaSizeX() + (thisZone.getZ() % 2 != 0 ? -16 : 0), 4, thisZone.getZ() * AreaManager.getAreaSizeZ());
+
         if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
