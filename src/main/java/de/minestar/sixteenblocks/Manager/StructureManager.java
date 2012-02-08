@@ -2,7 +2,7 @@ package de.minestar.sixteenblocks.Manager;
 
 import java.util.HashMap;
 
-import de.minestar.sixteenblocks.Structures.EnumStructures;
+import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Units.Structure;
 
 public class StructureManager {

@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
-import de.minestar.sixteenblocks.Structures.EnumStructures;
+import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 

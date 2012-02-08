@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.Command;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
-import de.minestar.sixteenblocks.Structures.EnumStructures;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class cmdSaveArea extends Command {
