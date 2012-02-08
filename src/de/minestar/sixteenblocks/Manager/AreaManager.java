@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -55,17 +56,20 @@ public class AreaManager {
         ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
         int startX = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0);
         int startZ = thisZone.getZ() * Settings.getAreaSizeZ();
-        int startY = Settings.getBaseY();
         int ID;
         byte SubID;
 
         // FIRST WE GET ALL BLOCKS != AIR
         for (int x = 0; x < Settings.getAreaSizeX(); x++) {
             for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
-                for (int y = 0; y < 128 - startY; y++) {
-                    ID = world.getBlockTypeIdAt(startX + x, startY + y, startZ + z);
-                    SubID = world.getBlockAt(startX + x, startY + y, startZ + z).getData();
-                    if (ID != 0) {
+                for (int y = 0; y < 128; y++) {
+                    ID = world.getBlockTypeIdAt(startX + x, y, startZ + z);
+                    SubID = world.getBlockAt(startX + x, y, startZ + z).getData();
+                    if (ID != Material.AIR.getId()) {
+                        if (y <= Settings.getBaseY()) {
+                            if (ID == Material.GRASS.getId() || ID == Material.DIRT.getId() || ID == Material.BEDROCK.getId())
+                                continue;
+                        }
                         blockList.add(new StructureBlock(x, y, z, ID, SubID));
                     }
                 }
@@ -123,7 +127,6 @@ public class AreaManager {
         }
         return true;
     }
-
     public ArrayList<StructureBlock> loadStructure(String structureName) {
         ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
         try {

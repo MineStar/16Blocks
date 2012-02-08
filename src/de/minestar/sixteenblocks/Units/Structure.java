@@ -23,11 +23,11 @@ public class Structure {
         }
     }
 
-    public void createStructure(World world, int baseX, int baseY, int baseZ) {
+    public void createStructure(World world, int baseX, int baseZ) {
         if (this.BlockSet == null)
             return;
-        BlockCreationThread thisThread = new BlockCreationThread(world, baseX, baseY, baseZ, this.BlockSet);
-        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplac()));
+        BlockCreationThread thisThread = new BlockCreationThread(world, baseX, baseZ, this.BlockSet);
+        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
     }
 
     protected void addBlock(int x, int y, int z, int TypeID) {

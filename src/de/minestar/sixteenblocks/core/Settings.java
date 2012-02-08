@@ -9,8 +9,8 @@ public class Settings {
     private static int minimumBuildY = 5;
     private static int baseY = 4;
 
-    private static int MAX_BLOCKS_REPLACE_AT_ONCE = 50;
-    private static int TICKS_BETWEEN_REPLACE = 20;
+    private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
+    private static int TICKS_BETWEEN_REPLACE = 10;
 
     public static void init(File dataFolder) {
         try {
@@ -31,12 +31,12 @@ public class Settings {
 
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             TICKS_BETWEEN_REPLACE = config.getInt("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
-
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
         }
     }
+
     private static void saveSettings(File dataFolder) {
         try {
             File file = new File(dataFolder, "config.yml");
@@ -60,22 +60,28 @@ public class Settings {
             e.printStackTrace();
         }
     }
+
     public static int getAreaSizeX() {
         return areaSizeX;
     }
+
     public static int getAreaSizeZ() {
         return areaSizeZ;
     }
+
     public static int getMinimumBuildY() {
         return minimumBuildY;
     }
+
     public static int getBaseY() {
         return baseY;
     }
+
     public static int getMaxBlockxReplaceAtOnce() {
         return MAX_BLOCKS_REPLACE_AT_ONCE;
     }
-    public static int getTicksBetweenReplac() {
+
+    public static int getTicksBetweenReplace() {
         return TICKS_BETWEEN_REPLACE;
     }
 

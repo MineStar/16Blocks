@@ -29,7 +29,7 @@ public class BlockListener implements Listener {
 
         // TEST TO CREATE STRUCTURES
         if (!event.getPlayer().isOp()) {
-            structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(event.getBlock().getWorld(), thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), 4, thisZone.getZ() * Settings.getAreaSizeZ());
+            structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(event.getBlock().getWorld(), thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), thisZone.getZ() * Settings.getAreaSizeZ());
         }
         // TEST - END
 
@@ -46,8 +46,8 @@ public class BlockListener implements Listener {
 
         // TEST TO EXPORT AREAS
         if (!event.getPlayer().isOp()) {
-            if (areaManager.exportStructure(event.getBlock().getWorld(), EnumStructures.ZONE_STREETS_AND_SOCKET.getName(), thisZone)) {
-                TextUtils.sendSuccess(event.getPlayer(), "Saved Area as '" + EnumStructures.ZONE_STREETS_AND_SOCKET.getName() + "'.");
+            if (areaManager.exportStructure(event.getBlock().getWorld(), EnumStructures.ZONE_STREETS_BACK.getName(), thisZone)) {
+                TextUtils.sendSuccess(event.getPlayer(), "Saved Area as '" + EnumStructures.ZONE_STREETS_BACK.getName() + "'.");
             } else {
                 TextUtils.sendError(event.getPlayer(), "Could not save area!");
             }

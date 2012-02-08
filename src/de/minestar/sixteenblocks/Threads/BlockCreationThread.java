@@ -12,14 +12,13 @@ public class BlockCreationThread implements Runnable {
 
     private final ArrayList<StructureBlock> blockList;
     private final World world;
-    private final int baseX, baseY, baseZ;
+    private final int baseX, baseZ;
     private int TaskID = -9999;
     private int counter = 0;
 
-    public BlockCreationThread(World world, int baseX, int baseY, int baseZ, ArrayList<StructureBlock> blockList) {
+    public BlockCreationThread(World world, int baseX, int baseZ, ArrayList<StructureBlock> blockList) {
         this.world = world;
         this.baseX = baseX;
-        this.baseY = baseY;
         this.baseZ = baseZ;
         this.blockList = blockList;
     }
@@ -36,7 +35,7 @@ public class BlockCreationThread implements Runnable {
         StructureBlock thisBlock = null;
         for (int i = 0; i < Settings.getMaxBlockxReplaceAtOnce(); i++) {
             thisBlock = blockList.get(counter);
-            world.getBlockAt(baseX + thisBlock.getX(), baseY + thisBlock.getY(), baseZ + thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
+            world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
             counter++;
             if (counter >= blockList.size()) {
                 Bukkit.getScheduler().cancelTask(this.TaskID);
