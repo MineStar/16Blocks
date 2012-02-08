@@ -42,10 +42,9 @@ public class Structure {
     public ArrayList<StructureBlock> flipX(ArrayList<StructureBlock> BlockList) {
         if (BlockList == null)
             return null;
-        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
-        newList.addAll(BlockList);
+        ArrayList<StructureBlock> newList = this.cloneList(BlockList);
         for (StructureBlock block : newList) {
-            block.setX(Settings.getAreaSizeX() - block.getX());
+            block.setX(Settings.getAreaSizeX() - 1 - block.getX());
         }
         return newList;
     }
@@ -57,10 +56,9 @@ public class Structure {
     public ArrayList<StructureBlock> flipZ(ArrayList<StructureBlock> BlockList) {
         if (BlockList == null)
             return null;
-        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
-        newList.addAll(BlockList);
+        ArrayList<StructureBlock> newList = this.cloneList(BlockList);
         for (StructureBlock block : newList) {
-            block.setZ(Settings.getAreaSizeZ() - block.getZ());
+            block.setZ(Settings.getAreaSizeZ() - 1 - block.getZ());
         }
         return newList;
     }
@@ -81,25 +79,24 @@ public class Structure {
         return this.rotate180(this.BlockList);
     }
 
-    public ArrayList<StructureBlock> rotate90() {
+    public ArrayList<StructureBlock> rotate270() {
         if (this.BlockList == null)
             return null;
-        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
-        newList.addAll(BlockList);
+        ArrayList<StructureBlock> newList = this.cloneList(this.BlockList);
         int oldX, oldZ;
         for (StructureBlock block : newList) {
             oldX = block.getX();
             oldZ = block.getZ();
             block.setX(oldZ);
-            block.setZ(Settings.getAreaSizeZ() - oldX);
+            block.setZ(Settings.getAreaSizeZ() - 1 - oldX);
         }
         return newList;
     }
 
-    public ArrayList<StructureBlock> rotate270() {
+    public ArrayList<StructureBlock> rotate90() {
         if (this.BlockList == null)
             return null;
-        ArrayList<StructureBlock> newList = this.rotate90();
+        ArrayList<StructureBlock> newList = this.rotate270();
         newList = this.rotate180(newList);
         return newList;
     }
@@ -115,4 +112,16 @@ public class Structure {
     protected void addBlock(StructureBlock block) {
         this.BlockList.add(block);
     }
+
+    public ArrayList<StructureBlock> getBlockList() {
+        return BlockList;
+    }
+
+    private ArrayList<StructureBlock> cloneList(ArrayList<StructureBlock> list) {
+        ArrayList<StructureBlock> clone = new ArrayList<StructureBlock>(list.size());
+        for (StructureBlock item : list)
+            clone.add(item.clone());
+        return clone;
+    }
+
 }

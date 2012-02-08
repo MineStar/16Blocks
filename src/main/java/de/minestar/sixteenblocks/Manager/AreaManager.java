@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
+import de.minestar.sixteenblocks.Units.Structure;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
@@ -95,6 +96,10 @@ public class AreaManager {
                             if (ID == Material.GRASS.getId() || ID == Material.DIRT.getId() || ID == Material.BEDROCK.getId())
                                 continue;
                         }
+                        if (ID == 44) {
+                            System.out.println("x: " + x);
+                        }
+
                         blockList.add(new StructureBlock(x, y, z, ID, SubID));
                     }
                 }
@@ -309,5 +314,30 @@ public class AreaManager {
             return false;
         }
         return thisArea.isAreaOwner(player);
+    }
+
+    public void testMethod() {
+        Structure thisStructure = this.structureManager.getStructure(EnumStructures.STREETS_CORNER);
+        thisStructure.createStructure(0, -2);
+
+        ArrayList<StructureBlock> list = thisStructure.getBlockList();
+        list = thisStructure.flipX(list);
+        thisStructure.createStructure(list, 1, -2);
+
+        list = thisStructure.getBlockList();
+        list = thisStructure.flipZ(list);
+        thisStructure.createStructure(list, 0, -3);
+
+        list = thisStructure.getBlockList();
+        list = thisStructure.rotate180();
+        thisStructure.createStructure(list, 1, -3);
+
+        list = thisStructure.getBlockList();
+        list = thisStructure.rotate90();
+        thisStructure.createStructure(list, 0, -4);
+
+        list = thisStructure.getBlockList();
+        list = thisStructure.rotate270();
+        thisStructure.createStructure(list, 1, -4);
     }
 }

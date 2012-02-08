@@ -57,6 +57,8 @@ public class Core extends JavaPlugin {
         this.areaManager.createRow(1);
         this.areaManager.createRow(2);
         this.areaManager.createRow(3);
+
+        this.areaManager.testMethod();
     }
 
     private void createManager() {

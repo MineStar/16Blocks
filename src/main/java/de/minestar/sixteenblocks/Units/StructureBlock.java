@@ -48,4 +48,8 @@ public class StructureBlock {
     public byte getSubID() {
         return SubID;
     }
+
+    public StructureBlock clone() {
+        return new StructureBlock(x, y, z, TypeID, SubID);
+    }
 }
