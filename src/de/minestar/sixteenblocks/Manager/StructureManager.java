@@ -2,8 +2,8 @@ package de.minestar.sixteenblocks.Manager;
 
 import java.util.HashMap;
 
-import de.minestar.sixteenblocks.structures.EnumStructures;
-import de.minestar.sixteenblocks.units.Structure;
+import de.minestar.sixteenblocks.Structures.EnumStructures;
+import de.minestar.sixteenblocks.Units.Structure;
 
 public class StructureManager {
     private HashMap<EnumStructures, Structure> structureList = new HashMap<EnumStructures, Structure>();

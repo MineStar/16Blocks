@@ -1,4 +1,4 @@
-package de.minestar.sixteenblocks.structures;
+package de.minestar.sixteenblocks.Structures;
 
 public enum EnumStructures {
     ZONE_STREETS_AND_SOCKET("STREETS_AND_SOCKET"),

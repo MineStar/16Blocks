@@ -7,9 +7,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
+import de.minestar.sixteenblocks.Structures.EnumStructures;
+import de.minestar.sixteenblocks.Units.ZoneXZ;
+import de.minestar.sixteenblocks.core.Settings;
 import de.minestar.sixteenblocks.core.TextUtils;
-import de.minestar.sixteenblocks.structures.EnumStructures;
-import de.minestar.sixteenblocks.units.ZoneXZ;
 
 public class BlockListener implements Listener {
 
@@ -28,7 +29,7 @@ public class BlockListener implements Listener {
 
         // TEST TO CREATE STRUCTURES
         if (!event.getPlayer().isOp()) {
-            structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(event.getBlock().getWorld(), thisZone.getX() * AreaManager.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (AreaManager.getAreaSizeX() >> 1) : 0), 4, thisZone.getZ() * AreaManager.getAreaSizeZ());
+            structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(event.getBlock().getWorld(), thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), 4, thisZone.getZ() * Settings.getAreaSizeZ());
         }
         // TEST - END
 

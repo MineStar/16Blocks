@@ -2,7 +2,7 @@ package de.minestar.sixteenblocks.Manager;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.sixteenblocks.units.ZoneXZ;
+import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class SkinArea {
     private final String areaOwner;

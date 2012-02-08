@@ -1,4 +1,4 @@
-package de.minestar.sixteenblocks.units;
+package de.minestar.sixteenblocks.Units;
 
 public class StructureBlock {
     private final int x, y, z, TypeID;

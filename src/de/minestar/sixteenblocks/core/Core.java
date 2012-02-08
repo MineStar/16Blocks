@@ -13,6 +13,7 @@ import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 
 public class Core extends JavaPlugin {
+    private static Core instance;
     private Listener baseListener, blockListener, chatListener, movementListener;
     private AreaManager areaManager;
     private WorldManager worldManager;
@@ -25,6 +26,12 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // INIT INSTANCE
+        instance = this;
+
+        // INIT SETTINGS
+        Settings.init(this.getDataFolder());
+
         // SET NAME
         TextUtils.setPluginName(this.getDescription().getName());
 
@@ -54,5 +61,9 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
+    }
+
+    public static Core getInstance() {
+        return instance;
     }
 }

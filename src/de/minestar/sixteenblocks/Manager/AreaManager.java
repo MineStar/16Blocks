@@ -7,22 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import de.minestar.sixteenblocks.Units.StructureBlock;
+import de.minestar.sixteenblocks.Units.ZoneXZ;
+import de.minestar.sixteenblocks.core.Settings;
 import de.minestar.sixteenblocks.core.TextUtils;
-import de.minestar.sixteenblocks.units.StructureBlock;
-import de.minestar.sixteenblocks.units.ZoneXZ;
 
 public class AreaManager {
-    private static int areaSizeX = 32, areaSizeZ = 32;
-    private static int minimumBuildY = 5;
-    private static int baseY = 4;
-
     private HashMap<String, SkinArea> areaList = new HashMap<String, SkinArea>();
 
     // ////////////////////////////////////////////////
@@ -57,15 +53,15 @@ public class AreaManager {
      */
     public boolean exportStructure(World world, String structureName, ZoneXZ thisZone) {
         ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
-        int startX = thisZone.getX() * areaSizeX - (thisZone.getZ() % 2 != 0 ? (areaSizeX >> 1) : 0);
-        int startZ = thisZone.getZ() * areaSizeZ;
-        int startY = baseY;
+        int startX = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0);
+        int startZ = thisZone.getZ() * Settings.getAreaSizeZ();
+        int startY = Settings.getBaseY();
         int ID;
         byte SubID;
 
         // FIRST WE GET ALL BLOCKS != AIR
-        for (int x = 0; x < areaSizeX; x++) {
-            for (int z = 0; z < areaSizeZ; z++) {
+        for (int x = 0; x < Settings.getAreaSizeX(); x++) {
+            for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
                 for (int y = 0; y < 128 - startY; y++) {
                     ID = world.getBlockTypeIdAt(startX + x, startY + y, startZ + z);
                     SubID = world.getBlockAt(startX + x, startY + y, startZ + z).getData();
@@ -128,8 +124,8 @@ public class AreaManager {
         return true;
     }
 
-    public HashSet<StructureBlock> loadStructure(String structureName) {
-        HashSet<StructureBlock> blockList = new HashSet<StructureBlock>();
+    public ArrayList<StructureBlock> loadStructure(String structureName) {
+        ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
         try {
             // CREATE DIRS
             File folder = new File("plugins/16Blocks/structures");
@@ -240,7 +236,7 @@ public class AreaManager {
     }
 
     public boolean isInArea(Player player, int x, int y, int z) {
-        if (y < AreaManager.minimumBuildY)
+        if (y < Settings.getMinimumBuildY())
             return false;
 
         ZoneXZ thisZone = ZoneXZ.fromPoint(x, z);
@@ -249,23 +245,5 @@ public class AreaManager {
             return false;
         }
         return thisArea.isAreaOwner(player);
-    }
-
-    // ////////////////////////////////////////////////
-    //
-    // GETTER-METHODS
-    //
-    // ////////////////////////////////////////////////
-
-    public static int getAreaSizeX() {
-        return areaSizeX;
-    }
-
-    public static int getAreaSizeZ() {
-        return areaSizeZ;
-    }
-
-    public static int getMinimumY() {
-        return minimumBuildY;
     }
 }
