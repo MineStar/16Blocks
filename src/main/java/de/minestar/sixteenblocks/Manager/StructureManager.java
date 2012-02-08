@@ -22,9 +22,12 @@ public class StructureManager {
         this.addStructure(EnumStructures.ZONE_STREETS_AND_SOCKET);
         this.addStructure(EnumStructures.ZONE_STREETS_BACK);
         this.addStructure(EnumStructures.ZONE_STEVE);
+        this.addStructure(EnumStructures.STREETS_CORNER);
+        this.addStructure(EnumStructures.STREETS_SIDE_1);
+        this.addStructure(EnumStructures.STREETS_SIDE_2);
     }
 
-    private void addStructure(EnumStructures structure) {
+    public void addStructure(EnumStructures structure) {
         this.structureList.put(structure, new Structure(this.areaManager, structure.getName()));
     }
 }

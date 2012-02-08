@@ -10,6 +10,9 @@ public class Settings {
     private static int minimumBuildY = 5;
     private static int baseY = 4;
 
+    private static int skinsLeft = 3;
+    private static int skinsRight = 3;
+
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
     private static int TICKS_BETWEEN_REPLACE = 10;
 
@@ -32,12 +35,14 @@ public class Settings {
             areaSizeZ = config.getInt("Zone.sizeZ", areaSizeZ);
             minimumBuildY = config.getInt("Zone.minimumBuildLevel", minimumBuildY);
 
+            skinsLeft = config.getInt("Skins.left", skinsLeft);
+            skinsRight = config.getInt("Skins.right", skinsRight);
+
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             TICKS_BETWEEN_REPLACE = config.getInt("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
 
             spawnVector = config.getVector("Locations.spawn", spawnVector);
             infoWallVector = config.getVector("Locations.infoWall", infoWallVector);
-
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
@@ -58,6 +63,9 @@ public class Settings {
             config.set("Zone.sizeX", areaSizeX);
             config.set("Zone.sizeZ", areaSizeZ);
             config.set("Zone.minimumBuildLevel", minimumBuildY);
+
+            config.set("Skins.left", skinsLeft);
+            config.set("Skins.right", skinsRight);
 
             config.set("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             config.set("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
@@ -101,6 +109,14 @@ public class Settings {
 
     public static Vector getInfoWallVector() {
         return infoWallVector;
+    }
+
+    public static int getSkinsLeft() {
+        return skinsLeft;
+    }
+
+    public static int getSkinsRight() {
+        return skinsRight;
     }
 
 }

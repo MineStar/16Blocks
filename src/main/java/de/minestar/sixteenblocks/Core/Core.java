@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.minestar.minestarlibrary.commands.Command;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
+import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
@@ -36,9 +37,6 @@ public class Core extends JavaPlugin {
         // INIT INSTANCE
         instance = this;
 
-        // INIT COMMANDS
-        this.initCommands();
-
         // INIT SETTINGS
         Settings.init(this.getDataFolder());
 
@@ -49,20 +47,29 @@ public class Core extends JavaPlugin {
         this.createManager();
         this.registerListeners();
 
+        // INIT COMMANDS
+        this.initCommands();
+
         // INFO
         TextUtils.logInfo("Enabled!");
+
+        this.areaManager.createRow(0);
+        this.areaManager.createRow(1);
+        this.areaManager.createRow(2);
+        this.areaManager.createRow(3);
     }
 
     private void createManager() {
         this.areaManager = new AreaManager();
         this.structureManager = new StructureManager(this.areaManager);
         this.worldManager = new WorldManager(this.structureManager);
+        this.areaManager.init(this.structureManager);
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager, this.structureManager);
+        this.blockListener = new BlockListener(this.areaManager);
         this.chatListener = new ChatListener();
         this.movementListener = new MovementListener(this.worldManager);
 
@@ -78,7 +85,8 @@ public class Core extends JavaPlugin {
         // Add an command to this list to register it in the plugin       
         Command[] commands = new Command[] {
                         new cmdSpawn("[16Blocks]", "/spawn", "", ""),
-                        new cmdInfo("[16Blocks]", "/info", "", "")
+                        new cmdInfo("[16Blocks]", "/info", "", ""),
+                        new cmdSaveArea("[16Blocks]", "/save", "<StructureName>", "", this.areaManager, this.structureManager)
         };
         /* @formatter:on */
         // store the commands in the hash map

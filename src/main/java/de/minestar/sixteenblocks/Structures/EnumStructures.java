@@ -5,7 +5,13 @@ public enum EnumStructures {
 
     ZONE_STEVE("STEVE"),
 
-    ZONE_STREETS_BACK("STREETS_BACK");
+    ZONE_STREETS_BACK("STREETS_BACK"),
+
+    STREETS_CORNER("STREETS_CORNER"),
+
+    STREETS_SIDE_1("STREETS_SIDE_1"),
+
+    STREETS_SIDE_2("STREETS_SIDE_2");
 
     private final String name;
 
@@ -17,9 +23,9 @@ public enum EnumStructures {
         return this.name;
     }
 
-    public EnumStructures fromName(String name) {
+    public static EnumStructures fromName(String name) {
         for (EnumStructures thisStructure : EnumStructures.values()) {
-            if (thisStructure.getName().contains(name))
+            if (thisStructure.getName().toLowerCase().contains(name.toLowerCase()))
                 return thisStructure;
         }
         return null;

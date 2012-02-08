@@ -23,10 +23,11 @@ public class Structure {
         }
     }
 
-    public void createStructure(World world, int baseX, int baseZ) {
+    public void createStructure(int zoneX, int zoneZ) {
         if (this.BlockSet == null)
             return;
-        BlockCreationThread thisThread = new BlockCreationThread(world, baseX, baseZ, this.BlockSet);
+        World world = Bukkit.getWorlds().get(0);
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockSet);
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
     }
 

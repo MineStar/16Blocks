@@ -16,11 +16,15 @@ import org.bukkit.entity.Player;
 
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Structures.EnumStructures;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaManager {
-    private HashMap<String, SkinArea> areaList = new HashMap<String, SkinArea>();
+    private HashMap<String, SkinArea> usedAreaList = new HashMap<String, SkinArea>();
+    private HashMap<String, SkinArea> unusedAreaList = new HashMap<String, SkinArea>();
+
+    private StructureManager structureManager;
 
     // ////////////////////////////////////////////////
     //
@@ -30,6 +34,27 @@ public class AreaManager {
 
     public AreaManager() {
         this.loadAreas();
+    }
+
+    public void init(StructureManager structureManager) {
+        this.structureManager = structureManager;
+    }
+
+    // ////////////////////////////////////////////////
+    //
+    // AREA CREATION
+    //
+    // ////////////////////////////////////////////////
+
+    public void createRow(int z) {
+        int i = 0;
+        for (int x = -Settings.getSkinsRight() + (z % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
+            this.createUnusedArea(new SkinArea(x, z, ""), true);
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
+            if (z % 2 != 0 && i == 0) {
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, z - 1);
+            }
+        }
     }
 
     // ////////////////////////////////////////////////
@@ -127,6 +152,7 @@ public class AreaManager {
         }
         return true;
     }
+
     public ArrayList<StructureBlock> loadStructure(String structureName) {
         ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
         try {
@@ -183,36 +209,71 @@ public class AreaManager {
     //
     // ////////////////////////////////////////////////
 
-    public SkinArea getArea(ZoneXZ thisZone) {
-        return this.areaList.get(thisZone.toString());
-    }
-
-    public boolean containsArea(ZoneXZ thisZone) {
-        return this.containsArea(thisZone.toString());
-    }
-
-    public boolean containsArea(String coordinateString) {
-        return this.areaList.containsKey(coordinateString);
-    }
-
-    public boolean addArea(SkinArea skinArea) {
-        if (this.containsArea(skinArea.getZoneXZ()))
+    public boolean createUnusedArea(SkinArea skinArea, boolean createStructures) {
+        if (this.containsUnusedArea(skinArea.getZoneXZ()))
             return false;
-        this.areaList.put(skinArea.getZoneXZ().toString(), skinArea);
+        this.unusedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
+        this.usedAreaList.remove(skinArea.getZoneXZ().toString());
+        if (createStructures) {
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
+        }
         return true;
     }
 
-    public boolean removeArea(ZoneXZ thisZone) {
-        return (this.areaList.remove(thisZone.toString()) != null);
+    public SkinArea getUnusedArea(ZoneXZ thisZone) {
+        return this.unusedAreaList.get(thisZone.toString());
     }
 
-    public boolean removeArea(SkinArea thisArea) {
-        return this.removeArea(thisArea.getZoneXZ());
+    public boolean containsUnusedArea(ZoneXZ thisZone) {
+        return this.containsUnusedArea(thisZone.toString());
     }
 
-    public boolean removeArea(Player player) {
+    public boolean containsUnusedArea(String coordinateString) {
+        return this.unusedAreaList.containsKey(coordinateString);
+    }
+
+    // ///////////////////////////
+    // USED AREAS
+    // //////////////////////////
+    public SkinArea getPlayerArea(ZoneXZ thisZone) {
+        return this.usedAreaList.get(thisZone.toString());
+    }
+
+    public boolean containsPlayerArea(ZoneXZ thisZone) {
+        return this.containsPlayerArea(thisZone.toString());
+    }
+
+    public boolean containsPlayerArea(String coordinateString) {
+        return this.usedAreaList.containsKey(coordinateString);
+    }
+
+    public boolean createPlayerArea(SkinArea skinArea, boolean createStructures) {
+        if (this.containsPlayerArea(skinArea.getZoneXZ()))
+            return false;
+        this.usedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
+        this.unusedAreaList.remove(skinArea.getZoneXZ().toString());
+        if (createStructures) {
+            this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
+        }
+        return true;
+    }
+
+    public boolean removePlayerArea(ZoneXZ thisZone) {
+        if (!this.containsPlayerArea(thisZone.toString()))
+            return false;
+
+        this.unusedAreaList.put(thisZone.toString(), new SkinArea(thisZone.getX(), thisZone.getZ(), ""));
+        this.usedAreaList.remove(thisZone.toString());
+        return true;
+    }
+
+    public boolean removePlayerArea(SkinArea thisArea) {
+        return this.removePlayerArea(thisArea.getZoneXZ());
+    }
+
+    public boolean removePlayerArea(Player player) {
         SkinArea toDelete = null;
-        for (SkinArea thisArea : this.areaList.values()) {
+        for (SkinArea thisArea : this.usedAreaList.values()) {
             if (thisArea.isAreaOwner(player)) {
                 toDelete = thisArea;
                 break;
@@ -220,7 +281,7 @@ public class AreaManager {
         }
         // DELETE IF FOUND
         if (toDelete != null)
-            return this.removeArea(toDelete);
+            return this.removePlayerArea(toDelete);
         return false;
     }
 
@@ -243,7 +304,7 @@ public class AreaManager {
             return false;
 
         ZoneXZ thisZone = ZoneXZ.fromPoint(x, z);
-        SkinArea thisArea = this.getArea(thisZone);
+        SkinArea thisArea = this.getPlayerArea(thisZone);
         if (thisArea == null) {
             return false;
         }

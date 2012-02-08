@@ -8,4 +8,7 @@ commands:
   info:
     description: Takes you to the infowall
     usage: /info
+  save:
+    description: Saves the current area as a structure
+    usage: /save <Name>
     
