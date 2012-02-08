@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import de.minestar.sixteenblocks.Core.Core;
+import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Threads.BlockCreationThread;
-import de.minestar.sixteenblocks.core.Core;
-import de.minestar.sixteenblocks.core.Settings;
-import de.minestar.sixteenblocks.core.TextUtils;
 
 public class Structure {
     private ArrayList<StructureBlock> BlockSet = null;

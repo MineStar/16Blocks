@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
-import de.minestar.sixteenblocks.core.TextUtils;
+import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class ChatListener implements Listener {
 

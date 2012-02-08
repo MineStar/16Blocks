@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Units.StructureBlock;
-import de.minestar.sixteenblocks.core.Settings;
 
 public class BlockCreationThread implements Runnable {
 

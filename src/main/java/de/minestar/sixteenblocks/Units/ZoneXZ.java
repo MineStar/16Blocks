@@ -1,6 +1,6 @@
 package de.minestar.sixteenblocks.Units;
 
-import de.minestar.sixteenblocks.core.Settings;
+import de.minestar.sixteenblocks.Core.Settings;
 
 public class ZoneXZ {
     private final int x, z;

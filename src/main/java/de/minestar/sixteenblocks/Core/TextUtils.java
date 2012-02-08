@@ -1,4 +1,4 @@
-package de.minestar.sixteenblocks.core;
+package de.minestar.sixteenblocks.Core;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

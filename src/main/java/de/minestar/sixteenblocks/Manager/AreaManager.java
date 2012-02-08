@@ -14,10 +14,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
-import de.minestar.sixteenblocks.core.Settings;
-import de.minestar.sixteenblocks.core.TextUtils;
 
 public class AreaManager {
     private HashMap<String, SkinArea> areaList = new HashMap<String, SkinArea>();

@@ -1,9 +1,14 @@
-package de.minestar.sixteenblocks.core;
+package de.minestar.sixteenblocks.Core;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.minestar.minestarlibrary.commands.Command;
+import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.sixteenblocks.Commands.cmdInfo;
+import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
@@ -18,9 +23,11 @@ public class Core extends JavaPlugin {
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
+    private CommandList commandList;
 
     @Override
     public void onDisable() {
+        Settings.saveSettings(this.getDataFolder());
         TextUtils.logInfo("Disabled!");
     }
 
@@ -28,6 +35,9 @@ public class Core extends JavaPlugin {
     public void onEnable() {
         // INIT INSTANCE
         instance = this;
+
+        // INIT COMMANDS
+        this.initCommands();
 
         // INIT SETTINGS
         Settings.init(this.getDataFolder());
@@ -61,6 +71,24 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
+    }
+
+    private void initCommands() {
+        /* @formatter:off */
+        // Add an command to this list to register it in the plugin       
+        Command[] commands = new Command[] {
+                        new cmdSpawn("[16Blocks]", "/spawn", "", ""),
+                        new cmdInfo("[16Blocks]", "/info", "", "")
+        };
+        /* @formatter:on */
+        // store the commands in the hash map
+        commandList = new CommandList("[16Blocks]", commands);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        commandList.handleCommand(sender, label, args);
+        return true;
     }
 
     public static Core getInstance() {

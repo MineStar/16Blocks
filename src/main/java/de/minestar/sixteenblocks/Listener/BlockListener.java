@@ -5,12 +5,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Structures.EnumStructures;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
-import de.minestar.sixteenblocks.core.Settings;
-import de.minestar.sixteenblocks.core.TextUtils;
 
 public class BlockListener implements Listener {
 

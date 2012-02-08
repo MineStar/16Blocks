@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.WorldManager;
-import de.minestar.sixteenblocks.core.TextUtils;
 
 public class MovementListener implements Listener {
 
@@ -47,7 +47,7 @@ public class MovementListener implements Listener {
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
-            event.setTo(new Location(event.getTo().getWorld(), 0, 6, 0));
+            event.setTo(new Location(event.getTo().getWorld(), 0, 5, 0));
         }
     }
 }

@@ -1,5 +1,5 @@
 name: 16Blocks
-main: de.minestar.sixteenblocks.core.Core
+main: de.minestar.sixteenblocks.Core.Core
 version: 1.0
 commands:
   spawn:
@@ -7,5 +7,5 @@ commands:
     usage: /spawn
   info:
     description: Takes you to the infowall
-    usage: /info   
+    usage: /info
     

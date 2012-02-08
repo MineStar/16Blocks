@@ -1,8 +1,9 @@
-package de.minestar.sixteenblocks.core;
+package de.minestar.sixteenblocks.Core;
 
 import java.io.File;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.util.Vector;
 
 public class Settings {
     private static int areaSizeX = 32, areaSizeZ = 32;
@@ -11,6 +12,8 @@ public class Settings {
 
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
     private static int TICKS_BETWEEN_REPLACE = 10;
+
+    private static Vector spawnVector = new Vector(0, 4, 0), infoWallVector = new Vector(0, 4, 0);
 
     public static void init(File dataFolder) {
         try {
@@ -31,13 +34,17 @@ public class Settings {
 
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             TICKS_BETWEEN_REPLACE = config.getInt("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
+
+            spawnVector = config.getVector("Locations.spawn", spawnVector);
+            infoWallVector = config.getVector("Locations.infoWall", infoWallVector);
+
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
         }
     }
 
-    private static void saveSettings(File dataFolder) {
+    public static void saveSettings(File dataFolder) {
         try {
             File file = new File(dataFolder, "config.yml");
             boolean fileExists = file.exists();
@@ -54,6 +61,9 @@ public class Settings {
 
             config.set("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             config.set("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
+
+            config.set("Locations.spawn", spawnVector);
+            config.set("Locations.infoWall", infoWallVector);
 
             config.save(file);
         } catch (Exception e) {
@@ -83,6 +93,14 @@ public class Settings {
 
     public static int getTicksBetweenReplace() {
         return TICKS_BETWEEN_REPLACE;
+    }
+
+    public static Vector getSpawnVector() {
+        return spawnVector;
+    }
+
+    public static Vector getInfoWallVector() {
+        return infoWallVector;
     }
 
 }
