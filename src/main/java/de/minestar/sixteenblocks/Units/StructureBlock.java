@@ -1,7 +1,8 @@
 package de.minestar.sixteenblocks.Units;
 
 public class StructureBlock {
-    private final int x, y, z, TypeID;
+    private int x, y, z;
+    private final int TypeID;
     private final byte SubID;
 
     public StructureBlock(int x, int y, int z, int TypeID, byte SubID) {
@@ -26,6 +27,18 @@ public class StructureBlock {
 
     public int getZ() {
         return z;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 
     public int getTypeID() {

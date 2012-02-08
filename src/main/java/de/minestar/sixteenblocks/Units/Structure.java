@@ -12,23 +12,96 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Threads.BlockCreationThread;
 
 public class Structure {
-    private ArrayList<StructureBlock> BlockSet = null;
+    private ArrayList<StructureBlock> BlockList = null;
 
     public Structure(AreaManager areaManager, String structureName) {
         ArrayList<StructureBlock> loadedBlocks = areaManager.loadStructure(structureName);
         if (loadedBlocks != null) {
-            this.BlockSet = loadedBlocks;
+            this.BlockList = loadedBlocks;
         } else {
             TextUtils.logWarning("Structure '" + structureName + "' could not be initialized!");
         }
     }
 
     public void createStructure(int zoneX, int zoneZ) {
-        if (this.BlockSet == null)
+        if (this.BlockList == null)
             return;
         World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockSet);
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockList);
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+    }
+
+    public void createStructure(ArrayList<StructureBlock> BlockList, int zoneX, int zoneZ) {
+        if (BlockList == null)
+            return;
+        World world = Bukkit.getWorlds().get(0);
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), BlockList);
+        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+    }
+
+    public ArrayList<StructureBlock> flipX(ArrayList<StructureBlock> BlockList) {
+        if (BlockList == null)
+            return null;
+        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
+        newList.addAll(BlockList);
+        for (StructureBlock block : newList) {
+            block.setX(Settings.getAreaSizeX() - block.getX());
+        }
+        return newList;
+    }
+
+    public ArrayList<StructureBlock> flipX() {
+        return this.flipX(this.BlockList);
+    }
+
+    public ArrayList<StructureBlock> flipZ(ArrayList<StructureBlock> BlockList) {
+        if (BlockList == null)
+            return null;
+        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
+        newList.addAll(BlockList);
+        for (StructureBlock block : newList) {
+            block.setZ(Settings.getAreaSizeZ() - block.getZ());
+        }
+        return newList;
+    }
+
+    public ArrayList<StructureBlock> flipZ() {
+        return this.flipZ(this.BlockList);
+    }
+
+    public ArrayList<StructureBlock> rotate180(ArrayList<StructureBlock> BlockList) {
+        if (BlockList == null)
+            return null;
+        ArrayList<StructureBlock> newList = this.flipZ(BlockList);
+        newList = this.flipX(newList);
+        return newList;
+    }
+
+    public ArrayList<StructureBlock> rotate180() {
+        return this.rotate180(this.BlockList);
+    }
+
+    public ArrayList<StructureBlock> rotate90() {
+        if (this.BlockList == null)
+            return null;
+        ArrayList<StructureBlock> newList = new ArrayList<StructureBlock>();
+        newList.addAll(BlockList);
+        int oldX, oldZ;
+        for (StructureBlock block : newList) {
+            oldX = block.getX();
+            oldZ = block.getZ();
+            block.setX(oldZ);
+            block.setZ(Settings.getAreaSizeZ() - oldX);
+        }
+        return newList;
+    }
+
+    public ArrayList<StructureBlock> rotate270() {
+        if (this.BlockList == null)
+            return null;
+        ArrayList<StructureBlock> newList = this.rotate90();
+        newList = this.rotate180(newList);
+        return newList;
     }
 
     protected void addBlock(int x, int y, int z, int TypeID) {
@@ -40,6 +113,6 @@ public class Structure {
     }
 
     protected void addBlock(StructureBlock block) {
-        this.BlockSet.add(block);
+        this.BlockList.add(block);
     }
 }
