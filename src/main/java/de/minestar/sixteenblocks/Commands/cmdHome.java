@@ -3,12 +3,12 @@ package de.minestar.sixteenblocks.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.minestar.minestarlibrary.commands.ExtendedCommand;
+import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.SkinArea;
 
-public class cmdHome extends ExtendedCommand {
+public class cmdHome extends AbstractExtendedCommand {
 
     private AreaManager areaManager;
 

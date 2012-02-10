@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.minestar.minestarlibrary.commands.Command;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
@@ -86,7 +86,7 @@ public class Core extends JavaPlugin {
     private void initCommands() {
         /* @formatter:off */
         // Add an command to this list to register it in the plugin       
-        Command[] commands = new Command[] {
+        AbstractCommand[] commands = new AbstractCommand[] {
                         new cmdSpawn("[16Blocks]", "/spawn", "", ""),
                         new cmdInfo("[16Blocks]", "/info", "", ""),
                         new cmdStartAuto("[16Blocks]", "/start", "", "",  this.areaManager),

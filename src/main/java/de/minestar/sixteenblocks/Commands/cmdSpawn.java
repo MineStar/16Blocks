@@ -4,11 +4,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import de.minestar.minestarlibrary.commands.Command;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
-public class cmdSpawn extends Command {
+public class cmdSpawn extends AbstractCommand {
 
     public cmdSpawn(String pluginName, String syntax, String arguments, String node) {
         super(pluginName, syntax, arguments, node);

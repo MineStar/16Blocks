@@ -2,12 +2,12 @@ package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.minestarlibrary.commands.Command;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.SkinArea;
 
-public class cmdStartAuto extends Command {
+public class cmdStartAuto extends AbstractCommand {
 
     private AreaManager areaManager;
 
