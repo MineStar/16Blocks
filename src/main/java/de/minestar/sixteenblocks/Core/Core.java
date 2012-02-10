@@ -62,11 +62,11 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.databaseManager = new DatabaseManager(this.getDescription().getName(), this.getDataFolder());
-        this.areaManager = new AreaManager(this.databaseManager);
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager(this.structureManager);
-        this.areaManager.init(this.structureManager);
+        this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
     }
+
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();

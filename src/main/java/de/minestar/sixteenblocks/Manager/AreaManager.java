@@ -20,6 +20,7 @@ public class AreaManager {
 
     private StructureManager structureManager;
     private DatabaseManager databaseManager;
+    private WorldManager worldManager;
 
     private int lastRow = 0;
 
@@ -29,13 +30,12 @@ public class AreaManager {
     //
     // ////////////////////////////////////////////////
 
-    public AreaManager(DatabaseManager databaseManager) {
+    public AreaManager(DatabaseManager databaseManager, WorldManager worldManager, StructureManager structureManager) {
+        this.worldManager = worldManager;
         this.databaseManager = databaseManager;
-        this.loadAreas();
-    }
-
-    public void init(StructureManager structureManager) {
         this.structureManager = structureManager;
+        this.loadAreas();
+        this.checkForZoneExtesion();
     }
 
     // ////////////////////////////////////////////////
@@ -248,9 +248,11 @@ public class AreaManager {
             while (true) {
                 if (this.unusedAreaList.containsKey("0:" + lastRow) || this.usedAreaList.containsKey("0:" + lastRow)) {
                     ++lastRow;
+                    this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ() + 1));
                     continue;
                 } else {
                     this.createRow(lastRow);
+                    this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ()));
                     return;
                 }
             }
