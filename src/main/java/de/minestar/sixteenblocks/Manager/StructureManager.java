@@ -44,9 +44,9 @@ public class StructureManager {
         byte SubID;
 
         // FIRST WE GET ALL BLOCKS != AIR
-        for (int x = 0; x < Settings.getAreaSizeX(); x++) {
+        for (int y = 0; y < 128; y++) {
             for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
-                for (int y = 0; y < 128; y++) {
+                for (int x = 0; x < Settings.getAreaSizeX(); x++) {
                     ID = world.getBlockTypeIdAt(startX + x, y, startZ + z);
                     SubID = world.getBlockAt(startX + x, y, startZ + z).getData();
                     if (ID != Material.AIR.getId()) {
