@@ -1,5 +1,6 @@
 package de.minestar.sixteenblocks.Manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
@@ -18,6 +19,9 @@ public class AreaManager {
     private HashMap<String, SkinArea> unusedAreaList = new HashMap<String, SkinArea>();
 
     private StructureManager structureManager;
+    private DatabaseManager databaseManager;
+
+    private int lastRow = 0;
 
     // ////////////////////////////////////////////////
     //
@@ -25,7 +29,8 @@ public class AreaManager {
     //
     // ////////////////////////////////////////////////
 
-    public AreaManager() {
+    public AreaManager(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
         this.loadAreas();
     }
 
@@ -56,10 +61,25 @@ public class AreaManager {
     //
     // ////////////////////////////////////////////////
 
-    // TODO: PLACE PERSISTENCE-METHODS HERE
-    // I THINK WE SHOULD USE MySQL
     private void loadAreas() {
-        TextUtils.logInfo("Areas loaded.");
+        ArrayList<SkinArea> loadedAreas = databaseManager.loadZones();
+        for (SkinArea thisArea : loadedAreas) {
+            if (thisArea.getAreaOwner().equalsIgnoreCase("")) {
+                this.unusedAreaList.put(thisArea.getZoneXZ().toString(), thisArea);
+            } else {
+                this.usedAreaList.put(thisArea.getZoneXZ().toString(), thisArea);
+            }
+        }
+        TextUtils.logInfo(this.unusedAreaList.size() + " unused Areas loaded.");
+        TextUtils.logInfo(this.usedAreaList.size() + " used Areas loaded.");
+    }
+
+    private void saveArea(SkinArea thisArea) {
+        this.databaseManager.saveZone(thisArea);
+    }
+
+    private void updateAreaOwner(SkinArea thisArea) {
+        this.databaseManager.updateAreaOwner(thisArea);
     }
 
     // ////////////////////////////////////////////////
@@ -71,11 +91,19 @@ public class AreaManager {
     public boolean createUnusedArea(SkinArea skinArea, boolean createStructures) {
         if (this.containsUnusedArea(skinArea.getZoneXZ()))
             return false;
+        // UPDATE DATABASE
+        if (!this.usedAreaList.containsKey(skinArea.getZoneXZ().toString())) {
+            this.saveArea(skinArea);
+        } else {
+            this.updateAreaOwner(skinArea);
+        }
+        // UPDATE LISTS
         this.unusedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
         this.usedAreaList.remove(skinArea.getZoneXZ().toString());
         if (createStructures) {
             this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
         }
+
         return true;
     }
 
@@ -132,11 +160,21 @@ public class AreaManager {
     public boolean createPlayerArea(SkinArea skinArea, boolean createStructures) {
         if (this.containsPlayerArea(skinArea.getZoneXZ()))
             return false;
+
+        // UPDATE DATABASE
+        if (!this.unusedAreaList.containsKey(skinArea.getZoneXZ().toString())) {
+            this.saveArea(skinArea);
+        } else {
+            this.updateAreaOwner(skinArea);
+        }
+
+        // UPDATE LISTS
         this.usedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
         this.unusedAreaList.remove(skinArea.getZoneXZ().toString());
         if (createStructures) {
             this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
         }
+        this.checkForZoneExtesion();
         return true;
     }
 
@@ -203,5 +241,19 @@ public class AreaManager {
 
         thisStructure.createStructure(EnumDirection.ROTATE_90, 0, -4);
         thisStructure.createStructure(EnumDirection.ROTATE_270, 1, -4);
+    }
+
+    public void checkForZoneExtesion() {
+        if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * 1) {
+            while (true) {
+                if (this.unusedAreaList.containsKey("0:" + lastRow) || this.usedAreaList.containsKey("0:" + lastRow)) {
+                    ++lastRow;
+                    continue;
+                } else {
+                    this.createRow(lastRow);
+                    return;
+                }
+            }
+        }
     }
 }

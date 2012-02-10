@@ -17,12 +17,14 @@ import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.DatabaseManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 
 public class Core extends JavaPlugin {
     private static Core instance;
     private Listener baseListener, blockListener, chatListener, movementListener;
+    private DatabaseManager databaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
@@ -55,21 +57,16 @@ public class Core extends JavaPlugin {
         // INFO
         TextUtils.logInfo("Enabled!");
 
-        this.areaManager.createRow(0);
-        this.areaManager.createRow(1);
-        this.areaManager.createRow(2);
-        this.areaManager.createRow(3);
-
-        this.areaManager.testMethod();
+        this.areaManager.checkForZoneExtesion();
     }
 
     private void createManager() {
-        this.areaManager = new AreaManager();
+        this.databaseManager = new DatabaseManager(this.getDescription().getName(), this.getDataFolder());
+        this.areaManager = new AreaManager(this.databaseManager);
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager(this.structureManager);
         this.areaManager.init(this.structureManager);
     }
-
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
