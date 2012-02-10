@@ -21,6 +21,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.DatabaseManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.DayThread;
 
 public class Core extends JavaPlugin {
     private static Core instance;
@@ -56,10 +57,12 @@ public class Core extends JavaPlugin {
         // INIT COMMANDS
         this.initCommands();
 
+        // FINAL INTITIALIZATION
+        this.areaManager.checkForZoneExtesion();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
+
         // INFO
         TextUtils.logInfo("Enabled!");
-
-        this.areaManager.checkForZoneExtesion();
     }
 
     private void createManager() {

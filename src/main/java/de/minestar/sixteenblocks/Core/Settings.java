@@ -12,8 +12,10 @@ public class Settings {
 
     private static int CHAT_PAUSE_IN_SECONDS = 5;
 
-    private static int SKINS_LEFT = 3;
-    private static int SKINS_RIGHT = 3;
+    private static int SKINS_LEFT = 10;
+    private static int SKINS_RIGHT = 10;
+
+    private static long TIME = 6000;
 
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
     private static int TICKS_BETWEEN_REPLACE = 5;
@@ -32,12 +34,14 @@ public class Settings {
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);
 
+            TIME = config.getLong("general.dayTime", TIME);
             BASE_Y = config.getInt("general.baseLevel", BASE_Y);
             CHAT_PAUSE_IN_SECONDS = config.getInt("general.chatPauseInSeconds", CHAT_PAUSE_IN_SECONDS);
 
             AREA_SIZE_X = config.getInt("Zone.sizeX", AREA_SIZE_X);
             AREA_SIZE_Z = config.getInt("Zone.sizeZ", AREA_SIZE_Z);
             MINIMUM_BUILD_Y = config.getInt("Zone.minimumBuildLevel", MINIMUM_BUILD_Y);
+            MAXIMUM_BUILD_Y = config.getInt("Zone.maximumBuildLevel", MAXIMUM_BUILD_Y);
 
             SKINS_LEFT = config.getInt("Skins.left", SKINS_LEFT);
             SKINS_RIGHT = config.getInt("Skins.right", SKINS_RIGHT);
@@ -63,12 +67,14 @@ public class Settings {
             if (fileExists)
                 config.load(file);
 
+            config.set("general.dayTime", TIME);
             config.set("general.baseLevel", BASE_Y);
             config.set("general.chatPauseInSeconds", CHAT_PAUSE_IN_SECONDS);
 
             config.set("Zone.sizeX", AREA_SIZE_X);
             config.set("Zone.sizeZ", AREA_SIZE_Z);
             config.set("Zone.minimumBuildLevel", MINIMUM_BUILD_Y);
+            config.set("Zone.maximumBuildLevel", MAXIMUM_BUILD_Y);
 
             config.set("Skins.left", SKINS_LEFT);
             config.set("Skins.right", SKINS_RIGHT);
@@ -92,6 +98,10 @@ public class Settings {
 
     public static int getAreaSizeZ() {
         return AREA_SIZE_Z;
+    }
+
+    public static long getTime() {
+        return TIME;
     }
 
     public static int getMinimumBuildY() {
