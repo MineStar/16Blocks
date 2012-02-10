@@ -28,9 +28,9 @@ public class ChatListener implements Listener {
         // FORMAT CHAT
         event.setFormat("%2$s");
         if (event.getPlayer().isOp())
-            event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ":" + event.getMessage().replace("$", ""));
+            event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
         else
-            event.setMessage(ChatColor.DARK_GRAY + event.getPlayer().getName() + ChatColor.WHITE + ":" + event.getMessage().replace("$", ""));
+            event.setMessage(ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
 
         lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
     }

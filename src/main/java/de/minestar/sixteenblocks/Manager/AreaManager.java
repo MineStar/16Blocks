@@ -1,7 +1,7 @@
 package de.minestar.sixteenblocks.Manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -11,12 +11,11 @@ import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
-import de.minestar.sixteenblocks.Units.Structure;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaManager {
-    private HashMap<String, SkinArea> usedAreaList = new HashMap<String, SkinArea>();
-    private HashMap<String, SkinArea> unusedAreaList = new HashMap<String, SkinArea>();
+    private TreeMap<String, SkinArea> usedAreaList = new TreeMap<String, SkinArea>();
+    private TreeMap<String, SkinArea> unusedAreaList = new TreeMap<String, SkinArea>();
 
     private StructureManager structureManager;
     private DatabaseManager databaseManager;
@@ -35,6 +34,7 @@ public class AreaManager {
         this.databaseManager = databaseManager;
         this.structureManager = structureManager;
         this.loadAreas();
+        this.initMaximumZ();
         this.checkForZoneExtesion();
     }
 
@@ -45,13 +45,26 @@ public class AreaManager {
     // ////////////////////////////////////////////////
 
     public void createRow(int z) {
-        int i = 0;
         for (int x = -Settings.getSkinsRight() + (z % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
             this.createUnusedArea(new SkinArea(x, z, ""), true);
-            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
-            if (z % 2 != 0 && i == 0) {
+            if (z % 2 != 0) {
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
                 this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, z - 1);
+            } else {
+                if (x > -Settings.getSkinsRight()) {
+                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
+                }
             }
+        }
+        if (z == 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+        } else if (z % 2 != 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+        } else {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
         }
     }
 
@@ -220,7 +233,7 @@ public class AreaManager {
     }
 
     public boolean isInArea(Player player, int x, int y, int z) {
-        if (y < Settings.getMinimumBuildY())
+        if (y < Settings.getMinimumBuildY() || y > Settings.getMaximumBuildY())
             return false;
 
         ZoneXZ thisZone = ZoneXZ.fromPoint(x, z);
@@ -231,31 +244,40 @@ public class AreaManager {
         return thisArea.isAreaOwner(player);
     }
 
-    public void testMethod() {
-        Structure thisStructure = this.structureManager.getStructure(EnumStructures.ZONE_STEVE);
-        thisStructure.createStructure(0, -2);
-        thisStructure.createStructure(EnumDirection.FLIP_X, 1, -2);
-
-        thisStructure.createStructure(EnumDirection.FLIP_Z, 0, -3);
-        thisStructure.createStructure(EnumDirection.ROTATE_180, 1, -3);
-
-        thisStructure.createStructure(EnumDirection.ROTATE_90, 0, -4);
-        thisStructure.createStructure(EnumDirection.ROTATE_270, 1, -4);
-    }
-
     public void checkForZoneExtesion() {
-        if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * 1) {
+        if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * Settings.getCreateRowsAtOnce()) {
             while (true) {
-                if (this.unusedAreaList.containsKey("0:" + lastRow) || this.usedAreaList.containsKey("0:" + lastRow)) {
+                if (this.unusedAreaList.containsKey(lastRow + ":0") || this.usedAreaList.containsKey(lastRow + ":0")) {
                     ++lastRow;
                     this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ() + 1));
                     continue;
                 } else {
-                    this.createRow(lastRow);
-                    this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ()));
+                    for (int i = 0; i < Settings.getCreateRowsAtOnce(); i++) {
+                        this.createRow(lastRow + i);
+                    }
+                    this.worldManager.setMaxZ((lastRow + Settings.getCreateRowsAtOnce()) * (Settings.getAreaSizeZ()));
                     return;
                 }
             }
         }
+    }
+
+    private void initMaximumZ() {
+        int i = 0;
+        while (true) {
+            if (this.unusedAreaList.containsKey(i + ":0") || this.usedAreaList.containsKey(i + ":0")) {
+                ++i;
+                this.worldManager.setMaxZ((i + 1) * (Settings.getAreaSizeZ() + 1));
+                continue;
+            } else {
+                return;
+            }
+        }
+    }
+
+    public SkinArea getRandomUnusedArea() {
+        return (SkinArea) this.unusedAreaList.values().toArray()[0];
+        // return (SkinArea)
+        // this.unusedAreaList.values().toArray()[randomizer.nextInt(this.unusedAreaList.size())];
     }
 }

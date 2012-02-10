@@ -40,7 +40,7 @@ public class cmdHome extends ExtendedCommand {
                 return;
             }
             player.teleport(thisArea.getZoneXZ().getSpawnLocation());
-            TextUtils.sendInfo(player, "Teleporting you to '" + arguments[0] + "s' area...");
+            TextUtils.sendInfo(player, "Teleporting you to '" + thisArea.getAreaOwner() + "s' area...");
         }
     }
 }

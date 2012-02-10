@@ -11,6 +11,7 @@ import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
+import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
@@ -32,6 +33,7 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.databaseManager.closeConnection();
         Settings.saveSettings(this.getDataFolder());
         TextUtils.logInfo("Disabled!");
     }
@@ -63,14 +65,14 @@ public class Core extends JavaPlugin {
     private void createManager() {
         this.databaseManager = new DatabaseManager(this.getDescription().getName(), this.getDataFolder());
         this.structureManager = new StructureManager();
-        this.worldManager = new WorldManager(this.structureManager);
+        this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager, this.structureManager);
+        this.blockListener = new BlockListener(this.areaManager);
         this.chatListener = new ChatListener();
         this.movementListener = new MovementListener(this.worldManager);
 
@@ -87,6 +89,8 @@ public class Core extends JavaPlugin {
         Command[] commands = new Command[] {
                         new cmdSpawn("[16Blocks]", "/spawn", "", ""),
                         new cmdInfo("[16Blocks]", "/info", "", ""),
+                        new cmdStartAuto("[16Blocks]", "/start", "", "",  this.areaManager),
+                        new cmdStartAuto("[16Blocks]", "/startauto", "", "",  this.areaManager),
                         new cmdStartHere("[16Blocks]", "/starthere", "", "",  this.areaManager),
                         new cmdHome("[16Blocks]", "/home", "[Playername]", "",  this.areaManager),
                         new cmdSaveArea("[16Blocks]", "/save", "<StructureName>", "", this.areaManager, this.structureManager)

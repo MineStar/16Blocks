@@ -8,6 +8,9 @@ commands:
   info:
     description: Takes you to the infowall
     usage: /info
+  startauto:
+    description: Gives you an random zone
+    usage: /startauto  
   starthere:
     description: Gives you the current zone
     usage: /starthere

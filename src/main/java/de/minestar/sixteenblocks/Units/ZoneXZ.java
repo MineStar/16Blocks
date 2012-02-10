@@ -39,6 +39,6 @@ public class ZoneXZ {
 
     @Override
     public String toString() {
-        return this.x + ":" + this.z;
+        return this.z + ":" + this.x;
     }
 }
