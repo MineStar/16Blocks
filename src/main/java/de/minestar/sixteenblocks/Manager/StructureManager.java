@@ -54,10 +54,6 @@ public class StructureManager {
                             if (ID == Material.GRASS.getId() || ID == Material.DIRT.getId() || ID == Material.BEDROCK.getId())
                                 continue;
                         }
-                        if (ID == 44) {
-                            System.out.println("x: " + x);
-                        }
-
                         blockList.add(new StructureBlock(x, y, z, ID, SubID));
                     }
                 }
