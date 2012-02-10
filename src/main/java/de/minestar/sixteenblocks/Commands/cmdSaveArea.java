@@ -11,13 +11,11 @@ import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class cmdSaveArea extends Command {
 
-    private AreaManager areaManager;
     private StructureManager structureManager;
 
     public cmdSaveArea(String pluginName, String syntax, String arguments, String node, AreaManager areaManager, StructureManager structureManager) {
         super(pluginName, syntax, arguments, node);
         this.description = "Saves the current area as a structure";
-        this.areaManager = areaManager;
         this.structureManager = structureManager;
     }
 
@@ -35,7 +33,7 @@ public class cmdSaveArea extends Command {
             return;
         }
 
-        if (areaManager.exportStructure(player.getWorld(), thisStructure.getName(), thisZone)) {
+        if (structureManager.exportStructure(player.getWorld(), thisStructure.getName(), thisZone)) {
             TextUtils.sendSuccess(player, "Saved area as '" + thisStructure.getName() + "'.");
             this.structureManager.addStructure(thisStructure);
         } else {

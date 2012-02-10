@@ -63,7 +63,7 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.areaManager = new AreaManager();
-        this.structureManager = new StructureManager(this.areaManager);
+        this.structureManager = new StructureManager();
         this.worldManager = new WorldManager(this.structureManager);
         this.areaManager.init(this.structureManager);
     }
@@ -71,7 +71,7 @@ public class Core extends JavaPlugin {
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager);
+        this.blockListener = new BlockListener(this.areaManager, this.structureManager);
         this.chatListener = new ChatListener();
         this.movementListener = new MovementListener(this.worldManager);
 

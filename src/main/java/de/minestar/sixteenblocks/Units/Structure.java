@@ -8,14 +8,14 @@ import org.bukkit.World;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
-import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Threads.BlockCreationThread;
 
 public class Structure {
     private ArrayList<StructureBlock> BlockList = null;
 
-    public Structure(AreaManager areaManager, String structureName) {
-        ArrayList<StructureBlock> loadedBlocks = areaManager.loadStructure(structureName);
+    public Structure(StructureManager structureManager, String structureName) {
+        ArrayList<StructureBlock> loadedBlocks = structureManager.loadStructure(structureName);
         if (loadedBlocks != null) {
             this.BlockList = loadedBlocks;
         } else {
