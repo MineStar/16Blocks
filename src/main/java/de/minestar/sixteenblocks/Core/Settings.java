@@ -10,6 +10,8 @@ public class Settings {
     private static int minimumBuildY = 5;
     private static int baseY = 4;
 
+    private static int chatPauseTimeInSeconds = 5;
+
     private static int skinsLeft = 3;
     private static int skinsRight = 3;
 
@@ -30,6 +32,7 @@ public class Settings {
             config.load(file);
 
             baseY = config.getInt("general.baseLevel", baseY);
+            chatPauseTimeInSeconds = config.getInt("general.chatPauseInSeconds", chatPauseTimeInSeconds);
 
             areaSizeX = config.getInt("Zone.sizeX", areaSizeX);
             areaSizeZ = config.getInt("Zone.sizeZ", areaSizeZ);
@@ -59,6 +62,7 @@ public class Settings {
                 config.load(file);
 
             config.set("general.baseLevel", baseY);
+            config.set("general.chatPauseInSeconds", chatPauseTimeInSeconds);
 
             config.set("Zone.sizeX", areaSizeX);
             config.set("Zone.sizeZ", areaSizeZ);
@@ -117,6 +121,10 @@ public class Settings {
 
     public static int getSkinsRight() {
         return skinsRight;
+    }
+
+    public static int getChatPauseTimeInSeconds() {
+        return chatPauseTimeInSeconds;
     }
 
 }
