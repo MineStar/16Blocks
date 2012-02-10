@@ -43,6 +43,6 @@ public class cmdStartHere extends AbstractCommand {
         TextUtils.sendSuccess(player, "You are now owner of this area: [ " + thisZone.getX() + " / " + thisZone.getZ() + " ]");
 
         // TELEPORT TO HOME-POINT
-        // player.teleport(thisZone.getSpawnLocation());
+        player.teleport(thisZone.getSpawnLocation());
     }
 }

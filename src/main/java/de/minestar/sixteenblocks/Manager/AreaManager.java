@@ -277,7 +277,5 @@ public class AreaManager {
 
     public SkinArea getRandomUnusedArea() {
         return (SkinArea) this.unusedAreaList.values().toArray()[0];
-        // return (SkinArea)
-        // this.unusedAreaList.values().toArray()[randomizer.nextInt(this.unusedAreaList.size())];
     }
 }

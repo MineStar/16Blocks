@@ -32,6 +32,6 @@ public class cmdStartAuto extends AbstractCommand {
         TextUtils.sendSuccess(player, "You are now owner of this area: [ " + randomArea.getZoneXZ().getX() + " / " + randomArea.getZoneXZ().getZ() + " ]");
 
         // TELEPORT TO HOME-POINT
-        // player.teleport(randomArea.getZoneXZ().getSpawnLocation());
+        player.teleport(randomArea.getZoneXZ().getSpawnLocation());
     }
 }
