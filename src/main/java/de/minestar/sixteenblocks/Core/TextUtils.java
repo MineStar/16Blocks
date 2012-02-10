@@ -26,6 +26,10 @@ public class TextUtils {
         log(message, Level.WARNING);
     }
 
+    public static void sendLine(Player player, ChatColor color, String message) {
+        player.sendMessage(color + message);
+    }
+
     public static void sendMessage(Player player, ChatColor color, String message) {
         player.sendMessage(ChatColor.AQUA + "[ " + pluginName + " ] " + color + message);
     }

@@ -7,9 +7,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.minestar.minestarlibrary.commands.Command;
 import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
+import de.minestar.sixteenblocks.Commands.cmdStartHere;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
@@ -88,6 +90,8 @@ public class Core extends JavaPlugin {
         Command[] commands = new Command[] {
                         new cmdSpawn("[16Blocks]", "/spawn", "", ""),
                         new cmdInfo("[16Blocks]", "/info", "", ""),
+                        new cmdStartHere("[16Blocks]", "/starthere", "", "",  this.areaManager),
+                        new cmdHome("[16Blocks]", "/home", "[Playername]", "",  this.areaManager),
                         new cmdSaveArea("[16Blocks]", "/save", "<StructureName>", "", this.areaManager, this.structureManager)
         };
         /* @formatter:on */

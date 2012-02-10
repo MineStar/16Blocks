@@ -8,6 +8,12 @@ commands:
   info:
     description: Takes you to the infowall
     usage: /info
+  starthere:
+    description: Gives you the current zone
+    usage: /starthere
+  home:
+    description: Takes you to your area
+    usage: /home [Player]
   save:
     description: Saves the current area as a structure
     usage: /save <Name>

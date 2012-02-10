@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Units.Structure;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
@@ -93,6 +94,29 @@ public class AreaManager {
     // ///////////////////////////
     // USED AREAS
     // //////////////////////////
+
+    public boolean hasPlayerArea(Player player) {
+        for (SkinArea thisArea : this.usedAreaList.values()) {
+            if (thisArea.isAreaOwner(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public SkinArea getPlayerArea(Player player) {
+        return this.getPlayerArea(player.getName());
+    }
+
+    public SkinArea getPlayerArea(String playerName) {
+        for (SkinArea thisArea : this.usedAreaList.values()) {
+            if (thisArea.isAreaOwner(playerName)) {
+                return thisArea;
+            }
+        }
+        return null;
+    }
+
     public SkinArea getPlayerArea(ZoneXZ thisZone) {
         return this.usedAreaList.get(thisZone.toString());
     }
@@ -170,7 +194,14 @@ public class AreaManager {
     }
 
     public void testMethod() {
-        Structure thisStructure = this.structureManager.getStructure(EnumStructures.STREETS_CORNER);
+        Structure thisStructure = this.structureManager.getStructure(EnumStructures.ZONE_STEVE);
         thisStructure.createStructure(0, -2);
+        thisStructure.createStructure(EnumDirection.FLIP_X, 1, -2);
+
+        thisStructure.createStructure(EnumDirection.FLIP_Z, 0, -3);
+        thisStructure.createStructure(EnumDirection.ROTATE_180, 1, -3);
+
+        thisStructure.createStructure(EnumDirection.ROTATE_90, 0, -4);
+        thisStructure.createStructure(EnumDirection.ROTATE_270, 1, -4);
     }
 }
