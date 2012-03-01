@@ -32,6 +32,8 @@ public class Core extends JavaPlugin {
     private StructureManager structureManager;
     private CommandList commandList;
 
+    public final static String NAME = "16Blocks";
+
     @Override
     public void onDisable() {
         this.databaseManager.closeConnection();
