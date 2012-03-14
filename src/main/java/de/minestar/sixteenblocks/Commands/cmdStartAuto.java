@@ -28,7 +28,7 @@ public class cmdStartAuto extends AbstractCommand {
 
         // TAKE THIS AREA
         SkinArea randomArea = this.areaManager.getRandomUnusedArea();
-        this.areaManager.createPlayerArea(new SkinArea(randomArea.getZoneXZ().getX(), randomArea.getZoneXZ().getZ(), player.getName()), true);
+        this.areaManager.createPlayerArea(new SkinArea(randomArea.getZoneXZ().getX(), randomArea.getZoneXZ().getZ(), player.getName()), true, player);
         TextUtils.sendSuccess(player, "You are now owner of this area: [ " + randomArea.getZoneXZ().getX() + " / " + randomArea.getZoneXZ().getZ() + " ]");
 
         // TELEPORT TO HOME-POINT

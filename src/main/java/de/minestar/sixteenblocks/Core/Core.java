@@ -114,4 +114,11 @@ public class Core extends JavaPlugin {
     public static Core getInstance() {
         return instance;
     }
+
+    /**
+     * @return the areaManager
+     */
+    public AreaManager getAreaManager() {
+        return areaManager;
+    }
 }
