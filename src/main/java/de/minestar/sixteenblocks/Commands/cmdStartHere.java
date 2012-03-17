@@ -39,7 +39,7 @@ public class cmdStartHere extends AbstractCommand {
         }
 
         // TAKE THIS AREA
-        this.areaManager.createPlayerArea(new SkinArea(thisZone.getX(), thisZone.getZ(), player.getName()), true);
+        this.areaManager.createPlayerArea(new SkinArea(thisZone.getX(), thisZone.getZ(), player.getName()), true, player);
         TextUtils.sendSuccess(player, "You are now owner of this area: [ " + thisZone.getX() + " / " + thisZone.getZ() + " ]");
 
         // TELEPORT TO HOME-POINT

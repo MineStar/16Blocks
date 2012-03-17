@@ -3,8 +3,15 @@ package de.minestar.sixteenblocks.Manager;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import net.minecraft.server.Packet130UpdateSign;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import de.minestar.sixteenblocks.Core.Settings;
@@ -170,7 +177,7 @@ public class AreaManager {
         return this.usedAreaList.containsKey(coordinateString);
     }
 
-    public boolean createPlayerArea(SkinArea skinArea, boolean createStructures) {
+    public boolean createPlayerArea(SkinArea skinArea, boolean createStructures, Player player) {
         if (this.containsPlayerArea(skinArea.getZoneXZ()))
             return false;
 
@@ -185,10 +192,53 @@ public class AreaManager {
         this.usedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
         this.unusedAreaList.remove(skinArea.getZoneXZ().toString());
         if (createStructures) {
-            this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
+            this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructureWithSign(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ(), player);
         }
+
         this.checkForZoneExtesion();
         return true;
+    }
+
+    public void createPlayerSign(Player player, ZoneXZ thisZone) {
+        World world = Bukkit.getWorlds().get(0);
+
+        // PLACE SIGN
+        int x = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0) + (Settings.getAreaSizeX() >> 1);
+        int z = thisZone.getZ() * Settings.getAreaSizeZ() + 12;
+        world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setTypeIdAndData(Material.WALL_SIGN.getId(), (byte) 0x2, true);
+
+        // UPDATE LINE
+        Sign signBlock = (Sign) (world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).getState());
+        String[] playerName = new String[3];
+
+        signBlock.setLine(0, "Built by:");
+        playerName[0] = player.getName();
+        playerName[1] = "";
+        playerName[2] = "";
+        if (player.getName().length() > 15) {
+            playerName[0] = player.getName().substring(0, 15);
+            if (player.getName().length() > 30) {
+                playerName[1] = player.getName().substring(15, 30);
+                if (player.getName().length() > 45) {
+                    playerName[2] = player.getName().substring(30, 45);
+                } else {
+                    playerName[2] = player.getName().substring(30);
+                }
+            } else {
+                playerName[1] = player.getName().substring(15);
+            }
+        }
+
+        signBlock.setLine(1, playerName[0]);
+        signBlock.setLine(2, playerName[1]);
+        signBlock.setLine(3, playerName[2]);
+        signBlock.update(true);
+
+        // SEND UPDATE => NEED HELP OF ORIGINAL MC-SERVERSOFTWARE
+        CraftPlayer cPlayer = (CraftPlayer) player;
+        Packet130UpdateSign signPacket = null;
+        signPacket = new Packet130UpdateSign(signBlock.getX(), signBlock.getY(), signBlock.getZ(), signBlock.getLines());
+        cPlayer.getHandle().netServerHandler.sendPacket(signPacket);
     }
 
     public boolean removePlayerArea(ZoneXZ thisZone) {
