@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
@@ -13,10 +12,12 @@ import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
+import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
+import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.DatabaseManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
@@ -25,11 +26,15 @@ import de.minestar.sixteenblocks.Threads.DayThread;
 
 public class Core extends JavaPlugin {
     private static Core instance;
+
     private Listener baseListener, blockListener, chatListener, movementListener;
+
     private DatabaseManager databaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
+    private MailHandler mHandler;
+
     private CommandList commandList;
 
     public final static String NAME = "16Blocks";
@@ -72,6 +77,7 @@ public class Core extends JavaPlugin {
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
+        this.mHandler = new MailHandler(getDataFolder());
     }
 
     private void registerListeners() {
@@ -90,19 +96,21 @@ public class Core extends JavaPlugin {
 
     private void initCommands() {
         /* @formatter:off */
-        // Add an command to this list to register it in the plugin       
-        AbstractCommand[] commands = new AbstractCommand[] {
-                        new cmdSpawn("[16Blocks]", "/spawn", "", ""),
-                        new cmdInfo("[16Blocks]", "/info", "", ""),
-                        new cmdStartAuto("[16Blocks]", "/start", "", "",  this.areaManager),
-                        new cmdStartAuto("[16Blocks]", "/startauto", "", "",  this.areaManager),
-                        new cmdStartHere("[16Blocks]", "/starthere", "", "",  this.areaManager),
-                        new cmdHome("[16Blocks]", "/home", "[Playername]", "",  this.areaManager),
-                        new cmdSaveArea("[16Blocks]", "/save", "<StructureName>", "", this.areaManager, this.structureManager)
-        };
+        // Add an command to this list to register it in the plugin
+        commandList = new CommandList(Core.NAME, 
+                        new cmdSpawn        ("/spawn",      "",                 ""),
+                        new cmdInfo         ("/info",       "",                 ""),
+                        new cmdStartAuto    ("/start",      "",                 "", this.areaManager),
+                        new cmdStartAuto    ("/startauto",  "",                 "", this.areaManager),
+                        new cmdStartHere    ("/starthere",  "",                 "", this.areaManager),
+                        new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
+                        new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager),
+
+                        new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
+                        new cmdTicket       ("/bug",        "<Text>",           "", mHandler),
+                        new cmdTicket       ("/report",     "<Text>",           "", mHandler)
+        );
         /* @formatter:on */
-        // store the commands in the hash map
-        commandList = new CommandList("[16Blocks]", commands);
     }
 
     @Override

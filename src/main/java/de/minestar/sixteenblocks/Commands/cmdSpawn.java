@@ -5,13 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class cmdSpawn extends AbstractCommand {
 
-    public cmdSpawn(String pluginName, String syntax, String arguments, String node) {
-        super(pluginName, syntax, arguments, node);
+    public cmdSpawn(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Teleport to spawn";
     }
 

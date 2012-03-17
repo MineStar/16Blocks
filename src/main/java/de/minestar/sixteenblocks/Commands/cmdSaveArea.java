@@ -3,6 +3,7 @@ package de.minestar.sixteenblocks.Commands;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Manager.AreaManager;
@@ -13,8 +14,8 @@ public class cmdSaveArea extends AbstractCommand {
 
     private StructureManager structureManager;
 
-    public cmdSaveArea(String pluginName, String syntax, String arguments, String node, AreaManager areaManager, StructureManager structureManager) {
-        super(pluginName, syntax, arguments, node);
+    public cmdSaveArea(String syntax, String arguments, String node, AreaManager areaManager, StructureManager structureManager) {
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Saves the current area as a structure";
         this.structureManager = structureManager;
     }

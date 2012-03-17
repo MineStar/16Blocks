@@ -3,6 +3,7 @@ package de.minestar.sixteenblocks.Commands;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.SkinArea;
@@ -11,8 +12,8 @@ public class cmdStartAuto extends AbstractCommand {
 
     private AreaManager areaManager;
 
-    public cmdStartAuto(String pluginName, String syntax, String arguments, String node, AreaManager areaManager) {
-        super(pluginName, syntax, arguments, node);
+    public cmdStartAuto(String syntax, String arguments, String node, AreaManager areaManager) {
+        super(Core.NAME, syntax, arguments, node);
         this.areaManager = areaManager;
         this.description = "Make a random zone to your zone";
     }

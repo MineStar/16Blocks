@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.SkinArea;
@@ -12,8 +13,8 @@ public class cmdHome extends AbstractExtendedCommand {
 
     private AreaManager areaManager;
 
-    public cmdHome(String pluginName, String syntax, String arguments, String node, AreaManager areaManager) {
-        super(pluginName, syntax, arguments, node);
+    public cmdHome(String syntax, String arguments, String node, AreaManager areaManager) {
+        super(Core.NAME, syntax, arguments, node);
         this.areaManager = areaManager;
         this.description = "Gives you the current area";
     }

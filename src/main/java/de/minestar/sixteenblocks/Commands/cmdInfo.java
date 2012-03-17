@@ -5,13 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class cmdInfo extends AbstractCommand {
 
-    public cmdInfo(String pluginName, String syntax, String arguments, String node) {
-        super(pluginName, syntax, arguments, node);
+    public cmdInfo(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
         this.description = "Teleport to infowall";
     }
 

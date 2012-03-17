@@ -65,11 +65,11 @@ public class MailHandler {
         }
     }
 
-    public void sendTicket(Player from, String message) {
+    public boolean sendTicket(Player from, String message) {
         // Send E-Mail with header
         // BUGREPORT - PlayerName
         // and the message plus additional information
-        sendMail("BUGREPORT - " + from.getName(), addInformation(from, message));
+        return sendMail("BUGREPORT - " + from.getName(), addInformation(from, message));
     }
 
     // add additional information to the message for debugging
@@ -92,7 +92,7 @@ public class MailHandler {
     }
 
     // sending the mail
-    private void sendMail(String subject, String message) {
+    private boolean sendMail(String subject, String message) {
         MimeMessage msg = new MimeMessage(session);
         try {
             msg.setFrom(from);
@@ -100,8 +100,10 @@ public class MailHandler {
             msg.setText(message);
             msg.setRecipient(Message.RecipientType.TO, to);
             Transport.send(msg);
+            return true;
         } catch (Exception e) {
             ConsoleUtils.printException(e, Core.NAME, "Can't send mail!");
+            return false;
         }
     }
 }
