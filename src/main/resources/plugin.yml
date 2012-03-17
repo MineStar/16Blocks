@@ -20,4 +20,12 @@ commands:
   save:
     description: Saves the current area as a structure
     usage: /save <Name>
-    
+  ticket:
+    description: Saves the current area as a structure
+    usage: /save <Name>
+  bug:
+    description: Saves the current area as a structure
+    usage: /save <Name>
+  report:
+    description: Saves the current area as a structure
+    usage: /save <Name>
