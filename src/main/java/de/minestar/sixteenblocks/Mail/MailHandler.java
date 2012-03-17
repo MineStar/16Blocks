@@ -28,7 +28,7 @@ public class MailHandler {
     }
 
     private void loadSettings(File dataFolder) {
-        File configFile = new File(dataFolder, "config.yml");
+        File configFile = new File(dataFolder, "mailConfig.yml");
         try {
             YamlConfiguration config = new YamlConfiguration();
             config.load(configFile);

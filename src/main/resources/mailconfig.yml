@@ -1,0 +1,7 @@
+smtp:
+    host: hostname
+    port: port
+    username: username
+    password: password
+    from: emailaddress@from.com
+    to: emailaddress@to.com
