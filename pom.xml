@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>de.minestar</groupId>
 			<artifactId>minestarlibrary</artifactId>
-			<version>1.6</version>
+			<version>1.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
@@ -52,6 +52,11 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>1.2.3-R0.2</version>
 		</dependency>
 	</dependencies>
 </project>
