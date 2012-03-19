@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.sixteenblocks.Commands.cmdHome;
@@ -18,10 +19,12 @@ import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
-import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
+import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
+import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
@@ -30,7 +33,8 @@ public class Core extends JavaPlugin {
 
     private Listener baseListener, blockListener, chatListener, movementListener;
 
-    private AreaDatabaseManager databaseManager;
+    private AreaDatabaseManager areaDatabaseManager;
+    private TicketDatabaseManager ticketDatabaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
@@ -43,7 +47,8 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.databaseManager.closeConnection();
+        this.areaDatabaseManager.closeConnection();
+        this.ticketDatabaseManager.closeConnection();
         Settings.saveSettings(this.getDataFolder());
         TextUtils.logInfo("Disabled!");
     }
@@ -68,17 +73,17 @@ public class Core extends JavaPlugin {
 
         // FINAL INTITIALIZATION
         this.areaManager.checkForZoneExtesion();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
+        createThreads(Bukkit.getScheduler());
 
         // INFO
         TextUtils.logInfo("Enabled!");
     }
-
     private void createManager() {
-        this.databaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
+        this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
+        this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
-        this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
+        this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
         this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
 
@@ -115,6 +120,13 @@ public class Core extends JavaPlugin {
                         new cmdTicket       ("/report",     "<Text>",           "", mHandler)
         );
         /* @formatter:on */
+    }
+
+    private void createThreads(BukkitScheduler scheduler) {
+        // Keep always day time
+        scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
+        // Check tickets
+        scheduler.scheduleSyncRepeatingTask(this, new CheckTicketThread(this.ticketDatabaseManager), 20 * 60, 20 * 60 * 10);
     }
 
     @Override
