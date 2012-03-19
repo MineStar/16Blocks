@@ -9,8 +9,16 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class ChatListener implements Listener {
+
+    private ChatFilter filter;
+
+    public ChatListener(ChatFilter filter) {
+        this.filter = filter;
+    }
+
     private HashMap<String, Long> lastChatList = new HashMap<String, Long>();
 
     @EventHandler
@@ -23,6 +31,15 @@ public class ChatListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+
+        // USED BAD WORD
+        if (!event.getPlayer().isOp() && !filter.acceptMessage(event.getMessage())) {
+            // troll them by sending the message to them but to no other player
+            TextUtils.sendInfo(event.getPlayer(), event.getMessage());
+            event.getRecipients().clear();
+            event.setCancelled(true);
+            return;
         }
 
         // FORMAT CHAT

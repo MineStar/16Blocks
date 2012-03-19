@@ -23,6 +23,7 @@ import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.DayThread;
+import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class Core extends JavaPlugin {
     private static Core instance;
@@ -34,6 +35,7 @@ public class Core extends JavaPlugin {
     private WorldManager worldManager;
     private StructureManager structureManager;
     private MailHandler mHandler;
+    private ChatFilter filter;
 
     private CommandList commandList;
 
@@ -78,13 +80,15 @@ public class Core extends JavaPlugin {
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
         this.mHandler = new MailHandler(getDataFolder());
+        this.filter = new ChatFilter(getDataFolder());
+
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
         this.blockListener = new BlockListener(this.areaManager);
-        this.chatListener = new ChatListener();
+        this.chatListener = new ChatListener(this.filter);
         this.movementListener = new MovementListener(this.worldManager);
 
         // REGISTER LISTENERS
