@@ -14,17 +14,17 @@ import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
 import de.minestar.sixteenblocks.Core.Core;
 
-public class DatabaseManager extends AbstractDatabaseHandler {
+public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     private PreparedStatement loadAreas, saveArea, updateArea;
 
-    public DatabaseManager(String pluginName, File dataFolder) {
+    public AreaDatabaseManager(String pluginName, File dataFolder) {
         super(pluginName, dataFolder);
     }
 
     @Override
     protected DatabaseConnection createConnection(String pluginName, File dataFolder) throws Exception {
-        File configFile = new File(dataFolder, "sqlconfig.yml");
+        File configFile = new File(dataFolder, "area_sqlconfig.yml");
         YamlConfiguration config = new YamlConfiguration();
 
         if (!configFile.exists()) {

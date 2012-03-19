@@ -25,7 +25,7 @@ public class AreaManager {
     private TreeMap<String, SkinArea> unusedAreaList = new TreeMap<String, SkinArea>();
 
     private StructureManager structureManager;
-    private DatabaseManager databaseManager;
+    private AreaDatabaseManager databaseManager;
     private WorldManager worldManager;
 
     private int lastRow = 0;
@@ -36,7 +36,7 @@ public class AreaManager {
     //
     // ////////////////////////////////////////////////
 
-    public AreaManager(DatabaseManager databaseManager, WorldManager worldManager, StructureManager structureManager) {
+    public AreaManager(AreaDatabaseManager databaseManager, WorldManager worldManager, StructureManager structureManager) {
         this.worldManager = worldManager;
         this.databaseManager = databaseManager;
         this.structureManager = structureManager;

@@ -19,7 +19,7 @@ import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaManager;
-import de.minestar.sixteenblocks.Manager.DatabaseManager;
+import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.DayThread;
@@ -29,7 +29,7 @@ public class Core extends JavaPlugin {
 
     private Listener baseListener, blockListener, chatListener, movementListener;
 
-    private DatabaseManager databaseManager;
+    private AreaDatabaseManager databaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
@@ -73,7 +73,7 @@ public class Core extends JavaPlugin {
     }
 
     private void createManager() {
-        this.databaseManager = new DatabaseManager(this.getDescription().getName(), this.getDataFolder());
+        this.databaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.databaseManager, this.worldManager, this.structureManager);
