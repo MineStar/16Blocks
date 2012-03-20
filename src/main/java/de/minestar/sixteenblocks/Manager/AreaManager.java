@@ -1,6 +1,7 @@
 package de.minestar.sixteenblocks.Manager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 import net.minecraft.server.Packet130UpdateSign;
@@ -23,6 +24,8 @@ import de.minestar.sixteenblocks.Units.ZoneXZ;
 public class AreaManager {
     private TreeMap<String, SkinArea> usedAreaList = new TreeMap<String, SkinArea>();
     private TreeMap<String, SkinArea> unusedAreaList = new TreeMap<String, SkinArea>();
+
+    private HashSet<String> blockedAreas = new HashSet<String>();
 
     private StructureManager structureManager;
     private AreaDatabaseManager databaseManager;
@@ -100,6 +103,36 @@ public class AreaManager {
 
     private void updateAreaOwner(SkinArea thisArea) {
         this.databaseManager.updateAreaOwner(thisArea);
+    }
+
+    // ////////////////////////////////////////////////
+    //
+    // BLOCK AREAS
+    //
+    // ////////////////////////////////////////////////
+
+    public void blockArea(ZoneXZ thisZone) {
+        this.blockArea(thisZone.toString());
+    }
+
+    public void unblockArea(ZoneXZ thisZone) {
+        this.unblockArea(thisZone.toString());
+    }
+
+    public boolean isAreaBlocked(ZoneXZ thisZone) {
+        return this.isAreaBlocked(thisZone.toString());
+    }
+
+    public void blockArea(String zoneString) {
+        this.blockedAreas.add(zoneString);
+    }
+
+    public void unblockArea(String zoneString) {
+        this.blockedAreas.remove(zoneString);
+    }
+
+    public boolean isAreaBlocked(String zoneString) {
+        return this.blockedAreas.contains(zoneString);
     }
 
     // ////////////////////////////////////////////////
