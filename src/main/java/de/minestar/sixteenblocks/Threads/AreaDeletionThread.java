@@ -25,6 +25,7 @@ public class AreaDeletionThread implements Runnable {
     private String playerName;
 
     private ZoneXZ thisZone;
+    private int percent = 0, oldPercent = 0;
 
     public AreaDeletionThread(World world, int baseX, int baseZ, ZoneXZ thisZone, String playerName) {
         this.world = world;
@@ -76,6 +77,16 @@ public class AreaDeletionThread implements Runnable {
                 }
                 break;
             }
+        }
+
+        this.percent = (int) (counter / blockList.size() * 100);
+        if (this.percent >= this.oldPercent + 10 && this.percent < 100) {
+            // PRINT INFO
+            Player player = Bukkit.getPlayer(this.playerName);
+            if (player != null) {
+                TextUtils.sendSuccess(player, "Status: " + percent + "%");
+            }
+            this.oldPercent = this.percent;
         }
     }
 }

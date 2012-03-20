@@ -122,7 +122,7 @@ public class Core extends JavaPlugin {
                         new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager),
 
-                        new cmdDeleteArea   ("/delete",     "<Playername>",     "", this.areaManager),
+                        new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager),
                         
                         new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",           "", mHandler),
