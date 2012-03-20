@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
@@ -122,6 +123,7 @@ public class Core extends JavaPlugin {
                         new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager),
 
+                        new cmdBan          ("/ban",        "<Playername>",     "", this.areaManager),
                         new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager),
                         
                         new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
@@ -130,7 +132,6 @@ public class Core extends JavaPlugin {
         );
         /* @formatter:on */
     }
-
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);

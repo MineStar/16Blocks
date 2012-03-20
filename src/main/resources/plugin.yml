@@ -20,6 +20,9 @@ commands:
   delete:
     description: Delete an area
     usage: /delete <Player>    
+  ban:
+    description: Ban a player and delete the area
+    usage: /ban <Player>    
   save:
     description: Saves the current area as a structure
     usage: /save <Name>

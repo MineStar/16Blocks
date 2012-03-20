@@ -16,7 +16,7 @@ public class cmdDeleteArea extends AbstractExtendedCommand {
     public cmdDeleteArea(String syntax, String arguments, String node, AreaManager areaManager) {
         super(Core.NAME, syntax, arguments, node);
         this.areaManager = areaManager;
-        this.description = "Make the current zone to your zone";
+        this.description = "Delete an area";
     }
 
     @Override

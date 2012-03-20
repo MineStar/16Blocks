@@ -179,9 +179,6 @@ public class AreaManager {
     // ///////////////////////////
 
     public void deletePlayerArea(SkinArea thisArea, Player player) {
-        // REMOVE AREA FROM USED LISTS
-        this.removePlayerArea(thisArea);
-
         // BLOCK AREA
         this.blockArea(thisArea.getZoneXZ());
 

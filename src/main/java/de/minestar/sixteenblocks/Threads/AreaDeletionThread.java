@@ -3,6 +3,7 @@ package de.minestar.sixteenblocks.Threads;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -68,7 +69,8 @@ public class AreaDeletionThread implements Runnable {
 
                 // CANCEL TASK & UNBLOCK AREA
                 Bukkit.getScheduler().cancelTask(this.TaskID);
-                Core.getInstance().getAreaManager().unblockArea(this.thisZone);
+                Core.getInstance().getAreaManager().removePlayerArea(thisZone);
+                Core.getInstance().getAreaManager().unblockArea(this.thisZone);                
 
                 // PRINT INFO
                 Player player = Bukkit.getPlayer(this.playerName);
@@ -79,14 +81,26 @@ public class AreaDeletionThread implements Runnable {
             }
         }
 
-        this.percent = (int) (counter / blockList.size() * 100);
+        this.percent = (int) ((float) ((float) counter / (float) blockList.size()) * 100f);
         if (this.percent >= this.oldPercent + 10 && this.percent < 100) {
             // PRINT INFO
             Player player = Bukkit.getPlayer(this.playerName);
             if (player != null) {
-                TextUtils.sendSuccess(player, "Status: " + percent + "%");
+                TextUtils.sendInfo(player, "Status: " + this.getPercentString(percent));
             }
             this.oldPercent = this.percent;
         }
+    }
+
+    private String getPercentString(int percent) {
+        String text = ChatColor.GOLD + "";
+        for (int i = 0; i < percent; i += 10) {
+            text += "|";
+        }
+        text += ChatColor.DARK_GRAY;
+        for (int i = percent; i <= 100; i += 10) {
+            text += "|";
+        }
+        return text;
     }
 }
