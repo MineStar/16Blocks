@@ -70,7 +70,7 @@ public class AreaDeletionThread implements Runnable {
                 // CANCEL TASK & UNBLOCK AREA
                 Bukkit.getScheduler().cancelTask(this.TaskID);
                 Core.getInstance().getAreaManager().removePlayerArea(thisZone);
-                Core.getInstance().getAreaManager().unblockArea(this.thisZone);                
+                Core.getInstance().getAreaManager().unblockArea(this.thisZone);
 
                 // PRINT INFO
                 Player player = Bukkit.getPlayer(this.playerName);
