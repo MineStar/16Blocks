@@ -16,7 +16,10 @@ commands:
     usage: /starthere
   home:
     description: Takes you to your area
-    usage: /home [Player]
+    usage: /home [Player]    
+  delete:
+    description: Delete an area
+    usage: /delete <Player>    
   save:
     description: Saves the current area as a structure
     usage: /save <Name>
