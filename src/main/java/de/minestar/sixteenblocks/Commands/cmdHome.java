@@ -26,7 +26,7 @@ public class cmdHome extends AbstractExtendedCommand {
             SkinArea thisArea = this.areaManager.getPlayerArea(player);
             if (thisArea == null) {
                 TextUtils.sendError(player, "You do not have an area yet.'");
-                TextUtils.sendLine(player, ChatColor.GRAY, "Take one with '/startauto' or '/starthere'.");
+                TextUtils.sendLine(player, ChatColor.GRAY, "Take one with '/start' or '/starthere'.");
                 return;
             }
 
