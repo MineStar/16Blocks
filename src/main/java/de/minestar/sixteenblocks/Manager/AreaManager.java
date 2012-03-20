@@ -162,9 +162,16 @@ public class AreaManager {
                 return thisArea;
             }
         }
+
+        // SEARCH FOR THE BEGINNING OF THE NAME
+        for (SkinArea thisArea : this.usedAreaList.values()) {
+            if (thisArea.getAreaOwner().toLowerCase().startsWith(playerName.toLowerCase())) {
+                return thisArea;
+            }
+        }
+
         return null;
     }
-
     public SkinArea getPlayerArea(ZoneXZ thisZone) {
         return this.usedAreaList.get(thisZone.toString());
     }
