@@ -65,11 +65,16 @@ public class Core extends JavaPlugin {
         // SET NAME
         TextUtils.setPluginName(this.getDescription().getName());
 
+        // STARTUP
+        try {
+            this.createManager();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // INIT COMMANDS
         this.initCommands();
 
-        // STARTUP
-        this.createManager();
         this.registerListeners();
 
         // FINAL INTITIALIZATION
@@ -82,13 +87,13 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
-        this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
+        // this.ticketDatabaseManager = new TicketDatabaseManager(NAME,
+        // getDataFolder());
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
-        this.mHandler = new MailHandler(getDataFolder());
+        // this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
-
     }
 
     private void registerListeners() {
