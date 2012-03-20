@@ -44,7 +44,7 @@ public class BlockListener implements Listener {
         }
 
         if (event.hasItem()) {
-            if (event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId()) {
+            if (event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId() || event.getMaterial().getId() == Material.EXP_BOTTLE.getId()) {
                 event.setCancelled(true);
             }
         }
