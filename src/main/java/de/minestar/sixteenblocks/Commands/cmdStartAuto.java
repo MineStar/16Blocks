@@ -1,5 +1,6 @@
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -21,11 +22,11 @@ public class cmdStartAuto extends AbstractCommand {
     @Override
     public void execute(String[] arguments, Player player) {
         // CHECK : PLAYER HAS NO AREA
-//        if (this.areaManager.hasPlayerArea(player)) {
-//            TextUtils.sendError(player, "You already own an area.");
-//            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
-//            return;
-//        }
+        if (this.areaManager.hasPlayerArea(player)) {
+            TextUtils.sendError(player, "You already own an area.");
+            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
+            return;
+        }
 
         // TAKE THIS AREA
         SkinArea randomArea = this.areaManager.getRandomUnusedArea();
