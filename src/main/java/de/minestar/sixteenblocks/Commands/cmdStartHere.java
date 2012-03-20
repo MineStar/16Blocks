@@ -39,6 +39,12 @@ public class cmdStartHere extends AbstractCommand {
             return;
         }
 
+        // CHECK : AREA IS NOT BLOCKED
+        if (this.areaManager.isAreaBlocked(thisZone)) {
+            TextUtils.sendError(player, "This area is currently blocked by another process.");
+            return;
+        }
+
         // TAKE THIS AREA
         this.areaManager.createPlayerArea(new SkinArea(thisZone.getX(), thisZone.getZ(), player.getName()), true, player);
         TextUtils.sendSuccess(player, "You are now owner of this area: [ " + thisZone.getX() + " / " + thisZone.getZ() + " ]");

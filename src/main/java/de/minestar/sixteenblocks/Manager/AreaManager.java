@@ -366,6 +366,11 @@ public class AreaManager {
     }
 
     public SkinArea getRandomUnusedArea() {
+        for (SkinArea thisArea : this.unusedAreaList.values()) {
+            if (!this.isAreaBlocked(thisArea.getZoneXZ())) {
+                return thisArea;
+            }
+        }
         return (SkinArea) this.unusedAreaList.values().toArray()[0];
     }
 }
