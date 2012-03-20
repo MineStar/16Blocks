@@ -21,6 +21,8 @@ public class Settings {
     private static int TICKS_BETWEEN_REPLACE = 5;
     private static int CREATE_ROWS_AT_ONCE = 2;
 
+    private static int CHAT_RADIUS = 150;
+
     private static Vector SPAWN_VECTOR = new Vector(0, 4, 0), INFOWALL_VECTOR = new Vector(0, 4, 0);
 
     public static void init(File dataFolder) {
@@ -37,6 +39,7 @@ public class Settings {
             TIME = config.getLong("general.dayTime", TIME);
             BASE_Y = config.getInt("general.baseLevel", BASE_Y);
             CHAT_PAUSE_IN_SECONDS = config.getInt("general.chatPauseInSeconds", CHAT_PAUSE_IN_SECONDS);
+            CHAT_RADIUS = config.getInt("general.chatRadius", CHAT_RADIUS);
 
             AREA_SIZE_X = config.getInt("Zone.sizeX", AREA_SIZE_X);
             AREA_SIZE_Z = config.getInt("Zone.sizeZ", AREA_SIZE_Z);
@@ -70,6 +73,7 @@ public class Settings {
             config.set("general.dayTime", TIME);
             config.set("general.baseLevel", BASE_Y);
             config.set("general.chatPauseInSeconds", CHAT_PAUSE_IN_SECONDS);
+            config.set("general.chatRadius", CHAT_RADIUS);
 
             config.set("Zone.sizeX", AREA_SIZE_X);
             config.set("Zone.sizeZ", AREA_SIZE_Z);
@@ -146,5 +150,9 @@ public class Settings {
 
     public static int getCreateRowsAtOnce() {
         return CREATE_ROWS_AT_ONCE;
+    }
+
+    public static int getChatRadius() {
+        return CHAT_RADIUS;
     }
 }
