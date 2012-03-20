@@ -36,6 +36,12 @@ public class cmdDeleteArea extends AbstractCommand {
             return;
         }
 
+        // CHECK : AREA IS NOT BLOCKED
+        if (this.areaManager.isAreaBlocked(thisArea.getZoneXZ())) {
+            TextUtils.sendError(player, "This area is currently blocked by another process.");
+            return;
+        }
+
         // TAKE THIS AREA
         this.areaManager.deletePlayerArea(thisArea, player);
         TextUtils.sendSuccess(player, "Starting deletion of '" + thisArea.getAreaOwner() + "'.");
