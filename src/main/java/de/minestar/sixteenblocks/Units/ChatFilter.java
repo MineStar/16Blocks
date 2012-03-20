@@ -37,7 +37,6 @@ public class ChatFilter {
 
     private void loadLists(File dataFolder) {
         try {
-
             StringBuilder sBuilder = new StringBuilder(4096);
             BufferedReader bReader = null;
             String line = "";
@@ -45,7 +44,7 @@ public class ChatFilter {
             // Read white list
             File whiteListFile = new File(dataFolder, "whitelist.txt");
             if (!whiteListFile.exists())
-                ConsoleUtils.printInfo(Core.NAME, whiteListFile + " not found! No Whitlist for ChatFilter created!");
+                ConsoleUtils.printInfo(Core.NAME, whiteListFile + " not found! No Whitelist for ChatFilter created!");
             else {
                 // Every line is seperated in the result with an
                 // | (logical operator in regex)
@@ -63,7 +62,7 @@ public class ChatFilter {
             // Read black list
             File blackListFile = new File(dataFolder, "blacklist.txt");
             if (!blackListFile.exists())
-                ConsoleUtils.printInfo(Core.NAME, blackListFile + " not found! No Whitlist for ChatFilter created!");
+                ConsoleUtils.printInfo(Core.NAME, blackListFile + " not found! No Blacklist for ChatFilter created!");
             else {
                 bReader = new BufferedReader(new FileReader(blackListFile));
                 while ((line = bReader.readLine()) != null) {
