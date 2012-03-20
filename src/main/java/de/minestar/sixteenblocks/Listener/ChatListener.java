@@ -27,8 +27,6 @@ public class ChatListener implements Listener {
         if (!event.getPlayer().isOp() && lastChatList.containsKey(event.getPlayer().getName())) {
             long lastChatEvent = lastChatList.get(event.getPlayer().getName());
             long delta = System.currentTimeMillis() - lastChatEvent;
-            System.out.println("delta: " + delta);
-            System.out.println("lastChatEvent: " + lastChatEvent);
             if (delta < (Settings.getChatPauseTimeInSeconds() * 1000)) {
                 TextUtils.sendError(event.getPlayer(), "You can only chat every " + Settings.getChatPauseTimeInSeconds() + " seconds.");
                 event.setCancelled(true);
@@ -37,9 +35,9 @@ public class ChatListener implements Listener {
         }
 
         // USED BAD WORD
-        if (!event.getPlayer().isOp() && !filter.acceptMessage(event.getMessage())) {
+        if (!event.getPlayer().isOp() && !filter.acceptMessage(event.getMessage().toLowerCase())) {
             // troll them by sending the message to them but to no other player
-            TextUtils.sendInfo(event.getPlayer(), event.getMessage());
+            TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
             event.getRecipients().clear();
             event.setCancelled(true);
             return;
