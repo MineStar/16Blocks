@@ -15,10 +15,12 @@ import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
+import de.minestar.sixteenblocks.Threads.AreaDeletionThread;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaManager {
@@ -45,7 +47,7 @@ public class AreaManager {
         this.structureManager = structureManager;
         this.loadAreas();
         this.initMaximumZ();
-        this.checkForZoneExtesion();
+        this.checkForZoneExtension();
     }
 
     // ////////////////////////////////////////////////
@@ -173,8 +175,23 @@ public class AreaManager {
     }
 
     // ///////////////////////////
+    // DELETE AREA
+    // ///////////////////////////
+
+    public void deletePlayerArea(SkinArea thisArea, Player player) {
+        // BLOCK AREA
+        this.blockArea(thisArea.getZoneXZ());
+
+        // CREATE THREAD AND START IT
+        World world = Bukkit.getWorlds().get(0);
+        ZoneXZ thisZone = thisArea.getZoneXZ();
+        AreaDeletionThread thisThread = new AreaDeletionThread(world, thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), thisZone.getZ() * Settings.getAreaSizeZ(), thisZone, player.getName());
+        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+    }
+
+    // ///////////////////////////
     // USED AREAS
-    // //////////////////////////
+    // ///////////////////////////
 
     public boolean hasPlayerArea(Player player) {
         for (SkinArea thisArea : this.usedAreaList.values()) {
@@ -205,6 +222,16 @@ public class AreaManager {
 
         return null;
     }
+
+    public SkinArea getExactPlayerArea(String playerName) {
+        for (SkinArea thisArea : this.usedAreaList.values()) {
+            if (thisArea.isAreaOwner(playerName)) {
+                return thisArea;
+            }
+        }
+        return null;
+    }
+
     public SkinArea getPlayerArea(ZoneXZ thisZone) {
         return this.usedAreaList.get(thisZone.toString());
     }
@@ -235,7 +262,7 @@ public class AreaManager {
             this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructureWithSign(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ(), player);
         }
 
-        this.checkForZoneExtesion();
+        this.checkForZoneExtension();
         return true;
     }
 
@@ -334,7 +361,7 @@ public class AreaManager {
         return thisArea.isAreaOwner(player);
     }
 
-    public void checkForZoneExtesion() {
+    public void checkForZoneExtension() {
         if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * Settings.getCreateRowsAtOnce()) {
             while (true) {
                 if (this.unusedAreaList.containsKey(lastRow + ":0") || this.usedAreaList.containsKey(lastRow + ":0")) {

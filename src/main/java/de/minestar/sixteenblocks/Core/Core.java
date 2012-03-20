@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
@@ -72,7 +73,7 @@ public class Core extends JavaPlugin {
         this.initCommands();
 
         // FINAL INTITIALIZATION
-        this.areaManager.checkForZoneExtesion();
+        this.areaManager.checkForZoneExtension();
         createThreads(Bukkit.getScheduler());
 
         // INFO
@@ -115,6 +116,8 @@ public class Core extends JavaPlugin {
                         new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager),
 
+                        new cmdDeleteArea   ("/delete",     "<Playername>",     "", this.areaManager),
+                        
                         new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",           "", mHandler),
                         new cmdTicket       ("/report",     "<Text>",           "", mHandler)
