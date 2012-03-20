@@ -65,12 +65,12 @@ public class Core extends JavaPlugin {
         // SET NAME
         TextUtils.setPluginName(this.getDescription().getName());
 
+        // INIT COMMANDS
+        this.initCommands();
+
         // STARTUP
         this.createManager();
         this.registerListeners();
-
-        // INIT COMMANDS
-        this.initCommands();
 
         // FINAL INTITIALIZATION
         this.areaManager.checkForZoneExtension();
@@ -79,6 +79,7 @@ public class Core extends JavaPlugin {
         // INFO
         TextUtils.logInfo("Enabled!");
     }
+
     private void createManager() {
         this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
         this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
