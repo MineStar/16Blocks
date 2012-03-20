@@ -26,7 +26,10 @@ public class ChatListener implements Listener {
         // FLOOD-CONTROL
         if (!event.getPlayer().isOp() && lastChatList.containsKey(event.getPlayer().getName())) {
             long lastChatEvent = lastChatList.get(event.getPlayer().getName());
-            if (System.currentTimeMillis() - (Settings.getChatPauseTimeInSeconds() * 1000) < lastChatEvent) {
+            long delta = System.currentTimeMillis() - lastChatEvent;
+            System.out.println("delta: " + delta);
+            System.out.println("lastChatEvent: " + lastChatEvent);
+            if (delta < (Settings.getChatPauseTimeInSeconds() * 1000)) {
                 TextUtils.sendError(event.getPlayer(), "You can only chat every " + Settings.getChatPauseTimeInSeconds() + " seconds.");
                 event.setCancelled(true);
                 return;

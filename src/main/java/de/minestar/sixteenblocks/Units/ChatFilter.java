@@ -53,7 +53,8 @@ public class ChatFilter {
                     sBuilder.append(line);
                     sBuilder.append('|');
                 }
-                sBuilder.deleteCharAt(sBuilder.length() - 1);
+                if (sBuilder.length() > 1)
+                    sBuilder.deleteCharAt(sBuilder.length() - 1);
 
                 whiteList = Pattern.compile(sBuilder.toString());
                 // reset StringBuilder
@@ -69,7 +70,8 @@ public class ChatFilter {
                     sBuilder.append(line);
                     sBuilder.append('|');
                 }
-                sBuilder.deleteCharAt(sBuilder.length() - 1);
+                if (sBuilder.length() > 1)
+                    sBuilder.deleteCharAt(sBuilder.length() - 1);
                 blackList = Pattern.compile(sBuilder.toString());
             }
             ConsoleUtils.printInfo(Core.NAME, "White and Blacklist for ChatFilter loaded!");
