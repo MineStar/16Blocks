@@ -37,6 +37,7 @@
 					<artifactSet>
 						<includes>
 							<include>de.minestar:minestarlibrary</include>
+							<include>javax.mail:mail</include>
 						</includes>
 					</artifactSet>
 				</configuration>

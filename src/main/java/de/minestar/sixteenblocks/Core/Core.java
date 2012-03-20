@@ -91,12 +91,11 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
-        // this.ticketDatabaseManager = new TicketDatabaseManager(NAME,
-        // getDataFolder());
+        this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
-        // this.mHandler = new MailHandler(getDataFolder());
+        this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
     }
 

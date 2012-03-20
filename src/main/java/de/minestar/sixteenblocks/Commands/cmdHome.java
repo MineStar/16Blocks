@@ -29,8 +29,6 @@ public class cmdHome extends AbstractExtendedCommand {
                 TextUtils.sendLine(player, ChatColor.GRAY, "Take one with '/start' or '/starthere'.");
                 return;
             }
-
-            TextUtils.sendLine(player, ChatColor.GRAY, thisArea.getZoneXZ().getX() + " / " + thisArea.getZoneXZ().getZ());
             player.teleport(thisArea.getZoneXZ().getSpawnLocation());
             TextUtils.sendInfo(player, "Teleporting you to your area...");
         } else {
