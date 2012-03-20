@@ -1,8 +1,12 @@
 package de.minestar.sixteenblocks.Listener;
 
 import java.util.HashMap;
+import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -40,6 +44,15 @@ public class ChatListener implements Listener {
             TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
             event.getRecipients().clear();
             event.setCancelled(true);
+
+            // WARN ADMINS
+            Set<OfflinePlayer> opList = Bukkit.getOperators();
+            for (OfflinePlayer offPlayer : opList) {
+                if (offPlayer.isOnline()) {
+                    TextUtils.sendLine((Player) offPlayer, ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
+                }
+            }
+
             return;
         }
 
