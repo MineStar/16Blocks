@@ -25,6 +25,8 @@ public class Settings {
 
     private static Vector SPAWN_VECTOR = new Vector(0, 4, 0), INFOWALL_VECTOR = new Vector(0, 4, 0);
 
+    private static String JSON_PATH = "stats.json";
+
     public static void init(File dataFolder) {
         try {
             File file = new File(dataFolder, "config.yml");
@@ -55,6 +57,8 @@ public class Settings {
 
             SPAWN_VECTOR = config.getVector("Locations.spawn", SPAWN_VECTOR);
             INFOWALL_VECTOR = config.getVector("Locations.infoWall", INFOWALL_VECTOR);
+
+            JSON_PATH = config.getString("general.JSON", JSON_PATH);
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
@@ -89,6 +93,8 @@ public class Settings {
 
             config.set("Locations.spawn", SPAWN_VECTOR);
             config.set("Locations.infoWall", INFOWALL_VECTOR);
+
+            config.set("general.JSON", JSON_PATH);
 
             config.save(file);
         } catch (Exception e) {
@@ -154,5 +160,9 @@ public class Settings {
 
     public static int getChatRadius() {
         return CHAT_RADIUS;
+    }
+
+    public static String getJSONPath() {
+        return JSON_PATH;
     }
 }
