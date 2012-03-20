@@ -13,6 +13,7 @@ import de.minestar.minestarlibrary.database.DatabaseConnection;
 import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
 import de.minestar.sixteenblocks.Core.Core;
+import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
@@ -78,6 +79,17 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
             updateArea.setString(1, thisArea.getAreaOwner());
             updateArea.setInt(2, thisArea.getZoneXZ().getX());
             updateArea.setInt(3, thisArea.getZoneXZ().getZ());
+            updateArea.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAreaOwner(ZoneXZ thisZone) {
+        try {
+            updateArea.setString(1, "");
+            updateArea.setInt(2, thisZone.getX());
+            updateArea.setInt(3, thisZone.getZ());
             updateArea.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
