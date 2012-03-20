@@ -1,6 +1,6 @@
 name: 16Blocks
 main: de.minestar.sixteenblocks.Core.Core
-version: 1.0
+version: ${pom.version}
 commands:
   spawn:
     description: Takes you to the spawn
