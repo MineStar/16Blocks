@@ -82,6 +82,9 @@ public class Core extends JavaPlugin {
         this.areaManager.checkForZoneExtension();
         createThreads(Bukkit.getScheduler());
 
+        // UPDATE SPAWN
+        Bukkit.getWorlds().get(0).setSpawnLocation(Settings.getSpawnVector().getBlockX(), Settings.getSpawnVector().getBlockY(), Settings.getSpawnVector().getBlockZ());
+
         // INFO
         TextUtils.logInfo("Enabled!");
     }
