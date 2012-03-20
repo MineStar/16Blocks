@@ -28,11 +28,27 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.hasBlock() && event.getClickedBlock().getTypeId() == Material.JUKEBOX.getId()) {
-            event.setCancelled(true);
+        if (event.getPlayer().isOp())
+            return;
+
+        if (event.hasBlock()) {
+            if (!areaManager.isInArea(event.getPlayer(), event.getClickedBlock())) {
+                TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
+                event.setCancelled(true);
+                return;
+            }
+            if (event.getClickedBlock().getTypeId() == Material.JUKEBOX.getId()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        if (event.hasItem()) {
+            if (event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId()) {
+                event.setCancelled(true);
+            }
         }
     }
-
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
