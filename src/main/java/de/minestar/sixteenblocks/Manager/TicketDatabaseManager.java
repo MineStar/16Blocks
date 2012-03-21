@@ -80,13 +80,13 @@ public class TicketDatabaseManager extends AbstractDatabaseHandler {
                 list.add(new Ticket(rs.getBoolean(2), rs.getBoolean(3), rs.getInt(4)));
                 tickets.put(userName, list);
             }
-
             return tickets;
         } catch (Exception e) {
             ConsoleUtils.printException(e, Core.NAME, "Can't check tickets");
             return null;
         }
     }
+
     private String createTicketQuery(Player[] onlinePlayer) {
         StringBuilder sBuilder = new StringBuilder("SELECT SUBSTRING_INDEX(`ost_ticket`.`subject`,'SERVERREPORT - ',-1), `ost_ticket`.`isanswered`, `ost_ticket`.`status` = 'closed' , `ost_ticket`.`ticket_id` FROM `ost_ticket` WHERE SUBSTRING_INDEX(`ost_ticket`.`subject`,'SERVERREPORT - ',-1) IN (");
         int i = 0;

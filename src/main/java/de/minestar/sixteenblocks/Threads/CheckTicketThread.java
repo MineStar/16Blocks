@@ -64,7 +64,7 @@ public class CheckTicketThread implements Runnable {
         Map<String, List<Ticket>> tickets = dbManager.checkTickets(onlinePlayer);
         List<Ticket> list;
         for (Player player : onlinePlayer) {
-            list = tickets.get(tickets);
+            list = tickets.get(player.getName());
             if (list != null) {
                 for (Ticket ticket : list) {
                     // only answered or closed tickets are shown and only once

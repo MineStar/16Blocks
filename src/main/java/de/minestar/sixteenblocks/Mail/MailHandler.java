@@ -69,7 +69,7 @@ public class MailHandler {
         // Send E-Mail with header
         // BUGREPORT - PlayerName
         // and the message plus additional information
-        return sendMail("BUGREPORT - " + from.getName(), addInformation(from, message));
+        return sendMail("SERVERREPORT - " + from.getName(), addInformation(from, message));
     }
 
     // add additional information to the message for debugging
