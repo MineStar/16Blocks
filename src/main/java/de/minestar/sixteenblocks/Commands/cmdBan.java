@@ -1,5 +1,7 @@
 package de.minestar.sixteenblocks.Commands;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
@@ -14,10 +16,12 @@ import de.minestar.sixteenblocks.Manager.SkinArea;
 public class cmdBan extends AbstractCommand {
 
     private AreaManager areaManager;
+    private Set<String> supporter;
 
-    public cmdBan(String syntax, String arguments, String node, AreaManager areaManager) {
+    public cmdBan(String syntax, String arguments, String node, AreaManager areaManager, Set<String> supporter) {
         super(Core.NAME, syntax, arguments, node);
         this.areaManager = areaManager;
+        this.supporter = supporter;
         this.description = "Ban a player and delete the area";
     }
 
@@ -25,7 +29,7 @@ public class cmdBan extends AbstractCommand {
     public void execute(String[] arguments, Player player) {
 
         // CHECK: PLAYER IS OP
-        if (!player.isOp()) {
+        if (!player.isOp() || !supporter.contains(player.getName())) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }

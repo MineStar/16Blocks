@@ -1,5 +1,7 @@
 package de.minestar.sixteenblocks.Commands;
 
+import java.util.Set;
+
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -13,16 +15,18 @@ import de.minestar.sixteenblocks.Units.ZoneXZ;
 public class cmdSaveArea extends AbstractCommand {
 
     private StructureManager structureManager;
+    private Set<String> supporter;
 
-    public cmdSaveArea(String syntax, String arguments, String node, AreaManager areaManager, StructureManager structureManager) {
+    public cmdSaveArea(String syntax, String arguments, String node, AreaManager areaManager, StructureManager structureManager, Set<String> supporter) {
         super(Core.NAME, syntax, arguments, node);
         this.description = "Saves the current area as a structure";
+        this.supporter = supporter;
         this.structureManager = structureManager;
     }
 
     @Override
     public void execute(String[] args, Player player) {
-        if (!player.isOp()) {
+        if (!player.isOp() || !supporter.contains(player.getName())) {
             TextUtils.sendError(player, "Only OPs can do this!");
             return;
         }

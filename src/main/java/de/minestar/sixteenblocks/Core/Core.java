@@ -1,5 +1,11 @@
 package de.minestar.sixteenblocks.Core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -7,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
@@ -118,6 +125,7 @@ public class Core extends JavaPlugin {
     }
 
     private void initCommands() {
+        Set<String> supporter = loadSupporter();
         /* @formatter:off */
         // Add an command to this list to register it in the plugin
         commandList = new CommandList(Core.NAME, 
@@ -127,10 +135,10 @@ public class Core extends JavaPlugin {
                         new cmdStartAuto    ("/startauto",  "",                 "", this.areaManager),
                         new cmdStartHere    ("/starthere",  "",                 "", this.areaManager),
                         new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
-                        new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager),
+                        new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager, supporter),
 
-                        new cmdBan          ("/ban",        "<Playername>",     "", this.areaManager),
-                        new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager),
+                        new cmdBan          ("/ban",        "<Playername>",     "", this.areaManager, supporter),
+                        new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager, supporter),
                         
                         new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",           "", mHandler),
@@ -164,5 +172,27 @@ public class Core extends JavaPlugin {
      */
     public AreaManager getAreaManager() {
         return areaManager;
+    }
+
+    private Set<String> loadSupporter() {
+        File f = new File(getDataFolder(), "supporter.txt");
+        Set<String> supporter = new HashSet<String>(16);
+        if (!f.exists()) {
+            ConsoleUtils.printError(NAME, "Can't find supporter file! Only ops can execute support commands!");
+            return supporter;
+        }
+
+        try {
+            BufferedReader bReader = new BufferedReader(new FileReader(f));
+            String line = "";
+            while ((line = bReader.readLine()) != null) {
+                if (!line.isEmpty())
+                    supporter.add(line);
+            }
+            ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " supporter!");
+        } catch (Exception e) {
+            ConsoleUtils.printException(e, NAME, "Can't load support file!");
+        }
+        return supporter;
     }
 }
