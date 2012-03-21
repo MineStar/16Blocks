@@ -83,11 +83,12 @@ public class Core extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Set<String> supporter = loadSupporter();
 
         // INIT COMMANDS
-        this.initCommands();
+        this.initCommands(supporter);
 
-        this.registerListeners();
+        this.registerListeners(supporter);
 
         // FINAL INTITIALIZATION
         this.areaManager.checkForZoneExtension();
@@ -110,11 +111,11 @@ public class Core extends JavaPlugin {
         this.filter = new ChatFilter(getDataFolder());
     }
 
-    private void registerListeners() {
+    private void registerListeners(Set<String> supporter) {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
         this.blockListener = new BlockListener(this.areaManager);
-        this.chatListener = new ChatListener(this.filter);
+        this.chatListener = new ChatListener(this.filter, supporter);
         this.movementListener = new MovementListener(this.worldManager);
 
         // REGISTER LISTENERS
@@ -124,8 +125,7 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
     }
 
-    private void initCommands() {
-        Set<String> supporter = loadSupporter();
+    private void initCommands(Set<String> supporter) {
         /* @formatter:off */
         // Add an command to this list to register it in the plugin
         commandList = new CommandList(Core.NAME, 

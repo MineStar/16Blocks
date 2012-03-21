@@ -21,8 +21,11 @@ public class ChatListener implements Listener {
 
     private ChatFilter filter;
 
-    public ChatListener(ChatFilter filter) {
+    private Set<String> supporter;
+
+    public ChatListener(ChatFilter filter, Set<String> supporter) {
         this.filter = filter;
+        this.supporter = supporter;
     }
 
     private HashMap<String, Long> lastChatList = new HashMap<String, Long>();
@@ -73,7 +76,7 @@ public class ChatListener implements Listener {
 
         // FORMAT CHAT
         event.setFormat("%2$s");
-        if (event.getPlayer().isOp())
+        if (event.getPlayer().isOp() || supporter.contains(event.getPlayer().getName()))
             event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
         else
             event.setMessage(ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
