@@ -22,6 +22,8 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -64,13 +66,20 @@ public class TicketDatabaseManager extends AbstractDatabaseHandler {
         // Nothing to do here
     }
 
-    public Map<String, Ticket> checkTickets(Player[] onlinePlayer) {
+    public Map<String, List<Ticket>> checkTickets(Player[] onlinePlayer) {
         try {
-            Map<String, Ticket> tickets = new HashMap<String, Ticket>(onlinePlayer.length);
-            Connection con = dbConnection.getConnection();
-            ResultSet rs = con.createStatement().executeQuery(createTicketQuery(onlinePlayer));
-            while (rs.next())
-                tickets.put(rs.getString(1), new Ticket(rs.getBoolean(2), rs.getBoolean(3), rs.getInt(4)));
+            ResultSet rs = dbConnection.getConnection().createStatement().executeQuery(createTicketQuery(onlinePlayer));
+
+            Map<String, List<Ticket>> tickets = new HashMap<String, List<Ticket>>(onlinePlayer.length);
+            List<Ticket> list = null;
+            while (rs.next()) {
+                String userName = rs.getString(1);
+                list = tickets.get(userName);
+                if (list == null)
+                    list = new LinkedList<Ticket>();
+                list.add(new Ticket(rs.getBoolean(2), rs.getBoolean(3), rs.getInt(4)));
+                tickets.put(userName, list);
+            }
 
             return tickets;
         } catch (Exception e) {
@@ -79,7 +88,7 @@ public class TicketDatabaseManager extends AbstractDatabaseHandler {
         }
     }
     private String createTicketQuery(Player[] onlinePlayer) {
-        StringBuilder sBuilder = new StringBuilder("SELECT SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1), `ost_ticket`.`isanswered`, `ost_ticket`.`status` = 'closed' , `ost_ticket`.`ticket_id` FROM `ost_ticket` WHERE SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1) IN (");
+        StringBuilder sBuilder = new StringBuilder("SELECT SUBSTRING_INDEX(`ost_ticket`.`subject`,'SERVERREPORT - ',-1), `ost_ticket`.`isanswered`, `ost_ticket`.`status` = 'closed' , `ost_ticket`.`ticket_id` FROM `ost_ticket` WHERE SUBSTRING_INDEX(`ost_ticket`.`subject`,'SERVERREPORT - ',-1) IN (");
         int i = 0;
         for (; i < onlinePlayer.length - 1; ++i) {
             sBuilder.append('\'');

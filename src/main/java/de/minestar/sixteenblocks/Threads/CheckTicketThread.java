@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,16 +61,19 @@ public class CheckTicketThread implements Runnable {
         if (onlinePlayer.length == 0)
             return;
 
-        Map<String, Ticket> tickets = dbManager.checkTickets(onlinePlayer);
-        Ticket ticket = null;
+        Map<String, List<Ticket>> tickets = dbManager.checkTickets(onlinePlayer);
+        List<Ticket> list;
         for (Player player : onlinePlayer) {
-            ticket = tickets.get(player.getName());
-            // only answered or closed tickets are shown
-            // and only once
-            if (ticket != null && (ticket.isAnswered() || ticket.isClosed()) && !checkedTickets.contains(ticket.getTickedId())) {
-                TextUtils.sendInfo(player, "Your ticket is processed. Thank you for your help. For questions please contact the YouAreMinecraft team.");
-                // prevent double shown tickets
-                checkedTickets.add(ticket.getTickedId());
+            list = tickets.get(tickets);
+            if (list != null) {
+                for (Ticket ticket : list) {
+                    // only answered or closed tickets are shown and only once
+                    if ((ticket.isAnswered() || ticket.isClosed()) && !checkedTickets.contains(ticket.getTickedId())) {
+                        TextUtils.sendInfo(player, "Your ticket is processed. Thank you for your help. For questions please contact the YouAreMinecraft team.");
+                        // prevent double shown tickets
+                        checkedTickets.add(ticket.getTickedId());
+                    }
+                }
             }
         }
     }

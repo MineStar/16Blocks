@@ -144,7 +144,7 @@ public class Core extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
         // Check tickets
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
-        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
+        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20, 20);
         // Writing JSON with online player
         scheduler.scheduleAsyncRepeatingTask(this, new PlayerCountThread(), 20 * 10, 20 * 10);
     }
