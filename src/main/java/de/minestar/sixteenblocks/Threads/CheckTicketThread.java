@@ -18,21 +18,34 @@
 
 package de.minestar.sixteenblocks.Threads;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Mail.Ticket;
 import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 
 public class CheckTicketThread implements Runnable {
 
+    private File checkedTicketsFile;
+    private Set<Integer> checkedTickets = new HashSet<Integer>(500);
+
     private TicketDatabaseManager dbManager;
 
-    public CheckTicketThread(TicketDatabaseManager dbManager) {
+    public CheckTicketThread(TicketDatabaseManager dbManager, File dataFolder) {
         this.dbManager = dbManager;
+        loadCheckTickets(dataFolder);
     }
 
     @Override
@@ -51,8 +64,47 @@ public class CheckTicketThread implements Runnable {
         Ticket ticket = null;
         for (Player player : onlinePlayer) {
             ticket = tickets.get(player.getName());
-            if (ticket != null && (ticket.isAnswered() || ticket.isClosed()))
+            // only answered or closed tickets are shown
+            // and only once
+            if (ticket != null && (ticket.isAnswered() || ticket.isClosed()) && !checkedTickets.contains(ticket.getTickedId())) {
                 TextUtils.sendInfo(player, "Your ticket is processed. Thank you for your help. For questions please contact the YouAreMinecraft team.");
+                // prevent double shown tickets
+                checkedTickets.add(ticket.getTickedId());
+            }
+        }
+    }
+
+    private void loadCheckTickets(File dataFolder) {
+        checkedTicketsFile = new File(dataFolder, "usedTickets.txt");
+        if (!checkedTicketsFile.exists())
+            return;
+
+        try {
+            BufferedReader bReader = new BufferedReader(new FileReader(checkedTicketsFile));
+            String line = "";
+            while ((line = bReader.readLine()) != null)
+                if (!line.isEmpty())
+                    checkedTickets.add(Integer.valueOf(line));
+            bReader.close();
+        } catch (Exception e) {
+            ConsoleUtils.printException(e, Core.NAME, "Can't load used ticket names!");
+        }
+
+    }
+
+    public void saveCheckTickets() {
+        if (checkedTickets.isEmpty())
+            return;
+
+        try {
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(checkedTicketsFile));
+            for (Integer i : checkedTickets) {
+                bWriter.write(i.toString());
+                bWriter.newLine();
+            }
+            bWriter.close();
+        } catch (Exception e) {
+            ConsoleUtils.printException(e, Core.NAME, "Can't save used ticket names!");
         }
     }
 }

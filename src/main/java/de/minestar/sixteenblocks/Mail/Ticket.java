@@ -20,19 +20,26 @@ package de.minestar.sixteenblocks.Mail;
 
 public class Ticket {
 
+    private int tickedId;
     private boolean isAnswered;
     private boolean isClosed;
 
-    public Ticket(boolean isAnswered, boolean isClosed) {
+    public Ticket(boolean isAnswered, boolean isClosed, int ticketId) {
         this.isAnswered = isAnswered;
         this.isClosed = isClosed;
+        this.tickedId = ticketId;
     }
 
     public boolean isAnswered() {
         return isAnswered;
     }
+
     public boolean isClosed() {
         return isClosed;
+    }
+
+    public int getTickedId() {
+        return tickedId;
     }
 
 }

@@ -44,6 +44,8 @@ public class Core extends JavaPlugin {
     private MailHandler mHandler;
     private ChatFilter filter;
 
+    private CheckTicketThread checkTread;
+
     private CommandList commandList;
 
     public final static String NAME = "16Blocks";
@@ -52,6 +54,7 @@ public class Core extends JavaPlugin {
     public void onDisable() {
         this.areaDatabaseManager.closeConnection();
         this.ticketDatabaseManager.closeConnection();
+        checkTread.saveCheckTickets();
         Settings.saveSettings(this.getDataFolder());
         TextUtils.logInfo("Disabled!");
     }
@@ -135,11 +138,13 @@ public class Core extends JavaPlugin {
         );
         /* @formatter:on */
     }
+
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
         // Check tickets
-        scheduler.scheduleSyncRepeatingTask(this, new CheckTicketThread(this.ticketDatabaseManager), 20 * 60, 20 * 60 * 10);
+        checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
+        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
         // Writing JSON with online player
         scheduler.scheduleAsyncRepeatingTask(this, new PlayerCountThread(), 20 * 10, 20 * 10);
     }

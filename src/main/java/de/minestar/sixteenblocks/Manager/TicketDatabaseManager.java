@@ -70,7 +70,7 @@ public class TicketDatabaseManager extends AbstractDatabaseHandler {
             Connection con = dbConnection.getConnection();
             ResultSet rs = con.createStatement().executeQuery(createTicketQuery(onlinePlayer));
             while (rs.next())
-                tickets.put(rs.getString(1), new Ticket(rs.getBoolean(2), rs.getBoolean(3)));
+                tickets.put(rs.getString(1), new Ticket(rs.getBoolean(2), rs.getBoolean(3), rs.getInt(4)));
 
             return tickets;
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class TicketDatabaseManager extends AbstractDatabaseHandler {
         }
     }
     private String createTicketQuery(Player[] onlinePlayer) {
-        StringBuilder sBuilder = new StringBuilder("SELECT SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1), `ost_ticket`.`isanswered`, `ost_ticket`.`status` == 'closed' FROM `ost_ticket` WHERE SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1) IN (");
+        StringBuilder sBuilder = new StringBuilder("SELECT SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1), `ost_ticket`.`isanswered`, `ost_ticket`.`status` = 'closed' , `ost_ticket`.`ticket_id` FROM `ost_ticket` WHERE SUBSTRING_INDEX(`ost_ticket`.`subject`,'BUGREPORT - ',-1) IN (");
         int i = 0;
         for (; i < onlinePlayer.length - 1; ++i) {
             sBuilder.append('\'');
