@@ -18,8 +18,6 @@
 
 package de.minestar.sixteenblocks.Commands;
 
-import java.util.Set;
-
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -30,11 +28,8 @@ import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class cmdKick extends AbstractExtendedCommand {
 
-    private Set<String> supporter;
-
-    public cmdKick(String syntax, String arguments, String node, Set<String> supporter) {
+    public cmdKick(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.supporter = supporter;
         this.description = "Kick a player from the server - Just tunneling";
     }
 
@@ -42,7 +37,7 @@ public class cmdKick extends AbstractExtendedCommand {
     public void execute(String[] args, Player player) {
 
         // CHECK: PLAYER IS OP OR SUPPORTER
-        if (!player.isOp() && !supporter.contains(player.getName().toLowerCase())) {
+        if (!Core.isSupporter(player)) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }

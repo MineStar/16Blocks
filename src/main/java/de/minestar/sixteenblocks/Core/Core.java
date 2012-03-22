@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -53,6 +54,8 @@ public class Core extends JavaPlugin {
     private MailHandler mHandler;
     private ChatFilter filter;
 
+    private static Set<String> supporter;
+
     private CheckTicketThread checkTread;
 
     private CommandList commandList;
@@ -82,12 +85,13 @@ public class Core extends JavaPlugin {
         // STARTUP
         this.createManager();
 
-        Set<String> supporter = loadSupporter();
+        // LOAD SUPPORTER (NOT ALL ADMINS ARE OPS)
+        loadSupporter();
 
         // INIT COMMANDS
-        this.initCommands(supporter);
+        this.initCommands();
 
-        this.registerListeners(supporter);
+        this.registerListeners();
 
         // FINAL INTITIALIZATION
         this.areaManager.checkForZoneExtension();
@@ -110,11 +114,11 @@ public class Core extends JavaPlugin {
         this.filter = new ChatFilter(getDataFolder());
     }
 
-    private void registerListeners(Set<String> supporter) {
+    private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
         this.blockListener = new BlockListener(this.areaManager);
-        this.chatListener = new ChatListener(this.filter, supporter);
+        this.chatListener = new ChatListener(this.filter);
         this.movementListener = new MovementListener(this.worldManager);
 
         // REGISTER LISTENERS
@@ -124,7 +128,7 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
     }
 
-    private void initCommands(Set<String> supporter) {
+    private void initCommands() {
         /* @formatter:off */
         // Empty permission because permissions are handeld in the commands
         commandList = new CommandList(Core.NAME, 
@@ -134,16 +138,16 @@ public class Core extends JavaPlugin {
                         new cmdStartAuto    ("/startauto",  "",                         "", this.areaManager),
                         new cmdStartHere    ("/starthere",  "",                         "", this.areaManager),
                         new cmdHome         ("/home",       "[Playername]",             "", this.areaManager),
-                        new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager, supporter),
+                        new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
 
-                        new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager, supporter),
-                        new cmdUnban        ("/unban",      "<Playername>",             "", supporter),
-                        new cmdKick         ("/kick",       "<Playername> [Message]",   "", supporter),      
-                        new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager, supporter),
+                        new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager),
+                        new cmdUnban        ("/unban",      "<Playername>",             ""),
+                        new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
+                        new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
                         
-                        new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler, supporter),
-                        new cmdTicket       ("/bug",        "<Text>",                   "", mHandler, supporter),
-                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler, supporter)
+                        new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
+                        new cmdTicket       ("/bug",        "<Text>",                   "", mHandler),
+                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler)
         );
         /* @formatter:on */
     }
@@ -175,12 +179,12 @@ public class Core extends JavaPlugin {
         return areaManager;
     }
 
-    private Set<String> loadSupporter() {
+    private void loadSupporter() {
         File f = new File(getDataFolder(), "supporter.txt");
-        Set<String> supporter = new HashSet<String>(16);
+        supporter = new HashSet<String>(16);
         if (!f.exists()) {
             ConsoleUtils.printError(NAME, "Can't find supporter file! Only ops can execute support commands!");
-            return supporter;
+            return;
         }
 
         try {
@@ -194,6 +198,9 @@ public class Core extends JavaPlugin {
         } catch (Exception e) {
             ConsoleUtils.printException(e, NAME, "Can't load support file!");
         }
-        return supporter;
+    }
+
+    public static boolean isSupporter(Player player) {
+        return player.isOp() || supporter.contains(player.getName().toLowerCase());
     }
 }

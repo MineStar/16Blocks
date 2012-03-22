@@ -1,7 +1,5 @@
 package de.minestar.sixteenblocks.Commands;
 
-import java.util.Set;
-
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -14,12 +12,9 @@ import de.minestar.sixteenblocks.Units.ZoneXZ;
 public class cmdDeleteArea extends AbstractExtendedCommand {
 
     private AreaManager areaManager;
-    private Set<String> supporter;
-
-    public cmdDeleteArea(String syntax, String arguments, String node, AreaManager areaManager, Set<String> supporter) {
+    public cmdDeleteArea(String syntax, String arguments, String node, AreaManager areaManager) {
         super(Core.NAME, syntax, arguments, node);
         this.areaManager = areaManager;
-        this.supporter = supporter;
         this.description = "Delete an area";
     }
 
@@ -27,7 +22,7 @@ public class cmdDeleteArea extends AbstractExtendedCommand {
     public void execute(String[] arguments, Player player) {
 
         // CHECK: PLAYER IS OP OR SUPPORTER
-        if (!player.isOp() && !supporter.contains(player.getName().toLowerCase())) {
+        if (!Core.isSupporter(player)) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }

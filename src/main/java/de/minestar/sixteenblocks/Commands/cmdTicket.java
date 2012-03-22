@@ -20,7 +20,6 @@ package de.minestar.sixteenblocks.Commands;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.entity.Player;
 
@@ -37,19 +36,18 @@ public class cmdTicket extends AbstractExtendedCommand {
     private Map<Player, Long> floodMap = new HashMap<Player, Long>();
     private static final long FLOOD_LIMIT = 1000L * 60L * 10L;
 
-    private Set<String> supporter;
-
-    public cmdTicket(String syntax, String arguments, String node, MailHandler mHandler, Set<String> supporter) {
+    public cmdTicket(String syntax, String arguments, String node, MailHandler mHandler) {
         super(Core.NAME, syntax, arguments, node);
         this.mHandler = mHandler;
-        this.supporter = supporter;
     }
 
     @Override
     public void execute(String[] args, Player player) {
         // CHECK: FLOOD PREVENTION
         long currentTime = System.currentTimeMillis();
-        if (!player.isOp() && !supporter.contains(player.getName().toLowerCase())) {
+
+        // CHECK: PLAYER IS OP OR SUPPORTER
+        if (!Core.isSupporter(player)) {
             Long old = floodMap.get(player);
             if (old != null && currentTime - old < FLOOD_LIMIT) {
                 TextUtils.sendError(player, "You can create a new ticket in " + formatString(FLOOD_LIMIT - (currentTime - old)));

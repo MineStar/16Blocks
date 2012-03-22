@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Units.ChatFilter;
@@ -21,11 +22,8 @@ public class ChatListener implements Listener {
 
     private ChatFilter filter;
 
-    private Set<String> supporter;
-
-    public ChatListener(ChatFilter filter, Set<String> supporter) {
+    public ChatListener(ChatFilter filter) {
         this.filter = filter;
-        this.supporter = supporter;
     }
 
     private HashMap<String, Long> lastChatList = new HashMap<String, Long>();
@@ -33,7 +31,8 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         // FLOOD-CONTROL
-        if (!event.getPlayer().isOp() && lastChatList.containsKey(event.getPlayer().getName())) {
+        if (!Core.isSupporter(event.getPlayer())) {
+
             long lastChatEvent = lastChatList.get(event.getPlayer().getName());
             long delta = System.currentTimeMillis() - lastChatEvent;
             if (delta < (Settings.getChatPauseTimeInSeconds() * 1000)) {
@@ -44,7 +43,7 @@ public class ChatListener implements Listener {
         }
 
         // USED BAD WORD
-        if (!event.getPlayer().isOp() && !filter.acceptMessage(event.getMessage().toLowerCase())) {
+        if (!Core.isSupporter(event.getPlayer()) && !filter.acceptMessage(event.getMessage().toLowerCase())) {
             // troll them by sending the message to them but to no other player
             TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
             event.getRecipients().clear();
@@ -62,7 +61,7 @@ public class ChatListener implements Listener {
         }
 
         // CHAT-RADIUS
-        if (Settings.getChatRadius() > 0 && !event.getPlayer().isOp()) {
+        if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
             Location chatLocation = event.getPlayer().getLocation();
             Iterator<Player> iterator = event.getRecipients().iterator();
             Player thisPlayer;
@@ -76,7 +75,7 @@ public class ChatListener implements Listener {
 
         // FORMAT CHAT
         event.setFormat("%2$s");
-        if (event.getPlayer().isOp() || supporter.contains(event.getPlayer().getName().toLowerCase()))
+        if (Core.isSupporter(event.getPlayer()))
             event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
         else
             event.setMessage(ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
