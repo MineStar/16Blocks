@@ -31,7 +31,7 @@ public class TextUtils {
     }
 
     public static void sendMessage(Player player, ChatColor color, String message) {
-        player.sendMessage(ChatColor.AQUA + "[ " + pluginName + " ] " + color + message);
+        player.sendMessage(ChatColor.AQUA + "[ YAM ] " + color + message);
     }
 
     public static void sendError(Player player, String message) {
