@@ -76,7 +76,7 @@ public class ChatListener implements Listener {
 
         // FORMAT CHAT
         event.setFormat("%2$s");
-        if (event.getPlayer().isOp() || supporter.contains(event.getPlayer().getName()))
+        if (event.getPlayer().isOp() || supporter.contains(event.getPlayer().getName().toLowerCase()))
             event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
         else
             event.setMessage(ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));

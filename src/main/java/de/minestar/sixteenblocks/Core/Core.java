@@ -188,7 +188,7 @@ public class Core extends JavaPlugin {
             String line = "";
             while ((line = bReader.readLine()) != null) {
                 if (!line.isEmpty())
-                    supporter.add(line);
+                    supporter.add(line.toLowerCase());
             }
             ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " supporter!");
         } catch (Exception e) {

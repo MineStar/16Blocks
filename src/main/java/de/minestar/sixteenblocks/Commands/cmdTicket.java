@@ -49,7 +49,7 @@ public class cmdTicket extends AbstractExtendedCommand {
     public void execute(String[] args, Player player) {
         // CHECK: FLOOD PREVENTION
         long currentTime = System.currentTimeMillis();
-        if (!player.isOp() && !supporter.contains(player.getName())) {
+        if (!player.isOp() && !supporter.contains(player.getName().toLowerCase())) {
             Long old = floodMap.get(player);
             if (old != null && currentTime - old < FLOOD_LIMIT) {
                 TextUtils.sendError(player, "You can create a new ticket in " + formatString(currentTime - old));
