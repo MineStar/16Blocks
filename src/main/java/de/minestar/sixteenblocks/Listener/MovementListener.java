@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.WorldManager;
@@ -34,7 +35,7 @@ public class MovementListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (event.getPlayer().isOp())
+        if (Core.isSupporter(event.getPlayer()))
             return;
 
         // ONLY CHECK, IF THE LOCATION IS DIFFERENT

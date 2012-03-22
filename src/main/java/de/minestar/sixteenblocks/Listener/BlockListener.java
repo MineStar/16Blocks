@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 
@@ -20,7 +21,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
+        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
@@ -28,7 +29,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getPlayer().isOp())
+        if (Core.isSupporter(event.getPlayer()))
             return;
 
         if (event.hasBlock()) {
@@ -51,7 +52,7 @@ public class BlockListener implements Listener {
     }
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
+        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
@@ -59,7 +60,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
@@ -67,7 +68,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBucketFill(PlayerBucketEmptyEvent event) {
-        if (!event.getPlayer().isOp() && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }

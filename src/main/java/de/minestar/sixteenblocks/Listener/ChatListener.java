@@ -67,7 +67,7 @@ public class ChatListener implements Listener {
             Player thisPlayer;
             while (iterator.hasNext()) {
                 thisPlayer = iterator.next();
-                if (!thisPlayer.isOp() && thisPlayer.getLocation().distance(chatLocation) > Settings.getChatRadius()) {
+                if (!Core.isSupporter(thisPlayer) && thisPlayer.getLocation().distance(chatLocation) > Settings.getChatRadius()) {
                     iterator.remove();
                 }
             }
