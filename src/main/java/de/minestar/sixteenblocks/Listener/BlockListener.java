@@ -1,6 +1,7 @@
 package de.minestar.sixteenblocks.Listener;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -24,6 +25,13 @@ public class BlockListener implements Listener {
         if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
+        } else {
+            // trick minecraft - falling sands and gravels
+            if (event.getBlockPlaced().getType().equals(Material.GRAVEL) || event.getBlockPlaced().getType().equals(Material.SAND)) {
+                event.setCancelled(true);
+                Block block = event.getBlock().getWorld().getBlockAt(event.getBlock().getLocation());
+                block.setTypeId(event.getBlockPlaced().getTypeId(), false);
+            }
         }
     }
 
