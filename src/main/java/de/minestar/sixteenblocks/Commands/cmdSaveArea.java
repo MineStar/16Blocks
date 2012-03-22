@@ -26,7 +26,9 @@ public class cmdSaveArea extends AbstractCommand {
 
     @Override
     public void execute(String[] args, Player player) {
-        if (!player.isOp() || !supporter.contains(player.getName())) {
+
+        // CHECK: PLAYER IS OP OR SUPPORTER
+        if (!player.isOp() && !supporter.contains(player.getName())) {
             TextUtils.sendError(player, "Only OPs can do this!");
             return;
         }

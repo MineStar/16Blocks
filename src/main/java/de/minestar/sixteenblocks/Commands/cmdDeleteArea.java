@@ -26,8 +26,8 @@ public class cmdDeleteArea extends AbstractExtendedCommand {
     @Override
     public void execute(String[] arguments, Player player) {
 
-        // CHECK: PLAYER IS OP
-        if (!player.isOp() || !supporter.contains(player.getName())) {
+        // CHECK: PLAYER IS OP OR SUPPORTER
+        if (!player.isOp() && !supporter.contains(player.getName())) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }
