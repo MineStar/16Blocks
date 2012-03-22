@@ -33,7 +33,7 @@ public class BlockListener implements Listener {
             return;
 
         if (event.hasBlock()) {
-            if (!areaManager.isInArea(event.getPlayer(), event.getClickedBlock())) {
+            if (!areaManager.isInArea(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()))) {
                 TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
                 event.setCancelled(true);
                 return;
