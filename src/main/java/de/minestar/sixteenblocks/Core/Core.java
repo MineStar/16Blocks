@@ -78,11 +78,8 @@ public class Core extends JavaPlugin {
         TextUtils.setPluginName(this.getDescription().getName());
 
         // STARTUP
-        try {
-            this.createManager();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.createManager();
+
         Set<String> supporter = loadSupporter();
 
         // INIT COMMANDS
@@ -127,7 +124,7 @@ public class Core extends JavaPlugin {
 
     private void initCommands(Set<String> supporter) {
         /* @formatter:off */
-        // Add an command to this list to register it in the plugin
+        // Empty permission because permissions are handeld in the commands
         commandList = new CommandList(Core.NAME, 
                         new cmdSpawn        ("/spawn",      "",                 ""),
                         new cmdInfo         ("/info",       "",                 ""),
@@ -140,9 +137,9 @@ public class Core extends JavaPlugin {
                         new cmdBan          ("/ban",        "<Playername>",     "", this.areaManager, supporter),
                         new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager, supporter),
                         
-                        new cmdTicket       ("/ticket",     "<Text>",           "", mHandler),
-                        new cmdTicket       ("/bug",        "<Text>",           "", mHandler),
-                        new cmdTicket       ("/report",     "<Text>",           "", mHandler)
+                        new cmdTicket       ("/ticket",     "<Text>",           "", mHandler, supporter),
+                        new cmdTicket       ("/bug",        "<Text>",           "", mHandler, supporter),
+                        new cmdTicket       ("/report",     "<Text>",           "", mHandler, supporter)
         );
         /* @formatter:on */
     }
