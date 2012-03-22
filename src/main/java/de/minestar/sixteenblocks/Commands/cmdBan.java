@@ -3,7 +3,6 @@ package de.minestar.sixteenblocks.Commands;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -36,14 +35,21 @@ public class cmdBan extends AbstractCommand {
 
         // GET AREA
         Player target = PlayerUtils.getOnlinePlayer(arguments[0]);
-        CraftServer cServer = (CraftServer) Bukkit.getServer();
         if (target == null) {
-            cServer.getHandle().addUserBan(arguments[0]);
+            String playerName = PlayerUtils.getOfflinePlayerName(arguments[0]);
+            if (playerName == null) {
+                TextUtils.sendInfo(player, "Player '" + arguments[0] + "' doesn't exist(was never on the server), but was banned!");
+                playerName = arguments[0];
+            } else
+                TextUtils.sendInfo(player, "Player '" + arguments[0] + "' is offline!");
+
+            Bukkit.getOfflinePlayer(playerName).setBanned(true);
             TextUtils.sendSuccess(player, "Player '" + arguments[0] + "' banned, but Skin was not deleted (because the player is offline!)");
             return;
         }
+
         // BAN PLAYER
-        cServer.getHandle().addUserBan(target.getName());
+        target.setBanned(true);
 
         SkinArea thisArea = this.areaManager.getExactPlayerArea(target.getName());
 
