@@ -18,6 +18,7 @@ import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
+import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
@@ -126,20 +127,21 @@ public class Core extends JavaPlugin {
         /* @formatter:off */
         // Empty permission because permissions are handeld in the commands
         commandList = new CommandList(Core.NAME, 
-                        new cmdSpawn        ("/spawn",      "",                 ""),
-                        new cmdInfo         ("/info",       "",                 ""),
-                        new cmdStartAuto    ("/start",      "",                 "", this.areaManager),
-                        new cmdStartAuto    ("/startauto",  "",                 "", this.areaManager),
-                        new cmdStartHere    ("/starthere",  "",                 "", this.areaManager),
-                        new cmdHome         ("/home",       "[Playername]",     "", this.areaManager),
-                        new cmdSaveArea     ("/save",       "<StructureName>",  "", this.areaManager, this.structureManager, supporter),
+                        new cmdSpawn        ("/spawn",      "",                         ""),
+                        new cmdInfo         ("/info",       "",                         ""),
+                        new cmdStartAuto    ("/start",      "",                         "", this.areaManager),
+                        new cmdStartAuto    ("/startauto",  "",                         "", this.areaManager),
+                        new cmdStartHere    ("/starthere",  "",                         "", this.areaManager),
+                        new cmdHome         ("/home",       "[Playername]",             "", this.areaManager),
+                        new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager, supporter),
 
-                        new cmdBan          ("/ban",        "<Playername>",     "", this.areaManager, supporter),
-                        new cmdDeleteArea   ("/delete",     "[Playername]",     "", this.areaManager, supporter),
+                        new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager, supporter),
+                        new cmdKick         ("/kick",       "<Playername> [Message]",   "", supporter),      
+                        new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager, supporter),
                         
-                        new cmdTicket       ("/ticket",     "<Text>",           "", mHandler, supporter),
-                        new cmdTicket       ("/bug",        "<Text>",           "", mHandler, supporter),
-                        new cmdTicket       ("/report",     "<Text>",           "", mHandler, supporter)
+                        new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler, supporter),
+                        new cmdTicket       ("/bug",        "<Text>",                   "", mHandler, supporter),
+                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler, supporter)
         );
         /* @formatter:on */
     }
