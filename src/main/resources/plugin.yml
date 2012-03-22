@@ -25,7 +25,13 @@ commands:
     usage: /delete <Player>    
   ban:
     description: Ban a player and delete the area
-    usage: /ban <Player>    
+    usage: /ban <Player>
+  kick:
+    description: Kick a player from the server
+    usage: /kick <Player>    
+  unban:
+    description: Unban a player
+    usage: /unban <Player>  
   save:
     description: Saves the current area as a structure
     usage: /save <Name>

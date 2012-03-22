@@ -24,6 +24,7 @@ import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
+import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.BlockListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
@@ -136,6 +137,7 @@ public class Core extends JavaPlugin {
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager, supporter),
 
                         new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager, supporter),
+                        new cmdUnban        ("/unban",      "<Playername>",             "", supporter),
                         new cmdKick         ("/kick",       "<Playername> [Message]",   "", supporter),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager, supporter),
                         
