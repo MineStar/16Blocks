@@ -3,7 +3,9 @@ package de.minestar.sixteenblocks.Core;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -20,6 +22,8 @@ import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
+import de.minestar.sixteenblocks.Commands.cmdMessage;
+import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
@@ -131,6 +135,7 @@ public class Core extends JavaPlugin {
     private void initCommands() {
         /* @formatter:off */
         // Empty permission because permissions are handeld in the commands
+        Map<Player, Player> recipients = new HashMap<Player, Player>(256);
         commandList = new CommandList(Core.NAME, 
                         new cmdSpawn        ("/spawn",      "",                         ""),
                         new cmdInfo         ("/info",       "",                         ""),
@@ -139,19 +144,25 @@ public class Core extends JavaPlugin {
                         new cmdStartHere    ("/starthere",  "",                         "", this.areaManager),
                         new cmdHome         ("/home",       "[Playername]",             "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
+                        
+                        // MESSAGE SYSTEM
+                        new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
+                        new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
+                        new cmdReply        ("/r",          "<Message>",                "", recipients),
 
+                        // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager),
                         new cmdUnban        ("/unban",      "<Playername>",             ""),
                         new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
                         
+                        // BUG REPORTS
                         new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",                   "", mHandler),
                         new cmdTicket       ("/report",     "<Text>",                   "", mHandler)
         );
         /* @formatter:on */
     }
-
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);

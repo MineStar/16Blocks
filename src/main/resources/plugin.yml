@@ -36,11 +36,20 @@ commands:
     description: Saves the current area as a structure
     usage: /save <Name>
   ticket:
-    description: Saves the current area as a structure
-    usage: /save <Name>
+    description: Send a bugreport
+    usage: /ticket <Message>
   bug:
-    description: Saves the current area as a structure
-    usage: /save <Name>
+    description: Send a bugreport
+    usage: /bug <Message>
   report:
-    description: Saves the current area as a structure
-    usage: /save <Name>
+    description: Send a bugreport
+    usage: /report <Message>
+  m:
+    description: Send a message to the player
+    usage: /m <PlayerName> <Message>
+  w:
+    description: Send a message to the player
+    usage: /w <PlayerName> <Message>
+  r:
+    description: Send a message to the player
+    usage: /r <Message>
