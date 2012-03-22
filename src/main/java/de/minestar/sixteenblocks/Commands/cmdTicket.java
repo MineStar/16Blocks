@@ -52,7 +52,7 @@ public class cmdTicket extends AbstractExtendedCommand {
         if (!player.isOp() && !supporter.contains(player.getName().toLowerCase())) {
             Long old = floodMap.get(player);
             if (old != null && currentTime - old < FLOOD_LIMIT) {
-                TextUtils.sendError(player, "You can create a new ticket in " + formatString(currentTime - old));
+                TextUtils.sendError(player, "You can create a new ticket in " + formatString(FLOOD_LIMIT - (currentTime - old)));
                 return;
             }
         }
