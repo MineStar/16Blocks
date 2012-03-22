@@ -42,7 +42,7 @@ import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
-import de.minestar.sixteenblocks.Threads.PlayerCountThread;
+import de.minestar.sixteenblocks.Threads.JSONThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class Core extends JavaPlugin {
@@ -170,7 +170,7 @@ public class Core extends JavaPlugin {
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
         scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
         // Writing JSON with online player
-        scheduler.scheduleAsyncRepeatingTask(this, new PlayerCountThread(), 20 * 10, 20 * 10);
+        scheduler.scheduleAsyncRepeatingTask(this, new JSONThread(this.areaManager), 20 * 10, 20 * 10);
     }
 
     @Override

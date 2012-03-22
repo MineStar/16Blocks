@@ -28,17 +28,24 @@ import org.json.simple.JSONObject;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Manager.AreaManager;
 
-public class PlayerCountThread implements Runnable {
+public class JSONThread implements Runnable {
 
     private File JSONFile = new File(Settings.getJSONPath());
+    private AreaManager aManager;
+
+    public JSONThread(AreaManager aManager) {
+        this.aManager = aManager;
+    }
 
     @SuppressWarnings("unchecked")
-    @Override 
+    @Override
     public void run() {
         try {
             JSONObject json = new JSONObject();
             json.put("ConnectedUsers", Bukkit.getOnlinePlayers().length);
+            json.put("Skins", aManager.getUsedAreaCount());
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(JSONFile));
             bWriter.write(json.toJSONString());
             bWriter.flush();
@@ -47,5 +54,4 @@ public class PlayerCountThread implements Runnable {
             ConsoleUtils.printException(e, Core.NAME, "Can't save JSON");
         }
     }
-
 }

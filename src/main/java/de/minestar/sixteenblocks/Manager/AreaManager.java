@@ -174,6 +174,10 @@ public class AreaManager {
         return this.unusedAreaList.containsKey(coordinateString);
     }
 
+    public int getUsedAreaCount() {
+        return usedAreaList.size();
+    }
+
     // ///////////////////////////
     // DELETE AREA
     // ///////////////////////////
