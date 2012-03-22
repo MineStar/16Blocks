@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.2.3-R0.2</version>
+			<version>1.2.4-R0.1-20120322.211123-3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.2.3-R0.2</version>
+			<version>1.2.4-R0.1-20120322.211246-3</version>
 		</dependency>
 	</dependencies>
 </project>
