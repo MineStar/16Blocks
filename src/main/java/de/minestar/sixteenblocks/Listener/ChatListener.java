@@ -21,24 +21,25 @@ import de.minestar.sixteenblocks.Units.ChatFilter;
 public class ChatListener implements Listener {
 
     private ChatFilter filter;
+    private HashMap<String, Long> lastChatList;
 
     public ChatListener(ChatFilter filter) {
         this.filter = filter;
+        this.lastChatList = new HashMap<String, Long>();
     }
-
-    private HashMap<String, Long> lastChatList = new HashMap<String, Long>();
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         // FLOOD-CONTROL
         if (!Core.isSupporter(event.getPlayer())) {
-
-            long lastChatEvent = lastChatList.get(event.getPlayer().getName());
-            long delta = System.currentTimeMillis() - lastChatEvent;
-            if (delta < (Settings.getChatPauseTimeInSeconds() * 1000)) {
-                TextUtils.sendError(event.getPlayer(), "You can only chat every " + Settings.getChatPauseTimeInSeconds() + " seconds.");
-                event.setCancelled(true);
-                return;
+            if (this.lastChatList.containsKey(event.getPlayer().getName())) {
+                long lastChatEvent = this.lastChatList.get(event.getPlayer().getName());
+                long delta = System.currentTimeMillis() - lastChatEvent;
+                if (delta < (Settings.getChatPauseTimeInSeconds() * 1000)) {
+                    TextUtils.sendError(event.getPlayer(), "You can only chat every " + Settings.getChatPauseTimeInSeconds() + " seconds.");
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 
