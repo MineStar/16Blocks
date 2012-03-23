@@ -1,9 +1,7 @@
 package de.minestar.sixteenblocks.Listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -19,8 +17,11 @@ import de.minestar.sixteenblocks.Threads.BlockWorkaroundThread;
 public class BlockListener implements Listener {
 
     private AreaManager areaManager;
-    public BlockListener(AreaManager areaManager) {
+    private BlockWorkaroundThread workaroundThread;
+
+    public BlockListener(AreaManager areaManager, BlockWorkaroundThread workaroundThread) {
         this.areaManager = areaManager;
+        this.workaroundThread = workaroundThread;
     }
 
     @EventHandler
@@ -35,7 +36,7 @@ public class BlockListener implements Listener {
         else if (event.getBlock().getType().equals(Material.GRAVEL) || event.getBlock().getType().equals(Material.SAND)) {
             if (event.getBlockPlaced().getRelative(BlockFace.DOWN).getTypeId() == Material.AIR.getId()) {
                 event.getBlockPlaced().getRelative(BlockFace.DOWN).setTypeId(Material.STONE.getId(), true);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new BlockWorkaroundThread((CraftWorld) event.getBlock().getWorld(), event.getBlock().getLocation()), 1l);
+                this.workaroundThread.addBlock(event.getBlock().getRelative(BlockFace.DOWN).getLocation());
             }
         }
     }

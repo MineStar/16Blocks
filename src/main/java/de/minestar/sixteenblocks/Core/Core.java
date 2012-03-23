@@ -40,6 +40,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.BlockWorkaroundThread;
 import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Threads.JSONThread;
@@ -61,6 +62,7 @@ public class Core extends JavaPlugin {
     private static Set<String> supporter;
 
     private CheckTicketThread checkTread;
+    private BlockWorkaroundThread workaroundThread;
 
     private CommandList commandList;
 
@@ -116,12 +118,14 @@ public class Core extends JavaPlugin {
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
         this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
+        this.workaroundThread = new BlockWorkaroundThread();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.workaroundThread, 0, 5);
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager);
+        this.blockListener = new BlockListener(this.areaManager, this.workaroundThread);
         this.chatListener = new ChatListener(this.filter);
         this.movementListener = new MovementListener(this.worldManager);
 

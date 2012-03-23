@@ -18,24 +18,32 @@
 
 package de.minestar.sixteenblocks.Threads;
 
-import net.minecraft.server.World;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftWorld;
 
 public class BlockWorkaroundThread implements Runnable {
 
-    private final Location blockLocation;
-    private final World nativeWorld;
+    private final List<Location> blockList = Collections.synchronizedList(new ArrayList<Location>());
 
-    public BlockWorkaroundThread(CraftWorld cWorld, Location blockLocation) {
-        this.blockLocation = blockLocation;
-        this.nativeWorld = cWorld.getHandle();
+    public void addBlock(Location blockLocation) {
+        synchronized (this.blockList) {
+            this.blockList.add(blockLocation);
+        }
     }
 
     @Override
     public void run() {
-        this.nativeWorld.setTypeId(this.blockLocation.getBlockX(), this.blockLocation.getBlockY() - 1, this.blockLocation.getBlockZ(), 0);
-    }
+        if (this.blockList.size() < 1)
+            return;
 
+        synchronized (this.blockList) {
+            for (Location thisLocation : this.blockList) {
+                thisLocation.getBlock().setTypeId(0, false);
+            }
+            this.blockList.clear();
+        }
+    }
 }
