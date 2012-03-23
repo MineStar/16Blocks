@@ -1,6 +1,9 @@
 package de.minestar.sixteenblocks.Listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -11,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Threads.BlockWorkaroundThread;
 
 public class BlockListener implements Listener {
 
@@ -25,9 +29,14 @@ public class BlockListener implements Listener {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
-        // trick minecraft - falling sands and gravels
+        // WORKAROUND FOR GRAVEL & SAND FALLING DOWN:
+        // WE NEED TO REPLACE THE BLOCK BELOW (IF AIR), AND THEN REMOVE IT AFTER
+        // 1 TICK TO PREVENT GRAVEL/SAND FROM FALLING
         else if (event.getBlock().getType().equals(Material.GRAVEL) || event.getBlock().getType().equals(Material.SAND)) {
-            // TODO: IMPLEMENT WORD AROUND
+            if (event.getBlockPlaced().getRelative(BlockFace.DOWN).getTypeId() == Material.AIR.getId()) {
+                event.getBlockPlaced().getRelative(BlockFace.DOWN).setTypeId(Material.STONE.getId(), true);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new BlockWorkaroundThread((CraftWorld) event.getBlock().getWorld(), event.getBlock().getLocation()), 1l);
+            }
         }
     }
 
