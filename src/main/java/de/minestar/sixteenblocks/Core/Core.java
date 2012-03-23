@@ -84,7 +84,7 @@ public class Core extends JavaPlugin {
         Settings.init(this.getDataFolder());
 
         // SET NAME
-        TextUtils.setPluginName(this.getDescription().getName());
+        TextUtils.setPluginName("YAM");
 
         // STARTUP
         this.createManager();

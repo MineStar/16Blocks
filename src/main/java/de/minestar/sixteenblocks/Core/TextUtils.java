@@ -8,14 +8,16 @@ import org.bukkit.entity.Player;
 
 public class TextUtils {
     private static String pluginName = "";
+    private static String prefix = "";
     private static Logger logger = Logger.getLogger("Minecraft");
 
     public static void setPluginName(String pluginName) {
         TextUtils.pluginName = pluginName;
+        TextUtils.prefix = "[ " + TextUtils.pluginName + " ] ";
     }
 
     public static void log(String message, Level level) {
-        logger.log(level, "[ " + pluginName + " ] " + message);
+        logger.log(level, TextUtils.prefix + message);
     }
 
     public static void logInfo(String message) {
@@ -31,7 +33,7 @@ public class TextUtils {
     }
 
     public static void sendMessage(Player player, ChatColor color, String message) {
-        player.sendMessage(ChatColor.AQUA + "[ YAM ] " + color + message);
+        player.sendMessage(ChatColor.AQUA + TextUtils.prefix + color + message);
     }
 
     public static void sendError(Player player, String message) {
