@@ -150,16 +150,16 @@ public class Core extends JavaPlugin {
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
                         
                         // TELEPORT
-                        new cmdRow          ("/row",          "<Number>",               ""),                        
-                        new cmdRow          ("/jump",         "<Number>",               ""),                        
-                        new cmdTP           ("/tp",           "<Player>",               ""),  
-                        new cmdReload       ("/reload",       "",                       ""),  
+                        new cmdRow          ("/row",        "<Number>",                 ""),                        
+                        new cmdRow          ("/jump",       "<Number>",                 ""),                        
+                        new cmdTP           ("/tp",         "<Player>",                 ""),  
+                        new cmdReload       ("/reload",     "",                         ""),  
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
-                        new cmdMe           ("/me",          "<Message>",               ""),
+                        new cmdMe           ("/me",         "<Message>",                ""),
                         
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),
