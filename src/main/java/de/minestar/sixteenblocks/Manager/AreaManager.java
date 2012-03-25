@@ -417,8 +417,8 @@ public class AreaManager {
             }
         }
 
-        if (this.unusedAreaList.containsKey(minX + ":" + minZ))
-            return this.unusedAreaList.get(minX + ":" + minZ);
+        if (this.unusedAreaList.containsKey(minZ + ":" + minX))
+            return this.unusedAreaList.get(minZ + ":" + minX);
         else
             return (SkinArea) this.unusedAreaList.values().toArray()[0];
     }
