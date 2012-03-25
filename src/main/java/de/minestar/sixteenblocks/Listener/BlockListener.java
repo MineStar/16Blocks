@@ -47,7 +47,7 @@ public class BlockListener implements Listener {
         }
 
         if (event.hasItem()) {
-            if (event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId() || event.getMaterial().getId() == Material.POTION.getId() || event.getMaterial().getId() == Material.EXP_BOTTLE.getId()) {
+            if (event.getMaterial().getId() == Material.SNOW_BALL.getId() || event.getMaterial().getId() == Material.POWERED_MINECART.getId() || event.getMaterial().getId() == Material.STORAGE_MINECART.getId() || event.getMaterial().getId() == Material.EGG.getId() || event.getMaterial().getId() == Material.BOAT.getId() || event.getMaterial().getId() == Material.MINECART.getId() || event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId() || event.getMaterial().getId() == Material.POTION.getId() || event.getMaterial().getId() == Material.EXP_BOTTLE.getId()) {
                 event.setCancelled(true);
             }
         }
