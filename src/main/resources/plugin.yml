@@ -62,3 +62,6 @@ commands:
   row:
     description: Jump to a row
     usage: /row <Number>    
+  reload:
+    description: Reload the server
+    usage: /reload       

@@ -11,7 +11,7 @@ public class cmdTP extends AbstractCommand {
 
     public cmdTP(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.description = "Jump to a specific row";
+        this.description = "Jump to a specific player";
     }
 
     @Override

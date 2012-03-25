@@ -24,6 +24,7 @@ import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
+import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
@@ -152,6 +153,7 @@ public class Core extends JavaPlugin {
                         new cmdRow          ("/row",          "<Number>",               ""),                        
                         new cmdRow          ("/jump",         "<Number>",               ""),                        
                         new cmdTP           ("/tp",           "<Player>",               ""),  
+                        new cmdReload       ("/reload",       "",                       ""),  
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
@@ -172,6 +174,7 @@ public class Core extends JavaPlugin {
         );
         /* @formatter:on */
     }
+
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
