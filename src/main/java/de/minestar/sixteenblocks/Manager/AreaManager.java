@@ -2,7 +2,6 @@ package de.minestar.sixteenblocks.Manager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.TreeMap;
 
 import net.minecraft.server.Packet130UpdateSign;
@@ -35,8 +34,6 @@ public class AreaManager {
     private WorldManager worldManager;
 
     private int lastRow = 0;
-
-    private Random randomizer = new Random();
 
     // ////////////////////////////////////////////////
     //
@@ -405,14 +402,24 @@ public class AreaManager {
     }
 
     public SkinArea getRandomUnusedArea() {
-//        
-//        for (SkinArea thisArea : this.unusedAreaList.values()) {
-//            if (!this.isAreaBlocked(thisArea.getZoneXZ())) {
-//                return thisArea;
-//            }
-//        }
-//        return (SkinArea) this.unusedAreaList.values().toArray()[0];
+        ZoneXZ thisZone;
+        int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        for (SkinArea thisArea : this.unusedAreaList.values()) {
+            thisZone = thisArea.getZoneXZ();
+            if (!this.isAreaBlocked(thisZone)) {
+                if (thisZone.getZ() <= minZ) {
+                    if (thisZone.getZ() < minZ)
+                        minX = Integer.MAX_VALUE;
+                    minZ = thisZone.getZ();
+                    if (thisZone.getX() < minX)
+                        minX = thisZone.getX();
+                }
+            }
+        }
 
-        return (SkinArea) this.unusedAreaList.values().toArray()[randomizer.nextInt(this.unusedAreaList.size())];
+        if (this.unusedAreaList.containsKey(minX + ":" + minZ))
+            return this.unusedAreaList.get(minX + ":" + minZ);
+        else
+            return (SkinArea) this.unusedAreaList.values().toArray()[0];
     }
 }
