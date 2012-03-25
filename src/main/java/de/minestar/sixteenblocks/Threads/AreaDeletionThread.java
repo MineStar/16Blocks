@@ -50,6 +50,7 @@ public class AreaDeletionThread implements Runnable {
         }
 
         this.TaskID = TaskID;
+        Core.getInstance().getAreaManager().incrementThreads();
     }
     @Override
     public void run() {
@@ -77,6 +78,7 @@ public class AreaDeletionThread implements Runnable {
                 if (player != null) {
                     TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
                 }
+                Core.getInstance().getAreaManager().decrementThreads();
                 break;
             }
         }

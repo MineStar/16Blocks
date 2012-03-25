@@ -35,6 +35,8 @@ public class AreaManager {
 
     private int lastRow = 0;
 
+    private int runningThreads = 0;
+
     // ////////////////////////////////////////////////
     //
     // CONSTRUCTOR
@@ -48,6 +50,20 @@ public class AreaManager {
         this.loadAreas();
         this.initMaximumZ();
         this.checkForZoneExtension();
+    }
+
+    public void incrementThreads() {
+        this.runningThreads++;
+    }
+
+    public void decrementThreads() {
+        this.runningThreads--;
+        if (this.runningThreads < 0)
+            this.runningThreads = 0;
+    }
+
+    public int getRunningThreadCount() {
+        return this.runningThreads;
     }
 
     // ////////////////////////////////////////////////
@@ -189,7 +205,6 @@ public class AreaManager {
     public void deletePlayerArea(SkinArea thisArea, Player player) {
         // BLOCK AREA
         this.blockArea(thisArea.getZoneXZ());
-
         // CREATE THREAD AND START IT
         World world = Bukkit.getWorlds().get(0);
         ZoneXZ thisZone = thisArea.getZoneXZ();

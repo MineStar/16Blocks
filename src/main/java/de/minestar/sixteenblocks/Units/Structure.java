@@ -37,6 +37,7 @@ public class Structure {
         World world = Bukkit.getWorlds().get(0);
         BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockList.get(EnumDirection.NORMAL));
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+
     }
 
     public void createStructureWithSign(int zoneX, int zoneZ, Player player) {

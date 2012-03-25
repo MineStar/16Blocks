@@ -36,6 +36,7 @@ public class BlockCreationThread implements Runnable {
 
     public void initTask(int TaskID) {
         this.TaskID = TaskID;
+        Core.getInstance().getAreaManager().incrementThreads();
     }
 
     @Override
@@ -53,6 +54,7 @@ public class BlockCreationThread implements Runnable {
                     Core.getInstance().getAreaManager().createPlayerSign(this.player, ZoneXZ.fromPoint(baseX, baseZ));
                 }
                 Bukkit.getScheduler().cancelTask(this.TaskID);
+                Core.getInstance().getAreaManager().decrementThreads();
                 break;
             }
         }
