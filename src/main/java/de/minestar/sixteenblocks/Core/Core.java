@@ -22,6 +22,7 @@ import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
+import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
@@ -149,7 +150,8 @@ public class Core extends JavaPlugin {
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
-
+                        new cmdMe           ("/me",          "<Message>",               ""),
+                        
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),
                         new cmdUnban        ("/unban",      "<Playername>",             ""),

@@ -72,10 +72,8 @@ public class ChatFilter {
         }
     }
 
-    public boolean acceptMessage(String message) {
+    public boolean acceptMessage(final String message) {
         // When on white list or NOT on black list -> is ok
-        message = message.replace(" ", "");
-
         for (int i = 0; i < this.whiteWords.size(); i++) {
             if (message.contains(this.whiteWords.get(i)))
                 return true;

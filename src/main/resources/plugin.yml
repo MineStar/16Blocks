@@ -11,6 +11,9 @@ commands:
   start:
     description: Gives you an random zone
     usage: /start  
+  me:
+    description: Fix it
+    usage: /me     
   startauto:
     description: Gives you an random zone
     usage: /startauto      
