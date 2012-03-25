@@ -169,6 +169,12 @@ public class StructureManager {
         this.addStructure(EnumStructures.STREETS_CORNER);
         this.addStructure(EnumStructures.STREETS_SIDE_1);
         this.addStructure(EnumStructures.STREETS_SIDE_2);
+        this.addStructure(EnumStructures.INFO_WALL_1);
+        this.addStructure(EnumStructures.INFO_WALL_2);
+        this.addStructure(EnumStructures.NOTCH_1);
+        this.addStructure(EnumStructures.NOTCH_2);
+        this.addStructure(EnumStructures.NOTCH_3);
+        this.addStructure(EnumStructures.NOTCH_4);
     }
 
     public void addStructure(EnumStructures structure) {

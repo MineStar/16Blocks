@@ -3,6 +3,7 @@ package de.minestar.sixteenblocks.Listener;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -39,7 +40,7 @@ public class BlockListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (event.getClickedBlock().getTypeId() == Material.JUKEBOX.getId()) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getTypeId() == Material.JUKEBOX.getId()) {
                 event.setCancelled(true);
                 return;
             }
@@ -50,6 +51,7 @@ public class BlockListener implements Listener {
                 event.setCancelled(true);
             }
         }
+
     }
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {

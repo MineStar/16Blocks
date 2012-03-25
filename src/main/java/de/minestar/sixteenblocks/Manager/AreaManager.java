@@ -71,6 +71,10 @@ public class AreaManager {
         if (z == 0) {
             this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), z - 1);
             this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, z - 1);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, z - 1);
+
         } else if (z % 2 != 0) {
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, z - 1);
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);

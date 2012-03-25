@@ -7,15 +7,11 @@ import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
-import de.minestar.sixteenblocks.Manager.AreaManager;
 
 public class cmdBan extends AbstractCommand {
 
-    private AreaManager areaManager;
-
-    public cmdBan(String syntax, String arguments, String node, AreaManager areaManager) {
+    public cmdBan(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.areaManager = areaManager;
         this.description = "Ban a player and delete the area";
     }
 

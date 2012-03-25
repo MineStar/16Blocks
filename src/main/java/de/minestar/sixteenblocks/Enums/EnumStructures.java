@@ -11,7 +11,19 @@ public enum EnumStructures {
 
     STREETS_SIDE_1("STREETS_SIDE_1"),
 
-    STREETS_SIDE_2("STREETS_SIDE_2");
+    STREETS_SIDE_2("STREETS_SIDE_2"),
+
+    INFO_WALL_1("INFO_WALL_1"),
+
+    INFO_WALL_2("INFO_WALL_2"),
+
+    NOTCH_1("NOTCH_1"),
+
+    NOTCH_2("NOTCH_2"),
+
+    NOTCH_3("NOTCH_3"),
+
+    NOTCH_4("NOTCH_4");
 
     private final String name;
 

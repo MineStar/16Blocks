@@ -151,7 +151,7 @@ public class Core extends JavaPlugin {
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
 
                         // PUNISHMENTS
-                        new cmdBan          ("/ban",        "<Playername>",             "", this.areaManager),
+                        new cmdBan          ("/ban",        "<Playername>",             ""),
                         new cmdUnban        ("/unban",      "<Playername>",             ""),
                         new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
