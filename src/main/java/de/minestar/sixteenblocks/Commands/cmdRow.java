@@ -20,7 +20,7 @@ public class cmdRow extends AbstractCommand {
     public void execute(String[] arguments, Player player) {
         try {
             int row = Integer.valueOf(arguments[0]);
-            Location teleportTo = new Location(Bukkit.getWorlds().get(0), 0, row * Settings.getAreaSizeZ() + 6, 50);
+            Location teleportTo = new Location(Bukkit.getWorlds().get(0), 0, 50, row * Settings.getAreaSizeZ() + 6);
             player.teleport(teleportTo);
             TextUtils.sendInfo(player, "Teleporting you to row: " + row);
         } catch (Exception e) {
