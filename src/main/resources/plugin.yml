@@ -56,3 +56,9 @@ commands:
   r:
     description: Send a message to the player
     usage: /r <Message>
+  tp:
+    description: Teleport you to a player
+    usage: /tp <Player>    
+  row:
+    description: Jump to a row
+    usage: /row <Number>    

@@ -25,10 +25,12 @@ import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
 import de.minestar.sixteenblocks.Commands.cmdReply;
+import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
+import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Listener.BaseListener;
@@ -145,6 +147,11 @@ public class Core extends JavaPlugin {
                         new cmdStartHere    ("/starthere",  "",                         "", this.areaManager),
                         new cmdHome         ("/home",       "[Playername]",             "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
+                        
+                        // TELEPORT
+                        new cmdRow          ("/row",          "<Number>",               ""),                        
+                        new cmdRow          ("/jump",         "<Number>",               ""),                        
+                        new cmdTP          ("/tp",           "<Player>",               ""),  
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
