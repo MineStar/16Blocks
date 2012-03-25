@@ -1,6 +1,7 @@
 package de.minestar.sixteenblocks.Listener;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -58,6 +59,9 @@ public class BlockListener implements Listener {
         if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
+        }
+        if (event.getBlock().getRelative(BlockFace.UP).getTypeId() == Material.FIRE.getId()) {
+            event.getBlock().getRelative(BlockFace.UP).setTypeId(0, false);
         }
     }
 

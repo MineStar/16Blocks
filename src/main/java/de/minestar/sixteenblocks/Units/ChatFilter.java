@@ -21,15 +21,15 @@ package de.minestar.sixteenblocks.Units;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 
 public class ChatFilter {
 
-    private Pattern whiteList;
-    private Pattern blackList;
+    private List<String> whiteWords, blackWords;
 
     public ChatFilter(File dataFolder) {
         loadLists(dataFolder);
@@ -37,11 +37,11 @@ public class ChatFilter {
 
     private void loadLists(File dataFolder) {
         try {
-            StringBuilder sBuilder = new StringBuilder(4096);
             BufferedReader bReader = null;
             String line = "";
 
             // Read white list
+            this.whiteWords = new ArrayList<String>();
             File whiteListFile = new File(dataFolder, "whitelist.txt");
             if (!whiteListFile.exists())
                 ConsoleUtils.printInfo(Core.NAME, whiteListFile + " not found! No Whitelist for ChatFilter created!");
@@ -50,29 +50,21 @@ public class ChatFilter {
                 // | (logical operator in regex)
                 bReader = new BufferedReader(new FileReader(whiteListFile));
                 while ((line = bReader.readLine()) != null) {
-                    sBuilder.append(line.toLowerCase());
-                    sBuilder.append('|');
+                    line = line.toLowerCase().trim().replace(" ", "");
+                    this.whiteWords.add(line);
                 }
-                if (sBuilder.length() > 1)
-                    sBuilder.deleteCharAt(sBuilder.length() - 1);
-
-                whiteList = Pattern.compile(sBuilder.toString());
-                // reset StringBuilder
-                sBuilder = new StringBuilder(4096);
             }
             // Read black list
             File blackListFile = new File(dataFolder, "blacklist.txt");
+            this.blackWords = new ArrayList<String>();
             if (!blackListFile.exists())
                 ConsoleUtils.printInfo(Core.NAME, blackListFile + " not found! No Blacklist for ChatFilter created!");
             else {
                 bReader = new BufferedReader(new FileReader(blackListFile));
                 while ((line = bReader.readLine()) != null) {
-                    sBuilder.append(line.toLowerCase());
-                    sBuilder.append('|');
+                    line = line.toLowerCase().trim().replace(" ", "");
+                    this.blackWords.add(line);
                 }
-                if (sBuilder.length() > 1)
-                    sBuilder.deleteCharAt(sBuilder.length() - 1);
-                blackList = Pattern.compile(sBuilder.toString());
             }
             ConsoleUtils.printInfo(Core.NAME, "White and Blacklist for ChatFilter loaded!");
         } catch (Exception e) {
@@ -82,6 +74,17 @@ public class ChatFilter {
 
     public boolean acceptMessage(String message) {
         // When on white list or NOT on black list -> is ok
-        return whiteList.matcher(message).matches() || !blackList.matcher(message).matches();
+        message = message.replace(" ", "");
+
+        for (int i = 0; i < this.whiteWords.size(); i++) {
+            if (message.contains(this.whiteWords.get(i)))
+                return true;
+        }
+
+        for (int i = 0; i < this.blackWords.size(); i++) {
+            if (message.contains(this.blackWords.get(i)))
+                return false;
+        }
+        return true;
     }
 }
