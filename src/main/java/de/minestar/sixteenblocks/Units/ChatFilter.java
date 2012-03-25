@@ -51,7 +51,7 @@ public class ChatFilter {
                 bReader = new BufferedReader(new FileReader(whiteListFile));
                 while ((line = bReader.readLine()) != null) {
                     line = line.toLowerCase().trim().replace(" ", "");
-                    this.whiteWords.add(line);
+                    this.whiteWords.add(" " + line + " ");
                 }
             }
             // Read black list
@@ -63,7 +63,7 @@ public class ChatFilter {
                 bReader = new BufferedReader(new FileReader(blackListFile));
                 while ((line = bReader.readLine()) != null) {
                     line = line.toLowerCase().trim().replace(" ", "");
-                    this.blackWords.add(line);
+                    this.blackWords.add(" " + line + " ");
                 }
             }
             ConsoleUtils.printInfo(Core.NAME, "White and Blacklist for ChatFilter loaded!");
