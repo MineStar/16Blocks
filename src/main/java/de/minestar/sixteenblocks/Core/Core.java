@@ -151,7 +151,7 @@ public class Core extends JavaPlugin {
                         // TELEPORT
                         new cmdRow          ("/row",          "<Number>",               ""),                        
                         new cmdRow          ("/jump",         "<Number>",               ""),                        
-                        new cmdTP          ("/tp",           "<Player>",               ""),  
+                        new cmdTP           ("/tp",           "<Player>",               ""),  
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),

@@ -21,7 +21,7 @@ public class cmdTP extends AbstractCommand {
             TextUtils.sendError(player, "Player '" + arguments[0] + "' was not found (maybe he is offline?)");
             return;
         } else {
-            player.teleport(player.getLocation());
+            player.teleport(target.getLocation());
             TextUtils.sendInfo(player, "Teleporting you to '" + target.getName() + "'...");
         }
     }
