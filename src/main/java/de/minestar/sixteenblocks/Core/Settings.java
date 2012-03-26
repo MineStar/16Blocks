@@ -23,6 +23,9 @@ public class Settings {
 
     private static int CHAT_RADIUS = 150;
 
+    // Player who can join the server when server is full
+    private static int SUPPORTER_BUFFER = 30;
+
     private static Vector SPAWN_VECTOR = new Vector(0, 4, 0), INFOWALL_VECTOR = new Vector(0, 4, 0);
 
     private static String JSON_PATH = "stats.json";
@@ -59,6 +62,8 @@ public class Settings {
             INFOWALL_VECTOR = config.getVector("Locations.infoWall", INFOWALL_VECTOR);
 
             JSON_PATH = config.getString("general.JSON", JSON_PATH);
+
+            SUPPORTER_BUFFER = config.getInt("general.supportBuffer", SUPPORTER_BUFFER);
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
@@ -164,5 +169,9 @@ public class Settings {
 
     public static String getJSONPath() {
         return JSON_PATH;
+    }
+
+    public static int getSupporterBuffer() {
+        return SUPPORTER_BUFFER;
     }
 }
