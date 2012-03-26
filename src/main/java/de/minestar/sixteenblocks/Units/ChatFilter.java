@@ -53,7 +53,10 @@ public class ChatFilter {
                     line = line.toLowerCase().trim();
                     if (line.equalsIgnoreCase(""))
                         continue;
-                    this.whiteWords.add(" " + line + " ");
+                    if (line.contains("."))
+                        this.whiteWords.add(line);
+                    else
+                        this.whiteWords.add(" " + line + " ");
                 }
             }
             // Read black list
@@ -67,7 +70,10 @@ public class ChatFilter {
                     line = line.toLowerCase().trim();
                     if (line.equalsIgnoreCase(""))
                         continue;
-                    this.blackWords.add(" " + line + " ");
+                    if (line.contains("."))
+                        this.blackWords.add(line);
+                    else
+                        this.blackWords.add(" " + line + " ");
                 }
             }
             ConsoleUtils.printInfo(Core.NAME, "White and Blacklist for ChatFilter loaded!");
