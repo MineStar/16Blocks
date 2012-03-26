@@ -22,7 +22,7 @@ public class ZoneXZ {
     }
 
     public Location getSpawnLocation() {
-        Location location = new Location(Bukkit.getWorlds().get(0), x * Settings.getAreaSizeX() + (z % 2 == 0 ? (Settings.getAreaSizeX() >> 1) : 0), Settings.getBaseY(), z * Settings.getAreaSizeZ() + (z >> 3));
+        Location location = new Location(Bukkit.getWorlds().get(0), x * Settings.getAreaSizeX() + (z % 2 == 0 ? (Settings.getAreaSizeX() >> 1) : 0), Settings.getBaseY(), z * Settings.getAreaSizeZ() + (Settings.getAreaSizeZ() >> 3));
         location.setPitch(-60.0f);
         return location;
     }
