@@ -46,7 +46,7 @@ public class JSONThread implements Runnable {
             JSONObject json = new JSONObject();
             json.put("ConnectedUsers", Bukkit.getOnlinePlayers().length);
             json.put("Skins", aManager.getUsedAreaCount());
-            json.put("Slots", Bukkit.getMaxPlayers());
+            json.put("Slots", Core.getAllowedMaxPlayer());
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(JSONFile));
             bWriter.write(json.toJSONString());
             bWriter.flush();

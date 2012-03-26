@@ -30,6 +30,7 @@ import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
+import de.minestar.sixteenblocks.Commands.cmdSlots;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
@@ -179,7 +180,10 @@ public class Core extends JavaPlugin {
                         // BUG REPORTS
                         new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",                   "", mHandler),
-                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler)
+                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler),
+                        
+                        // SET SLOTS
+                        new cmdSlots        ("/slots",   "<Number>",                 "")
         );
         /* @formatter:on */
     }
@@ -238,6 +242,10 @@ public class Core extends JavaPlugin {
 
     public static boolean isSupporter(String playerName) {
         return Bukkit.getOfflinePlayer(playerName).isOp() || supporter.contains(playerName.toLowerCase());
+    }
+
+    public static int getAllowedMaxPlayer() {
+        return Bukkit.getMaxPlayers() - Settings.getSupporterBuffer();
     }
 
     /**
