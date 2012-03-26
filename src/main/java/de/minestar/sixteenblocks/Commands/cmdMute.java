@@ -16,6 +16,12 @@ public class cmdMute extends AbstractCommand {
 
     @Override
     public void execute(String[] arguments, Player player) {
+        // CHECK: PLAYER IS OP OR SUPPORTER
+        if (!Core.isSupporter(player)) {
+            TextUtils.sendError(player, "You are not allowed to do this!");
+            return;
+        }
+
         Player target = PlayerUtils.getOnlinePlayer(arguments[0]);
         if (target == null) {
             TextUtils.sendError(player, "Player '" + arguments[0] + "' was not found (maybe he is offline?)");
