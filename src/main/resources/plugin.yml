@@ -50,6 +50,9 @@ commands:
   m:
     description: Send a message to the player
     usage: /m <PlayerName> <Message>
+  mute:
+    description: Send a message to the player
+    usage: /m <PlayerName> <Message>    
   w:
     description: Send a message to the player
     usage: /w <PlayerName> <Message>
