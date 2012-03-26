@@ -153,7 +153,7 @@ public class Core extends JavaPlugin {
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
                         
                         // TELEPORT
-                        new cmdCreateRow    ("/createrow",        "<Number>",           ""),                        
+                        new cmdCreateRow    ("/createrow",  "<Number>",                 ""),                        
                         
                         new cmdRow          ("/row",        "<Number>",                 ""),                        
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        
