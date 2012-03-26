@@ -68,7 +68,7 @@ public class ChatListener implements Listener {
         }
 
         // USED BAD WORD
-        String message = " " + event.getMessage().toLowerCase();
+        String message = " " + event.getMessage().toLowerCase() + " ";
         if (!Core.isSupporter(event.getPlayer()) && !filter.acceptMessage(message)) {
             // troll them by sending the message to them but to no other player
             TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
