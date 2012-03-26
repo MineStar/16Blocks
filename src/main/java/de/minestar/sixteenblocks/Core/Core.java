@@ -183,7 +183,7 @@ public class Core extends JavaPlugin {
                         new cmdTicket       ("/report",     "<Text>",                   "", mHandler),
                         
                         // SET SLOTS
-                        new cmdSlots        ("/slots",   "<Number>",                 "")
+                        new cmdSlots        ("/slots",      "<Number>",                 "")
         );
         /* @formatter:on */
     }

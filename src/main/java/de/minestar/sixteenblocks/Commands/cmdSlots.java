@@ -18,18 +18,26 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class cmdSlots extends AbstractCommand {
 
     public cmdSlots(String syntax, String arguments, String node) {
-        super(Core.NAME, arguments, node);
+        super(Core.NAME, syntax, arguments, node);
     }
 
     @Override
@@ -45,8 +53,21 @@ public class cmdSlots extends AbstractCommand {
             Integer maxPlayer = Integer.valueOf(args[0]);
             CraftServer server = (CraftServer) Bukkit.getServer();
             server.getHandle().maxPlayers = maxPlayer;
+
             TextUtils.sendSuccess(player, "MaxPlayers set to " + maxPlayer + " !");
-        } catch (Exception e) {
+
+            // Store new maxPlayer in server.properties
+            Properties p = new Properties();
+            BufferedReader bReader = new BufferedReader(new FileReader("server.properties"));
+            p.load(bReader);
+            bReader.close();
+            p.setProperty("max-players", maxPlayer.toString());
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter("server.properties"));
+            p.store(bWriter, "");
+            bWriter.close();
+        } catch (IOException IOE) {
+            ConsoleUtils.printException(IOE, "Can't update server.properties!");
+        } catch (NumberFormatException e) {
             TextUtils.sendError(player, args[0] + " is not a number!");
         }
     }
