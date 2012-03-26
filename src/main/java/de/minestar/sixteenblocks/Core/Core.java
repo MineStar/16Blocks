@@ -24,6 +24,7 @@ import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
+import de.minestar.sixteenblocks.Commands.cmdMute;
 import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdRow;
@@ -52,7 +53,8 @@ import de.minestar.sixteenblocks.Units.ChatFilter;
 public class Core extends JavaPlugin {
     private static Core instance;
 
-    private Listener baseListener, blockListener, chatListener, movementListener;
+    private Listener baseListener, blockListener, movementListener;
+    private ChatListener chatListener;
 
     private AreaDatabaseManager areaDatabaseManager;
     private TicketDatabaseManager ticketDatabaseManager;
@@ -160,6 +162,7 @@ public class Core extends JavaPlugin {
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
                         new cmdMe           ("/me",         "<Message>",                ""),
+                        new cmdMute         ("/mute",       "<Player>",                 ""),
                         
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),
@@ -225,5 +228,12 @@ public class Core extends JavaPlugin {
 
     public static boolean isSupporter(Player player) {
         return player.isOp() || supporter.contains(player.getName().toLowerCase());
+    }
+
+    /**
+     * @return the chatListener
+     */
+    public ChatListener getChatListener() {
+        return chatListener;
     }
 }

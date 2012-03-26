@@ -50,7 +50,9 @@ public class ChatFilter {
                 // | (logical operator in regex)
                 bReader = new BufferedReader(new FileReader(whiteListFile));
                 while ((line = bReader.readLine()) != null) {
-                    line = line.toLowerCase().trim().replace(" ", "");
+                    line = line.toLowerCase().trim();
+                    if (line.equalsIgnoreCase(""))
+                        continue;
                     this.whiteWords.add(" " + line + " ");
                 }
             }
@@ -62,7 +64,9 @@ public class ChatFilter {
             else {
                 bReader = new BufferedReader(new FileReader(blackListFile));
                 while ((line = bReader.readLine()) != null) {
-                    line = line.toLowerCase().trim().replace(" ", "");
+                    line = line.toLowerCase().trim();
+                    if (line.equalsIgnoreCase(""))
+                        continue;
                     this.blackWords.add(" " + line + " ");
                 }
             }
