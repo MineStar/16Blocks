@@ -99,7 +99,7 @@ public class AreaManager {
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
         }
     }
-    
+
     public void createRowStructures(int row) {
         for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
             if (row % 2 != 0) {
@@ -110,7 +110,9 @@ public class AreaManager {
                     this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1);
                 }
             }
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(x, row);
         }
+
         if (row == 0) {
             this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1);
             this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
