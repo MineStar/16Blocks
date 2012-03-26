@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Commands.cmdBan;
+import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
@@ -155,6 +156,8 @@ public class Core extends JavaPlugin {
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
                         
                         // TELEPORT
+                        new cmdCreateRow    ("/createrow",  "<Number>",                 ""),                        
+                        
                         new cmdRow          ("/row",        "<Number>",                 ""),                        
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        
                         new cmdTP           ("/tp",         "<Player>",                 ""),  

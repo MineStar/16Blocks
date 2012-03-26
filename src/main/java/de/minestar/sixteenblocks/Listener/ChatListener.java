@@ -2,10 +2,12 @@ package de.minestar.sixteenblocks.Listener;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -97,6 +99,19 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
 
             return;
+        }
+
+        // CHAT-RADIUS
+        if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
+            Location chatLocation = event.getPlayer().getLocation();
+            Iterator<Player> iterator = event.getRecipients().iterator();
+            Player thisPlayer;
+            while (iterator.hasNext()) {
+                thisPlayer = iterator.next();
+                if (!Core.isSupporter(thisPlayer) && thisPlayer.getLocation().distance(chatLocation) > Settings.getChatRadius()) {
+                    iterator.remove();
+                }
+            }
         }
 
         // FORMAT CHAT
