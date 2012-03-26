@@ -99,6 +99,33 @@ public class AreaManager {
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
         }
     }
+    
+    public void createRowStructures(int row) {
+        for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
+            if (row % 2 != 0) {
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1);
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, row - 1);
+            } else {
+                if (x > -Settings.getSkinsRight()) {
+                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1);
+                }
+            }
+        }
+        if (row == 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, row - 1);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, row - 1);
+
+        } else if (row % 2 != 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+        } else {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+        }
+    }
 
     // ////////////////////////////////////////////////
     //

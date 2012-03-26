@@ -51,8 +51,8 @@ commands:
     description: Send a message to the player
     usage: /m <PlayerName> <Message>
   mute:
-    description: Send a message to the player
-    usage: /m <PlayerName> <Message>    
+    description: Mute a player
+    usage: /mute <PlayerName>
   w:
     description: Send a message to the player
     usage: /w <PlayerName> <Message>
@@ -65,6 +65,9 @@ commands:
   row:
     description: Jump to a row
     usage: /row <Number>    
+  createrow:
+    description: Recreate rowstructures
+    usage: /createrow <Number>      
   reload:
     description: Reload the server
     usage: /reload       
