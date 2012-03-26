@@ -34,7 +34,7 @@ public class LoginListener implements Listener {
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         int onlinePlayer = Bukkit.getOnlinePlayers().length;
         // Only supporter can join a full server
-        if (!Core.isSupporter(event.getName()) && onlinePlayer >= Bukkit.getMaxPlayers() - Settings.getSupporterBuffer()) {
+        if (!Core.isSupporter(event.getName()) && onlinePlayer >= Core.getAllowedMaxPlayer()) {
             event.disallow(Result.KICK_FULL, "Server is full");
         }
     }

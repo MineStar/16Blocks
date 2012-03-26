@@ -240,6 +240,10 @@ public class Core extends JavaPlugin {
         return Bukkit.getOfflinePlayer(playerName).isOp() || supporter.contains(playerName.toLowerCase());
     }
 
+    public static int getAllowedMaxPlayer() {
+        return Bukkit.getMaxPlayers() - Settings.getSupporterBuffer();
+    }
+
     /**
      * @return the chatListener
      */
