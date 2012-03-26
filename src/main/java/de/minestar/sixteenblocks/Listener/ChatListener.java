@@ -93,10 +93,13 @@ public class ChatListener implements Listener {
             event.getRecipients().clear();
             event.setCancelled(true);
 
-            // troll them by sending the message to them but to no other player
-            TextUtils.sendLine(event.getPlayer(), ChatColor.RED, "[MUTED] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-            event.getRecipients().clear();
-            event.setCancelled(true);
+            // WARN ADMINS
+            Set<OfflinePlayer> opList = Bukkit.getOperators();
+            for (OfflinePlayer offPlayer : opList) {
+                if (offPlayer.isOnline()) {
+                    TextUtils.sendLine((Player) offPlayer, ChatColor.RED, "[Muted] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+                }
+            }
 
             return;
         }
