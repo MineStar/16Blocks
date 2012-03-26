@@ -29,6 +29,9 @@ commands:
   ban:
     description: Ban a player and delete the area
     usage: /ban <Player>
+  chatradius:
+    description: Change the chatradius
+    usage: /chatradius <Number>    
   kick:
     description: Kick a player from the server
     usage: /kick <Player>    

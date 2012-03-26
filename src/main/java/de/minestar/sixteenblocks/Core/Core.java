@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Commands.cmdBan;
+import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdHome;
@@ -158,6 +159,7 @@ public class Core extends JavaPlugin {
                         
                         // TELEPORT
                         new cmdCreateRow    ("/createrow",  "<Number>",                 ""),                        
+                        new cmdChatRadius   ("/chatradius", "<Number>",                 ""),                        
                         
                         new cmdRow          ("/row",        "<Number>",                 ""),                        
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        

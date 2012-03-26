@@ -23,6 +23,13 @@ public class Settings {
 
     private static int CHAT_RADIUS = 150;
 
+    /**
+     * @param cHAT_RADIUS the cHAT_RADIUS to set
+     */
+    public static void setChatRadius(int cHAT_RADIUS) {
+        CHAT_RADIUS = cHAT_RADIUS;
+    }
+
     // Player who can join the server when server is full
     private static int SUPPORTER_BUFFER = 30;
 
