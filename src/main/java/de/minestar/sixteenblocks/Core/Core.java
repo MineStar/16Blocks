@@ -233,6 +233,10 @@ public class Core extends JavaPlugin {
         return player.isOp() || supporter.contains(player.getName().toLowerCase());
     }
 
+    public static boolean isSupporter(String playerName) {
+        return Bukkit.getOfflinePlayer(playerName).isOp() || supporter.contains(playerName.toLowerCase());
+    }
+
     /**
      * @return the chatListener
      */
