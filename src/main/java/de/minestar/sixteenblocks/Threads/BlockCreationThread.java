@@ -46,10 +46,20 @@ public class BlockCreationThread implements Runnable {
 
         StructureBlock thisBlock = null;
         for (int i = 0; i < Settings.getMaxBlockxReplaceAtOnce(); i++) {
-            thisBlock = blockList.get(counter);
-            world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
-            counter++;
-            if (counter >= blockList.size()) {
+            try {
+                thisBlock = blockList.get(counter);
+
+                world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
+                counter++;
+                if (counter >= blockList.size()) {
+                    if (this.createSign && this.player != null) {
+                        Core.getInstance().getAreaManager().createPlayerSign(this.player, ZoneXZ.fromPoint(baseX, baseZ));
+                    }
+                    Bukkit.getScheduler().cancelTask(this.TaskID);
+                    Core.getInstance().getAreaManager().decrementThreads();
+                    break;
+                }
+            } catch (Exception e) {
                 if (this.createSign && this.player != null) {
                     Core.getInstance().getAreaManager().createPlayerSign(this.player, ZoneXZ.fromPoint(baseX, baseZ));
                 }

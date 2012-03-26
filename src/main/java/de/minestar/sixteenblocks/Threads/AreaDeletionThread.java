@@ -59,10 +59,30 @@ public class AreaDeletionThread implements Runnable {
 
         StructureBlock thisBlock = null;
         for (int i = 0; i < Settings.getMaxBlockxReplaceAtOnce(); i++) {
-            thisBlock = blockList.get(counter);
-            world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setType(Material.AIR);
-            counter++;
-            if (counter >= blockList.size()) {
+            try {
+                thisBlock = blockList.get(counter);
+                world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setType(Material.AIR);
+                counter++;
+                if (counter >= blockList.size()) {
+                    // DELETE SIGN
+                    int x = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0) + (Settings.getAreaSizeX() >> 1);
+                    int z = thisZone.getZ() * Settings.getAreaSizeZ() + 12;
+                    world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setType(Material.AIR);
+
+                    // CANCEL TASK & UNBLOCK AREA
+                    Bukkit.getScheduler().cancelTask(this.TaskID);
+                    Core.getInstance().getAreaManager().removePlayerArea(thisZone);
+                    Core.getInstance().getAreaManager().unblockArea(this.thisZone);
+
+                    // PRINT INFO
+                    Player player = Bukkit.getPlayer(this.playerName);
+                    if (player != null) {
+                        TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
+                    }
+                    Core.getInstance().getAreaManager().decrementThreads();
+                    break;
+                }
+            } catch (Exception e) {
                 // DELETE SIGN
                 int x = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0) + (Settings.getAreaSizeX() >> 1);
                 int z = thisZone.getZ() * Settings.getAreaSizeZ() + 12;
