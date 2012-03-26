@@ -70,4 +70,7 @@ commands:
     usage: /createrow <Number>      
   reload:
     description: Reload the server
-    usage: /reload       
+    usage: /reload
+  slots:
+    description: Set Slots 
+    usage: /slots <Number>
