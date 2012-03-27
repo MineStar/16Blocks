@@ -13,11 +13,12 @@ import de.minestar.minestarlibrary.database.DatabaseConnection;
 import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
 import de.minestar.sixteenblocks.Core.Core;
+import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
-    private PreparedStatement loadAreas, saveArea, updateArea;
+    private PreparedStatement loadAreas, insertArea, updateArea, checkExistance;
 
     public AreaDatabaseManager(String pluginName, File dataFolder) {
         super(pluginName, dataFolder);
@@ -38,11 +39,51 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     }
 
+    public ArrayList<SkinArea> createNotExistingAreas() {
+        ArrayList<SkinArea> currentZones = this.loadZones();
+
+        // GET MAXIMUM ROW
+        ZoneXZ thisZone;
+        int maxRow = Integer.MIN_VALUE;
+        for (SkinArea thisArea : currentZones) {
+            thisZone = thisArea.getZoneXZ();
+            if (thisZone.getZ() > maxRow)
+                maxRow = thisZone.getZ();
+        }
+
+        // INSERT AREAS INTO DATABASE, IF THEY DO NOT EXIST
+        ArrayList<SkinArea> newSkins = new ArrayList<SkinArea>();
+        for (int row = 0; row <= maxRow; row++) {
+            for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
+                if (!this.areaExists(x, row)) {
+                    SkinArea newArea = new SkinArea(x, row, "");
+                    this.saveZone(newArea);
+                    newSkins.add(newArea);
+                }
+            }
+        }
+        return newSkins;
+    }
+
+    private boolean areaExists(int x, int z) {
+        try {
+            ResultSet result = this.checkExistance.executeQuery();
+            while (result != null && result.next()) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
     @Override
     protected void createStatements(String pluginName, Connection connection) throws Exception {
         this.loadAreas = dbConnection.getConnection().prepareStatement("SELECT areaOwner, x, z FROM zones");
-        this.saveArea = dbConnection.getConnection().prepareStatement("INSERT INTO zones (areaOwner, x, z) VALUES(?, ?, ?)");
+        this.insertArea = dbConnection.getConnection().prepareStatement("INSERT INTO zones (areaOwner, x, z) VALUES(?, ?, ?)");
         this.updateArea = dbConnection.getConnection().prepareStatement("UPDATE zones SET areaOwner = ? WHERE x = ? AND z = ?");
+        this.checkExistance = dbConnection.getConnection().prepareStatement("SELECT * FROM zones WHERE x = ? AND z = ? LIMIT 1");
     }
 
     @Override
@@ -65,10 +106,10 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     public void saveZone(SkinArea thisArea) {
         try {
-            saveArea.setString(1, thisArea.getAreaOwner());
-            saveArea.setInt(2, thisArea.getZoneXZ().getX());
-            saveArea.setInt(3, thisArea.getZoneXZ().getZ());
-            saveArea.executeUpdate();
+            insertArea.setString(1, thisArea.getAreaOwner());
+            insertArea.setInt(2, thisArea.getZoneXZ().getX());
+            insertArea.setInt(3, thisArea.getZoneXZ().getZ());
+            insertArea.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
