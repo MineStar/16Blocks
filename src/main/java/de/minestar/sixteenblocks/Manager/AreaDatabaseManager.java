@@ -54,6 +54,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
         // INSERT AREAS INTO DATABASE, IF THEY DO NOT EXIST
         ArrayList<SkinArea> newSkins = new ArrayList<SkinArea>();
         for (int row = 0; row <= maxRow; row++) {
+            System.out.println("Extending row in DB: " + row);
             for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
                 if (!this.areaExists(x, row)) {
                     SkinArea newArea = new SkinArea(x, row, "");
