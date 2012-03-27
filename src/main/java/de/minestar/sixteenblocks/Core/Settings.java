@@ -15,6 +15,9 @@ public class Settings {
     private static int SKINS_LEFT = 10;
     private static int SKINS_RIGHT = 10;
 
+    private static int OLD_SKINS_LEFT = 10;
+    private static int OLD_SKINS_RIGHT = 10;
+
     private static long TIME = 6000;
 
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
@@ -62,6 +65,9 @@ public class Settings {
             SKINS_LEFT = config.getInt("Skins.left", SKINS_LEFT);
             SKINS_RIGHT = config.getInt("Skins.right", SKINS_RIGHT);
 
+            OLD_SKINS_LEFT = config.getInt("Skins.old.left", SKINS_LEFT);
+            OLD_SKINS_RIGHT = config.getInt("Skins.old.right", SKINS_RIGHT);
+
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             TICKS_BETWEEN_REPLACE = config.getInt("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
             CREATE_ROWS_AT_ONCE = config.getInt("Threads.Structures.createRowsAtOnce", CREATE_ROWS_AT_ONCE);
@@ -99,6 +105,9 @@ public class Settings {
 
             config.set("Skins.left", SKINS_LEFT);
             config.set("Skins.right", SKINS_RIGHT);
+
+            config.set("Skins.old.left", SKINS_LEFT);
+            config.set("Skins.old.right", SKINS_RIGHT);
 
             config.set("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             config.set("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
@@ -161,6 +170,14 @@ public class Settings {
 
     public static int getSkinsRight() {
         return SKINS_RIGHT;
+    }
+
+    public static int getSkinsLeftOld() {
+        return OLD_SKINS_LEFT;
+    }
+
+    public static int getSkinsRightOld() {
+        return OLD_SKINS_RIGHT;
     }
 
     public static int getChatPauseTimeInSeconds() {
