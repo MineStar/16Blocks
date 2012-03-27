@@ -57,6 +57,9 @@ public class AreaManager {
     }
 
     private void createNotExistingAreas() {
+        if (Settings.getSkinsLeft() == Settings.getSkinsLeftOld() && Settings.getSkinsRight() == Settings.getSkinsRightOld())
+            return;
+
         ArrayList<SkinArea> newSkins = this.databaseManager.createNotExistingAreas();
         System.out.println("Create new areas: " + newSkins.size());
         ZoneXZ thisZone;
