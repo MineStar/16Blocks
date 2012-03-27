@@ -67,6 +67,8 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     private boolean areaExists(int x, int z) {
         try {
+            this.checkExistance.setInt(1, x);
+            this.checkExistance.setInt(2, z);
             ResultSet result = this.checkExistance.executeQuery();
             while (result != null && result.next()) {
                 return true;

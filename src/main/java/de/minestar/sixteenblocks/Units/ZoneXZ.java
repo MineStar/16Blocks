@@ -27,6 +27,18 @@ public class ZoneXZ {
         return location;
     }
 
+    public int getBaseX() {
+        return this.x * Settings.getAreaSizeX();
+    }
+
+    public int getBaseZ() {
+        int offSet = 0;
+        if (this.z % 2 != 0) {
+            offSet = (Settings.getAreaSizeX() >> 1);
+        }
+        return (this.z * Settings.getAreaSizeZ()) + offSet;
+    }
+
     public static ZoneXZ fromPoint(int x, int z) {
         int thisZ = z >> 5;
         int thisX = (x + (thisZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0)) >> 5;

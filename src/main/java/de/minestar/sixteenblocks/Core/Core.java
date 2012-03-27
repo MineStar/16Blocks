@@ -99,6 +99,9 @@ public class Core extends JavaPlugin {
         // STARTUP
         this.createManager();
 
+        // INIT AREAMANAGER
+        this.areaManager.init();
+
         // LOAD SUPPORTER (NOT ALL ADMINS ARE OPS)
         loadSupporter();
 

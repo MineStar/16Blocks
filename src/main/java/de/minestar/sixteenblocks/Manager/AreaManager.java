@@ -47,9 +47,37 @@ public class AreaManager {
         this.worldManager = worldManager;
         this.databaseManager = databaseManager;
         this.structureManager = structureManager;
+    }
+
+    public void init() {
+        this.createNotExistingAreas();
         this.loadAreas();
         this.initMaximumZ();
         this.checkForZoneExtension();
+    }
+
+    private void createNotExistingAreas() {
+        ArrayList<SkinArea> newSkins = this.databaseManager.createNotExistingAreas();
+        System.out.println("create new areas: " + newSkins.size());
+        ZoneXZ thisZone;
+        int maxZ = Integer.MIN_VALUE;
+        int currentRow = -1;
+        for (SkinArea thisArea : newSkins) {
+            thisZone = thisArea.getZoneXZ();
+            this.rebaseSingleZone(thisZone.getX(), thisZone.getZ());
+            this.rebaseSingleZone(thisZone.getX(), thisZone.getZ() - 1);
+            if (maxZ < thisZone.getZ())
+                maxZ = thisZone.getZ();
+
+            if (currentRow != thisZone.getZ()) {
+                System.out.println("Current row: " + currentRow);
+                currentRow = thisZone.getZ();
+            }
+        }
+
+        for (int row = 0; row <= maxZ; row++) {
+            this.createRowStructures(row);
+        }
     }
 
     public void incrementThreads() {
@@ -97,6 +125,29 @@ public class AreaManager {
         } else {
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), z - 1);
             this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+        }
+    }
+
+    private void rebaseSingleZone(int x, int z) {
+        ZoneXZ thisZone = ZoneXZ.fromCoordinates(x, z);
+        int baseX = thisZone.getBaseX();
+        int baseZ = thisZone.getBaseZ();
+        World thisWorld = Bukkit.getWorlds().get(0);
+        Block thisBlock;
+        for (int thisX = 0; thisX < Settings.getAreaSizeX(); thisX++) {
+            for (int thisZ = 0; thisZ < Settings.getAreaSizeZ(); thisZ++) {
+                thisBlock = thisWorld.getBlockAt(baseX + thisX, 2, baseZ + thisZ);
+                if (thisBlock.getTypeId() != Material.DIRT.getId())
+                    thisWorld.getBlockAt(baseX + thisX, 2, baseZ + thisZ).setTypeId(Material.DIRT.getId(), false);
+
+                thisBlock = thisWorld.getBlockAt(baseX + thisX, 3, baseZ + thisZ);
+                if (thisBlock.getTypeId() != Material.GRASS.getId())
+                    thisWorld.getBlockAt(baseX + thisX, 3, baseZ + thisZ).setTypeId(Material.GRASS.getId(), false);
+
+                thisBlock = thisWorld.getBlockAt(baseX + thisX, 4, baseZ + thisZ);
+                if (thisBlock.getTypeId() == Material.STEP.getId())
+                    thisWorld.getBlockAt(baseX + thisX, 4, baseZ + thisZ).setTypeId(Material.AIR.getId(), false);
+            }
         }
     }
 
