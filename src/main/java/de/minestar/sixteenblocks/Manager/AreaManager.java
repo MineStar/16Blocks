@@ -58,30 +58,52 @@ public class AreaManager {
 
     private void createNotExistingAreas() {
         ArrayList<SkinArea> newSkins = this.databaseManager.createNotExistingAreas();
-        System.out.println("create new areas: " + newSkins.size());
+        System.out.println("Create new areas: " + newSkins.size());
         ZoneXZ thisZone;
         int maxZ = Integer.MIN_VALUE;
         int currentRow = -1;
+        World thisWorld = Bukkit.getWorlds().get(0);
         for (SkinArea thisArea : newSkins) {
             thisZone = thisArea.getZoneXZ();
-            if (thisZone.getX() == Settings.getSkinsLeftOld() || thisZone.getX() == Settings.getSkinsLeftOld() - 1 || thisZone.getX() == Settings.getSkinsRightOld() || thisZone.getX() == Settings.getSkinsRightOld() + 1) {
-                this.rebaseSingleZone(thisZone.getX(), thisZone.getZ());
-                this.rebaseSingleZone(thisZone.getX(), thisZone.getZ() - 1);
-                if (maxZ < thisZone.getZ())
-                    maxZ = thisZone.getZ();
 
-            }
+            if (maxZ < thisZone.getZ())
+                maxZ = thisZone.getZ();
+
             if (currentRow != thisZone.getZ()) {
-                System.out.println("Current row: " + currentRow);
+                ZoneXZ leftZone = ZoneXZ.fromCoordinates(Settings.getSkinsLeftOld(), thisZone.getZ());
+                ZoneXZ rightZone = ZoneXZ.fromCoordinates(-Settings.getSkinsRightOld(), thisZone.getZ());
+                int baseXLeft = leftZone.getBaseX();
+                int baseXRight = rightZone.getBaseX();
+
+                int baseZ = thisZone.getBaseZ();
+                Block thisBlock;
+                for (int z = 0; z <= Settings.getAreaSizeZ(); z++) {
+                    for (int x = 0; x <= Settings.getAreaSizeX() * 2; x++) {
+                        thisWorld.getBlockAt(baseXLeft + x, 2, baseZ + z).setTypeId(Material.DIRT.getId(), false);
+                        thisWorld.getBlockAt(baseXLeft + x, 3, baseZ + z).setTypeId(Material.GRASS.getId(), false);
+                        thisBlock = thisWorld.getBlockAt(baseXLeft + x, 4, baseZ + z);
+                        if (thisBlock.getTypeId() == 44) {
+                            thisBlock.setTypeId(Material.AIR.getId(), false);
+                        }
+
+                        thisWorld.getBlockAt(baseXRight - x, 2, baseZ + z).setTypeId(Material.DIRT.getId(), false);
+                        thisWorld.getBlockAt(baseXRight - x, 3, baseZ + z).setTypeId(Material.GRASS.getId(), false);
+                        thisBlock = thisWorld.getBlockAt(baseXRight - x, 4, baseZ + z);
+                        if (thisBlock.getTypeId() == 44) {
+                            thisBlock.setTypeId(Material.AIR.getId(), false);
+                        }
+                    }
+                }
                 currentRow = thisZone.getZ();
+                System.out.println("Current row: " + currentRow);
             }
+            this.createSingleZone(thisZone.getX(), thisZone.getZ());
         }
 
         for (int row = 0; row <= maxZ; row++) {
             this.createRowStructures(row);
         }
     }
-
     public void incrementThreads() {
         this.runningThreads++;
     }
@@ -130,26 +152,30 @@ public class AreaManager {
         }
     }
 
-    private void rebaseSingleZone(int x, int z) {
-        ZoneXZ thisZone = ZoneXZ.fromCoordinates(x, z);
-        int baseX = thisZone.getBaseX();
-        int baseZ = thisZone.getBaseZ();
-        World thisWorld = Bukkit.getWorlds().get(0);
-        Block thisBlock;
-        for (int thisX = 0; thisX < Settings.getAreaSizeX(); thisX++) {
-            for (int thisZ = 0; thisZ < Settings.getAreaSizeZ(); thisZ++) {
-                thisBlock = thisWorld.getBlockAt(baseX + thisX, 2, baseZ + thisZ);
-                if (thisBlock.getTypeId() != Material.DIRT.getId())
-                    thisWorld.getBlockAt(baseX + thisX, 2, baseZ + thisZ).setTypeId(Material.DIRT.getId(), false);
-
-                thisBlock = thisWorld.getBlockAt(baseX + thisX, 3, baseZ + thisZ);
-                if (thisBlock.getTypeId() != Material.GRASS.getId())
-                    thisWorld.getBlockAt(baseX + thisX, 3, baseZ + thisZ).setTypeId(Material.GRASS.getId(), false);
-
-                thisBlock = thisWorld.getBlockAt(baseX + thisX, 4, baseZ + thisZ);
-                if (thisBlock.getTypeId() == Material.STEP.getId())
-                    thisWorld.getBlockAt(baseX + thisX, 4, baseZ + thisZ).setTypeId(Material.AIR.getId(), false);
+    public void createSingleZone(int x, int z) {
+        if (z % 2 != 0) {
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, z - 1);
+        } else {
+            if (x > -Settings.getSkinsRight()) {
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
             }
+        }
+        this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(x, z);
+
+        if (z == 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, z - 1);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, z - 1);
+
+        } else if (z % 2 != 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+        } else {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
         }
     }
 
