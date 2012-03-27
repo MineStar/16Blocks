@@ -33,7 +33,7 @@ public class SuperBlockCreationThread implements Runnable {
         if (TaskID == -9999)
             return;
 
-        if (this.blockList.size() < 1)
+        if (this.blockList.isEmpty())
             return;
 
         synchronized (this.blockList) {
@@ -49,5 +49,8 @@ public class SuperBlockCreationThread implements Runnable {
                 }
             }
         }
+        System.out.println("---------------------");
+        System.out.println("EXTENSION READY!");
+        System.out.println("---------------------");
     }
 }

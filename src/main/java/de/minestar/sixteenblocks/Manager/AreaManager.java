@@ -104,10 +104,12 @@ public class AreaManager {
             this.createSingleZone(thisZone);
         }
 
-        for (int row = 0; row <= maxZ; row++) {
-            this.createRowStructures(row);
+        // CREATE STREETS
+        for (int thisRow = 0; thisRow <= maxZ; thisRow++) {
+            this.createBasicStructures(thisRow);
         }
     }
+
     public void incrementThreads() {
         this.runningThreads++;
     }
@@ -175,6 +177,20 @@ public class AreaManager {
             }
         }
     }
+
+    public void createBasicStructures(int row) {
+        if (row == 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+        } else if (row % 2 != 0) {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+        } else {
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+        }
+    }
+
     public void createRowStructures(int row) {
         for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
             if (row % 2 != 0) {
