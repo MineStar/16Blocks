@@ -52,6 +52,7 @@ import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Threads.JSONThread;
+import de.minestar.sixteenblocks.Threads.SuperBlockCreationThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class Core extends JavaPlugin {
@@ -71,6 +72,7 @@ public class Core extends JavaPlugin {
     private static Set<String> supporter;
 
     private CheckTicketThread checkTread;
+    private SuperBlockCreationThread extendThread;
 
     private CommandList commandList;
 
@@ -95,6 +97,10 @@ public class Core extends JavaPlugin {
 
         // SET NAME
         TextUtils.setPluginName("YAM");
+
+        // SUPER EXTENSION-THREAD
+        this.extendThread = new SuperBlockCreationThread(Bukkit.getWorlds().get(0));
+        this.extendThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.extendThread, 0, Settings.getTicksBetweenReplace()));
 
         // STARTUP
         this.createManager();
@@ -258,5 +264,12 @@ public class Core extends JavaPlugin {
      */
     public ChatListener getChatListener() {
         return chatListener;
+    }
+
+    /**
+     * @return the extendThread
+     */
+    public SuperBlockCreationThread getExtendThread() {
+        return extendThread;
     }
 }

@@ -15,45 +15,45 @@ import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Threads.BlockCreationThread;
 
 public class Structure {
-    private HashMap<EnumDirection, ArrayList<StructureBlock>> BlockList = new HashMap<EnumDirection, ArrayList<StructureBlock>>();
+    private HashMap<EnumDirection, ArrayList<StructureBlock>> blockList = new HashMap<EnumDirection, ArrayList<StructureBlock>>();
 
     public Structure(StructureManager structureManager, String structureName) {
         ArrayList<StructureBlock> loadedBlocks = structureManager.loadStructure(structureName);
         if (loadedBlocks != null) {
-            this.BlockList.put(EnumDirection.NORMAL, loadedBlocks);
-            this.BlockList.put(EnumDirection.FLIP_X, this.flipX());
-            this.BlockList.put(EnumDirection.FLIP_Z, this.flipZ());
-            this.BlockList.put(EnumDirection.ROTATE_90, this.rotate90());
-            this.BlockList.put(EnumDirection.ROTATE_180, this.rotate180());
-            this.BlockList.put(EnumDirection.ROTATE_270, this.rotate270());
+            this.blockList.put(EnumDirection.NORMAL, loadedBlocks);
+            this.blockList.put(EnumDirection.FLIP_X, this.flipX());
+            this.blockList.put(EnumDirection.FLIP_Z, this.flipZ());
+            this.blockList.put(EnumDirection.ROTATE_90, this.rotate90());
+            this.blockList.put(EnumDirection.ROTATE_180, this.rotate180());
+            this.blockList.put(EnumDirection.ROTATE_270, this.rotate270());
         } else {
             TextUtils.logWarning("Structure '" + structureName + "' could not be initialized!");
         }
     }
 
     public void createStructure(int zoneX, int zoneZ) {
-        if (this.BlockList == null)
+        if (this.blockList == null)
             return;
         World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockList.get(EnumDirection.NORMAL));
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(EnumDirection.NORMAL));
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
 
     }
 
     public void createStructureWithSign(int zoneX, int zoneZ, Player player) {
-        if (this.BlockList == null)
+        if (this.blockList == null)
             return;
         World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockList.get(EnumDirection.NORMAL));
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(EnumDirection.NORMAL));
         thisThread.createSign(player);
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
     }
 
     public void createStructure(EnumDirection direction, int zoneX, int zoneZ) {
-        if (this.BlockList == null)
+        if (this.blockList == null)
             return;
         World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.BlockList.get(direction));
+        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(direction));
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
     }
 
@@ -68,7 +68,7 @@ public class Structure {
     }
 
     private ArrayList<StructureBlock> flipX() {
-        return this.flipX(this.BlockList.get(EnumDirection.NORMAL));
+        return this.flipX(this.blockList.get(EnumDirection.NORMAL));
     }
 
     private ArrayList<StructureBlock> flipZ(ArrayList<StructureBlock> BlockList) {
@@ -82,7 +82,7 @@ public class Structure {
     }
 
     private ArrayList<StructureBlock> flipZ() {
-        return this.flipZ(this.BlockList.get(EnumDirection.NORMAL));
+        return this.flipZ(this.blockList.get(EnumDirection.NORMAL));
     }
 
     private ArrayList<StructureBlock> rotate180(ArrayList<StructureBlock> BlockList) {
@@ -94,13 +94,13 @@ public class Structure {
     }
 
     private ArrayList<StructureBlock> rotate180() {
-        return this.rotate180(this.BlockList.get(EnumDirection.NORMAL));
+        return this.rotate180(this.blockList.get(EnumDirection.NORMAL));
     }
 
     private ArrayList<StructureBlock> rotate270() {
-        if (this.BlockList == null)
+        if (this.blockList == null)
             return null;
-        ArrayList<StructureBlock> newList = this.cloneList(this.BlockList.get(EnumDirection.NORMAL));
+        ArrayList<StructureBlock> newList = this.cloneList(this.blockList.get(EnumDirection.NORMAL));
         int oldX, oldZ;
         for (StructureBlock block : newList) {
             oldX = block.getX();
@@ -112,7 +112,7 @@ public class Structure {
     }
 
     private ArrayList<StructureBlock> rotate90() {
-        if (this.BlockList == null)
+        if (this.blockList == null)
             return null;
         ArrayList<StructureBlock> newList = this.rotate270();
         newList = this.rotate180(newList);
@@ -123,6 +123,18 @@ public class Structure {
         ArrayList<StructureBlock> clone = new ArrayList<StructureBlock>(list.size());
         for (StructureBlock item : list)
             clone.add(item.clone());
+        return clone;
+    }
+
+    public ArrayList<StructureBlock> getBlocksForExtension(int baseX, int baseZ) {
+        return this.getBlocksForExtension(EnumDirection.NORMAL, baseX, baseZ);
+    }
+
+    public ArrayList<StructureBlock> getBlocksForExtension(EnumDirection direction, int baseX, int baseZ) {
+        ArrayList<StructureBlock> clone = new ArrayList<StructureBlock>(this.blockList.get(direction).size());
+        for (StructureBlock item : this.blockList.get(direction)) {
+            clone.add(item.clone(baseX, baseZ));
+        }
         return clone;
     }
 }

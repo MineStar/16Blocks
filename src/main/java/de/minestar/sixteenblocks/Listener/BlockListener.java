@@ -52,8 +52,8 @@ public class BlockListener implements Listener {
                 event.setCancelled(true);
             }
         }
-
     }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
