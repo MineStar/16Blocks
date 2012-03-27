@@ -64,11 +64,13 @@ public class AreaManager {
         int currentRow = -1;
         for (SkinArea thisArea : newSkins) {
             thisZone = thisArea.getZoneXZ();
-            this.rebaseSingleZone(thisZone.getX(), thisZone.getZ());
-            this.rebaseSingleZone(thisZone.getX(), thisZone.getZ() - 1);
-            if (maxZ < thisZone.getZ())
-                maxZ = thisZone.getZ();
+            if (thisZone.getX() == Settings.getSkinsLeftOld() || thisZone.getX() == Settings.getSkinsLeftOld() - 1 || thisZone.getX() == Settings.getSkinsRightOld() || thisZone.getX() == Settings.getSkinsRightOld() + 1) {
+                this.rebaseSingleZone(thisZone.getX(), thisZone.getZ());
+                this.rebaseSingleZone(thisZone.getX(), thisZone.getZ() - 1);
+                if (maxZ < thisZone.getZ())
+                    maxZ = thisZone.getZ();
 
+            }
             if (currentRow != thisZone.getZ()) {
                 System.out.println("Current row: " + currentRow);
                 currentRow = thisZone.getZ();
