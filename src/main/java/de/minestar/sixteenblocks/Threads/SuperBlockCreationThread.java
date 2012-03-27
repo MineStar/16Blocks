@@ -39,12 +39,12 @@ public class SuperBlockCreationThread implements Runnable {
         synchronized (this.blockList) {
             StructureBlock thisBlock = null;
             int counter = 0;
-
-            while ((thisBlock = blockList.removeFirst()) != null) {
+            while (!blockList.isEmpty()) {
+                thisBlock = blockList.removeFirst();
                 world.getBlockAt(thisBlock.getX(), thisBlock.getY(), thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
 
                 counter++;
-                if (counter > Settings.getMaxBlockxReplaceAtOnce()) {
+                if (counter >= Settings.getMaxBlockxReplaceAtOnce()) {
                     return;
                 }
             }
