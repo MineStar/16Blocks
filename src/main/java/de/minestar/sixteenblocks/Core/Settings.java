@@ -24,7 +24,8 @@ public class Settings {
     private static int CHAT_RADIUS = 150;
 
     /**
-     * @param cHAT_RADIUS the cHAT_RADIUS to set
+     * @param cHAT_RADIUS
+     *            the cHAT_RADIUS to set
      */
     public static void setChatRadius(int cHAT_RADIUS) {
         CHAT_RADIUS = cHAT_RADIUS;
