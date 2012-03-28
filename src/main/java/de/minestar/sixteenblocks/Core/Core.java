@@ -230,7 +230,7 @@ public class Core extends JavaPlugin {
         timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
 
         // Broadcasting information to player
-        scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
+        scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder(), this.areaManager), 20 * 60, 20 * 60 * 5);
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }

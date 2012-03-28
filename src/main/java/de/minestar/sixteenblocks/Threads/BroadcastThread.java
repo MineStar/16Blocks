@@ -24,12 +24,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
+import de.minestar.sixteenblocks.Manager.AreaManager;
 
 public class BroadcastThread implements Runnable {
 
@@ -39,8 +41,12 @@ public class BroadcastThread implements Runnable {
     // when index == message.length shuffle the messages
     private int index;
 
-    public BroadcastThread(File dataFolder) {
+    private Random rand;
+    private AreaManager aManager;
+
+    public BroadcastThread(File dataFolder, AreaManager aManager) {
         loadMessages(dataFolder);
+        this.aManager = aManager;
     }
 
     private void loadMessages(File dataFolder) {
@@ -70,11 +76,15 @@ public class BroadcastThread implements Runnable {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] " + ChatColor.WHITE + messages.get(index++));
+        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + ChatColor.WHITE + messages.get(index++));
         // shuffle the messages and reset index
         if (index == messages.size()) {
             Collections.shuffle(messages);
             index = 0;
         }
+
+        // Inform player about current skin count
+        if (rand.nextBoolean())
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + ChatColor.WHITE + aManager.getUsedAreaCount() + " Skins at the moment!");
     }
 }
