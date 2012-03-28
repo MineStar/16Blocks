@@ -3,12 +3,10 @@ package de.minestar.sixteenblocks.Listener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -83,10 +81,12 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
 
             // WARN ADMINS
-            Set<OfflinePlayer> opList = Bukkit.getOperators();
-            for (OfflinePlayer offPlayer : opList) {
-                if (offPlayer.isOnline()) {
-                    TextUtils.sendLine((Player) offPlayer, ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
+            Player[] players = Bukkit.getOnlinePlayers();
+            for (Player player : players) {
+                if (Core.isSupporter(player)) {
+                    if (player.isOnline()) {
+                        TextUtils.sendLine(player, ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
+                    }
                 }
             }
 
@@ -101,10 +101,12 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
 
             // WARN ADMINS
-            Set<OfflinePlayer> opList = Bukkit.getOperators();
-            for (OfflinePlayer offPlayer : opList) {
-                if (offPlayer.isOnline()) {
-                    TextUtils.sendLine((Player) offPlayer, ChatColor.RED, "[Muted] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+            Player[] players = Bukkit.getOnlinePlayers();
+            for (Player player : players) {
+                if (Core.isSupporter(player)) {
+                    if (player.isOnline()) {
+                        TextUtils.sendLine(player, ChatColor.RED, "[Muted] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+                    }
                 }
             }
 
