@@ -152,7 +152,7 @@ public class Core extends JavaPlugin {
         this.blockListener = new BlockListener(this.areaManager, this.afkThread);
         this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
-        this.loginListener = new LoginListener();
+        this.loginListener = new LoginListener(this.afkThread);
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
@@ -222,7 +222,7 @@ public class Core extends JavaPlugin {
         // Broadcasting information to player
         scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
         // AFK Thread
-        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 60, 20 * 30);
+        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }
 
     @Override

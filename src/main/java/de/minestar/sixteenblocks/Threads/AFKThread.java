@@ -31,7 +31,7 @@ public class AFKThread implements Runnable {
     private Map<String, Long> afkTimes = new HashMap<String, Long>(Bukkit.getMaxPlayers());
 
     // 10 Minutes
-    private static final long AFK_TIMER = 1000L * 60L * 10L;
+    private static final long AFK_TIMER = 1000L * 60L * 15L;
 
     @Override
     public void run() {
@@ -48,12 +48,12 @@ public class AFKThread implements Runnable {
                 continue;
             lastActivity = afkTimes.get(player.getName());
             // if player was checked before
-            if (lastActivity != null)
+            if (lastActivity != null) {
                 if (currentTime - lastActivity >= AFK_TIMER)
                     player.kickPlayer("You was afk!");
 
-                else
-                    afkTimes.put(player.getName(), currentTime);
+            } else
+                afkTimes.put(player.getName(), currentTime);
         }
     }
 

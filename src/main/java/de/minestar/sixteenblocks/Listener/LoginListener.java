@@ -23,12 +23,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Threads.AFKThread;
 
 public class LoginListener implements Listener {
+
+    private AFKThread afkThread;
+
+    public LoginListener(AFKThread afkThread) {
+        this.afkThread = afkThread;
+    }
 
     @EventHandler
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
@@ -42,5 +50,10 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         event.setMaxPlayers(Bukkit.getMaxPlayers() - Settings.getSupporterBuffer());
+    }
+
+    @EventHandler
+    public void onPlayerQuitEvent(PlayerQuitEvent event) {
+        afkThread.removePlayer(event.getPlayer());
     }
 }
