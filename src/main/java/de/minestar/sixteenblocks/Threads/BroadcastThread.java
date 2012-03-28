@@ -76,7 +76,7 @@ public class BroadcastThread implements Runnable {
     @Override
     public void run() {
 
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + ChatColor.WHITE + messages.get(index++));
+        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + messages.get(index++));
         // shuffle the messages and reset index
         if (index == messages.size()) {
             Collections.shuffle(messages);
@@ -85,6 +85,6 @@ public class BroadcastThread implements Runnable {
 
         // Inform player about current skin count
         if (rand.nextBoolean())
-            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + ChatColor.WHITE + aManager.getUsedAreaCount() + " Skins at the moment!");
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + aManager.getUsedAreaCount() + " Skins at the moment!");
     }
 }
