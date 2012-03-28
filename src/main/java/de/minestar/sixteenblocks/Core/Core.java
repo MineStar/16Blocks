@@ -52,6 +52,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.BroadcastThread;
 import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Threads.JSONThread;
@@ -206,11 +207,15 @@ public class Core extends JavaPlugin {
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
+
         // Check tickets
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
         scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
+
         // Writing JSON with online player
         scheduler.scheduleAsyncRepeatingTask(this, new JSONThread(this.areaManager), 20 * 10, 20 * 10);
+        // Broadcasting information to player
+        scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
     }
 
     @Override
