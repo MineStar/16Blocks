@@ -80,3 +80,12 @@ commands:
   slots:
     description: Set Slots 
     usage: /slots <Number>
+  say:
+    description: Broadcast a message 
+    usage: /slots <Message>
+  broadcast:
+    description: Broadcast a message 
+    usage: /broadcast <Message>
+  cast:
+    description: Broadcast a message 
+    usage: /cast <Message>

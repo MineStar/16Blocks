@@ -34,6 +34,7 @@ import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
+import de.minestar.sixteenblocks.Commands.cmdSay;
 import de.minestar.sixteenblocks.Commands.cmdSlots;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
@@ -205,7 +206,11 @@ public class Core extends JavaPlugin {
                         new cmdTicket       ("/report",     "<Text>",                   "", mHandler),
                         
                         // SET SLOTS
-                        new cmdSlots        ("/slots",      "<Number>",                 "")
+                        new cmdSlots        ("/slots",      "<Number>",                 ""),
+                        
+                        new cmdSay          ("/say",        "<Message>",                ""),
+                        new cmdSay          ("/cast",       "<Message>",                ""),
+                        new cmdSay          ("/broadcast",  "<Message>",                "")
         );
         /* @formatter:on */
     }
@@ -227,6 +232,7 @@ public class Core extends JavaPlugin {
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }
+
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         commandList.handleCommand(sender, label, args);
