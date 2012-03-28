@@ -58,6 +58,7 @@ public class BroadcastThread implements Runnable {
                 if (!line.isEmpty())
                     messages.add(line);
             }
+            bReader.close();
             index = 0;
             // shuffle messages
             Collections.shuffle(messages);

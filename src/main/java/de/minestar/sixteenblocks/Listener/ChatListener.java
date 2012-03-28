@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class ChatListener implements Listener {
@@ -26,9 +27,12 @@ public class ChatListener implements Listener {
 
     private HashSet<String> mutedPlayers = new HashSet<String>();
 
-    public ChatListener(ChatFilter filter) {
+    private AFKThread afkThread;
+
+    public ChatListener(ChatFilter filter, AFKThread afkThread) {
         this.filter = filter;
         this.lastChatList = new HashMap<String, Long>();
+        this.afkThread = afkThread;
     }
 
     public boolean toggleMute(Player player) {
@@ -54,6 +58,9 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
+
+        afkThread.takeAktion(event.getPlayer());
+
         // FLOOD-CONTROL
         if (!Core.isSupporter(event.getPlayer())) {
             if (this.lastChatList.containsKey(event.getPlayer().getName())) {

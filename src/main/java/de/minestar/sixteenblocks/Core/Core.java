@@ -52,6 +52,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Threads.BroadcastThread;
 import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
@@ -77,6 +78,7 @@ public class Core extends JavaPlugin {
 
     private CheckTicketThread checkTread;
     private SuperBlockCreationThread extendThread;
+    private AFKThread afkThread;
 
     private CommandList commandList;
 
@@ -105,6 +107,9 @@ public class Core extends JavaPlugin {
         // SUPER EXTENSION-THREAD
         this.extendThread = new SuperBlockCreationThread(Bukkit.getWorlds().get(0));
         this.extendThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.extendThread, 0, Settings.getTicksBetweenReplace()));
+
+        // AFK THREAD
+        this.afkThread = new AFKThread();
 
         // STARTUP
         this.createManager();
@@ -144,8 +149,8 @@ public class Core extends JavaPlugin {
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager);
-        this.chatListener = new ChatListener(this.filter);
+        this.blockListener = new BlockListener(this.areaManager, this.afkThread);
+        this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager);
         this.loginListener = new LoginListener();
 
@@ -216,6 +221,8 @@ public class Core extends JavaPlugin {
         scheduler.scheduleAsyncRepeatingTask(this, new JSONThread(this.areaManager), 20 * 10, 20 * 10);
         // Broadcasting information to player
         scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
+        // AFK Thread
+        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 60, 20 * 30);
     }
 
     @Override

@@ -13,13 +13,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Threads.AFKThread;
 
 public class BlockListener implements Listener {
 
     private AreaManager areaManager;
 
-    public BlockListener(AreaManager areaManager) {
+    private AFKThread afkThread;
+
+    public BlockListener(AreaManager areaManager, AFKThread afkThread) {
         this.areaManager = areaManager;
+        this.afkThread = afkThread;
     }
 
     @EventHandler
@@ -34,6 +38,8 @@ public class BlockListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (Core.isSupporter(event.getPlayer()))
             return;
+
+        afkThread.takeAktion(event.getPlayer());
 
         if (event.hasBlock()) {
             if (!areaManager.isInArea(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()))) {

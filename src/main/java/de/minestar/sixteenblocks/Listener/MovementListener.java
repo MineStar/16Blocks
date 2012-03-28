@@ -11,10 +11,13 @@ import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.WorldManager;
+import de.minestar.sixteenblocks.Threads.AFKThread;
 
 public class MovementListener implements Listener {
 
     private WorldManager worldManager;
+
+    private AFKThread afkThread;
 
     public MovementListener(WorldManager worldManager) {
         this.worldManager = worldManager;
@@ -42,6 +45,8 @@ public class MovementListener implements Listener {
         if (this.locationEquals(event.getFrom(), event.getTo()))
             return;
 
+        afkThread.takeAktion(event.getPlayer());
+
         // CHECK IF THE PLAYER CAN GO THERE
         if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
             event.setTo(worldManager.getCorrectedResetLocation(event.getFrom()));
@@ -49,12 +54,13 @@ public class MovementListener implements Listener {
             return;
         }
     }
-
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
             event.setTo(new Location(event.getTo().getWorld(), Settings.getSpawnVector().getX(), Settings.getSpawnVector().getY(), Settings.getSpawnVector().getZ()));
         }
+
+        afkThread.takeAktion(event.getPlayer());
     }
 
     @EventHandler
