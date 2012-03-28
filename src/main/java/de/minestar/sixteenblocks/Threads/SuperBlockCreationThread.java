@@ -49,6 +49,7 @@ public class SuperBlockCreationThread implements Runnable {
 
                 counter++;
                 if (counter >= Settings.getMaxBlockxReplaceAtOnce()) {
+                    System.out.println("Blocks left: " + this.blockList.size());
                     return;
                 }
             }
