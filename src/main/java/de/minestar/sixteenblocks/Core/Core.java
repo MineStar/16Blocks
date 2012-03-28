@@ -84,6 +84,8 @@ public class Core extends JavaPlugin {
 
     private CommandList commandList;
 
+    private Timer timer = new Timer();
+
     public final static String NAME = "16Blocks";
 
     @Override
@@ -92,6 +94,7 @@ public class Core extends JavaPlugin {
         this.ticketDatabaseManager.closeConnection();
         checkTread.saveCheckTickets();
         Settings.saveSettings(this.getDataFolder());
+        timer.cancel();
         TextUtils.logInfo("Disabled!");
     }
 
@@ -223,9 +226,8 @@ public class Core extends JavaPlugin {
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
         scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
 
-        Timer t = new Timer();
         // Writing JSON with online player
-        t.schedule(new JSONThread(this.areaManager), 1000L * 5L);
+        timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
 
         // Broadcasting information to player
         scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
