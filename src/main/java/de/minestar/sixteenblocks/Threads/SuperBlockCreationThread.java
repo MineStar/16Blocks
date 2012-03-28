@@ -3,8 +3,10 @@ package de.minestar.sixteenblocks.Threads;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 
@@ -33,8 +35,10 @@ public class SuperBlockCreationThread implements Runnable {
         if (TaskID == -9999)
             return;
 
-        if (this.blockList.isEmpty())
+        if (this.blockList.isEmpty()) {
+            this.cancelTask();
             return;
+        }
 
         synchronized (this.blockList) {
             StructureBlock thisBlock = null;
@@ -49,6 +53,12 @@ public class SuperBlockCreationThread implements Runnable {
                 }
             }
         }
+        this.cancelTask();
+    }
+
+    private void cancelTask() {
+        Bukkit.getScheduler().cancelTask(this.TaskID);
+        Core.getInstance().getAreaManager().decrementThreads();
         System.out.println("---------------------");
         System.out.println("EXTENSION READY!");
         System.out.println("---------------------");
