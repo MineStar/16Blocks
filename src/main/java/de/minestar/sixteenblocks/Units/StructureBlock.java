@@ -56,4 +56,8 @@ public class StructureBlock {
     public StructureBlock clone(int baseX, int baseZ) {
         return new StructureBlock(baseX + x, y, baseZ + z, TypeID, SubID);
     }
+
+    public StructureBlock clone(int baseX, int baseY, int baseZ) {
+        return new StructureBlock(baseX + x, baseY + y, baseZ + z, TypeID, SubID);
+    }
 }

@@ -37,7 +37,6 @@ public class Structure {
         World world = Bukkit.getWorlds().get(0);
         BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(EnumDirection.NORMAL));
         thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
-
     }
 
     public void createStructureWithSign(int zoneX, int zoneZ, Player player) {
@@ -134,6 +133,14 @@ public class Structure {
         ArrayList<StructureBlock> clone = new ArrayList<StructureBlock>(this.blockList.get(direction).size());
         for (StructureBlock item : this.blockList.get(direction)) {
             clone.add(item.clone(baseX, baseZ));
+        }
+        return clone;
+    }
+
+    public ArrayList<StructureBlock> getBlocksForExtension(EnumDirection direction, int baseX, int baseY, int baseZ) {
+        ArrayList<StructureBlock> clone = new ArrayList<StructureBlock>(this.blockList.get(direction).size());
+        for (StructureBlock item : this.blockList.get(direction)) {
+            clone.add(item.clone(baseX, baseY, baseZ));
         }
         return clone;
     }

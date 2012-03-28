@@ -74,15 +74,17 @@ public class AreaManager {
                 maxZ = thisZone.getZ();
 
             if (currentRow != thisZone.getZ()) {
-                ZoneXZ leftZone = ZoneXZ.fromCoordinates(Settings.getSkinsLeftOld(), thisZone.getZ());
-                ZoneXZ rightZone = ZoneXZ.fromCoordinates(-Settings.getSkinsRightOld(), thisZone.getZ());
-                int baseXLeft = leftZone.getBaseX();
-                int baseXRight = rightZone.getBaseX();
+                int baseXLeft = ZoneXZ.getBaseX(Settings.getSkinsLeftOld() + 1, thisZone.getZ());
+                int baseXRight = ZoneXZ.getBaseX(-(Settings.getSkinsRightOld()), thisZone.getZ()) - 1;
+
+                if (thisZone.getZ() % 2 != 0) {
+                    baseXLeft -= (Settings.getAreaSizeX());
+                }
 
                 int baseZ = thisZone.getBaseZ();
                 Block thisBlock;
-                for (int z = 0; z <= Settings.getAreaSizeZ(); z++) {
-                    for (int x = 0; x <= Settings.getAreaSizeX() * 2; x++) {
+                for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
+                    for (int x = 0; x < Settings.getAreaSizeX(); x++) {
                         thisWorld.getBlockAt(baseXLeft + x, 2, baseZ + z).setTypeId(Material.DIRT.getId(), false);
                         thisWorld.getBlockAt(baseXLeft + x, 3, baseZ + z).setTypeId(Material.GRASS.getId(), false);
                         thisBlock = thisWorld.getBlockAt(baseXLeft + x, 4, baseZ + z);
@@ -103,13 +105,7 @@ public class AreaManager {
             }
             this.createSingleZone(thisZone);
         }
-
-        // CREATE STREETS
-        for (int thisRow = 0; thisRow <= maxZ; thisRow++) {
-            this.createBasicStructures(thisRow);
-        }
     }
-
     public void incrementThreads() {
         this.runningThreads++;
     }
@@ -161,33 +157,56 @@ public class AreaManager {
     public void createSingleZone(ZoneXZ thisZone) {
         SuperBlockCreationThread extendThread = Core.getInstance().getExtendThread();
 
+        int x = thisZone.getX();
+        int row = thisZone.getZ();
         int baseX = thisZone.getBaseX();
+        if (row % 2 != 0) {
+            baseX -= Settings.getAreaSizeX();
+        }
         int baseZ = thisZone.getBaseZ();
 
-        if (thisZone.getZ() % 2 != 0) {
-            if (thisZone.getX() < Settings.getSkinsLeft()) {
-                extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX, baseZ));
-                extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(baseX, baseZ - Settings.getAreaSizeZ()));
+        // CREATE SOCKET
+        extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX, baseZ));
+
+        // CREATE BACK-STREETS
+        if (row % 2 != 0) {
+            // UNEVEN ROWS
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(ZoneXZ.getBaseX(x - 1, row - 1), ZoneXZ.getBaseZ(row - 1)));
+            if (thisZone.getX() >= Settings.getSkinsLeft()) {
+                extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(ZoneXZ.getBaseX(x, row - 1), ZoneXZ.getBaseZ(row - 1)));
             }
-            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(baseX - Settings.getAreaSizeX(), baseZ - Settings.getAreaSizeZ()));
         } else {
-            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX, baseZ));
-            if (thisZone.getX() > -Settings.getSkinsRight()) {
+            // EVEN ROWS
+            if (row != 0 || (thisZone.getX() >= -Settings.getSkinsRight())) {
                 extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(baseX, baseZ - Settings.getAreaSizeZ()));
             }
         }
-    }
 
-    public void createBasicStructures(int row) {
+        // CREATE SIDE-STREETS
         if (row == 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
-        } else if (row % 2 != 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+            // ROW 0
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_CORNER).getBlocksForExtension(ZoneXZ.getBaseX(-Settings.getSkinsRight() - 1, row - 1), ZoneXZ.getBaseZ(row - 1)));
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_CORNER).getBlocksForExtension(EnumDirection.FLIP_X, ZoneXZ.getBaseX(Settings.getSkinsLeft(), row - 1), ZoneXZ.getBaseZ(row - 1)));
+        }
+
+        if (row % 2 != 0) {
+            // UNEVEN ROWS
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).getBlocksForExtension(ZoneXZ.getBaseX(-Settings.getSkinsRight() - 1, row), ZoneXZ.getBaseZ(row)));
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).getBlocksForExtension(EnumDirection.FLIP_X, ZoneXZ.getBaseX(Settings.getSkinsLeft(), row), ZoneXZ.getBaseZ(row)));
+            // FIX WRONG BLOCKS
+            if (x == -Settings.getSkinsRightOld()) {
+                int extendX = ZoneXZ.getBaseX(x, row - 1);
+                int extendZ = ZoneXZ.getBaseZ(row);
+                extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(extendX, extendZ));
+            }
+            if (x - 1 == Settings.getSkinsLeftOld()) {
+                extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(ZoneXZ.getBaseX(x - 1, row - 1), ZoneXZ.getBaseZ(row)));
+            }
+
         } else {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+            // EVEN ROWS
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).getBlocksForExtension(ZoneXZ.getBaseX(-Settings.getSkinsRight() - 1, row), ZoneXZ.getBaseZ(row)));
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).getBlocksForExtension(EnumDirection.FLIP_X, ZoneXZ.getBaseX(Settings.getSkinsLeft() + 1, row), ZoneXZ.getBaseZ(row)));
         }
     }
 
