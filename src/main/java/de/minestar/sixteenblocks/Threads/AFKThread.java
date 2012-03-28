@@ -31,7 +31,7 @@ public class AFKThread implements Runnable {
     private Map<String, Long> afkTimes = new HashMap<String, Long>(Bukkit.getMaxPlayers());
 
     // 10 Minutes
-    private static final long AFK_TIMER = 1000L * 60L * 15L;
+    private static final long AFK_TIMER = 1000L * 60L * 5L;
 
     @Override
     public void run() {
