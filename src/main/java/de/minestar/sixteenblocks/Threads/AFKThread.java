@@ -24,6 +24,8 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import de.minestar.sixteenblocks.Core.Core;
+
 public class AFKThread implements Runnable {
 
     private Map<String, Long> afkTimes = new HashMap<String, Long>(Bukkit.getMaxPlayers());
@@ -41,6 +43,9 @@ public class AFKThread implements Runnable {
         Long lastActivity = Long.MIN_VALUE;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            // Ignore supporter
+            if (Core.isSupporter(player))
+                continue;
             lastActivity = afkTimes.get(player.getName());
             // if player was checked before
             if (lastActivity != null)
@@ -53,10 +58,14 @@ public class AFKThread implements Runnable {
     }
 
     public void takeAktion(Player player) {
-        afkTimes.put(player.getName(), System.currentTimeMillis());
+        // Ignore supporter
+        if (!Core.isSupporter(player))
+            afkTimes.put(player.getName(), System.currentTimeMillis());
     }
 
     public void removePlayer(Player player) {
-        afkTimes.remove(player.getName());
+        // Ignore supporter
+        if (!Core.isSupporter(player))
+            afkTimes.remove(player.getName());
     }
 }
