@@ -19,8 +19,9 @@ public class MovementListener implements Listener {
 
     private AFKThread afkThread;
 
-    public MovementListener(WorldManager worldManager) {
+    public MovementListener(WorldManager worldManager, AFKThread afkThread) {
         this.worldManager = worldManager;
+        this.afkThread = afkThread;
     }
 
     /**

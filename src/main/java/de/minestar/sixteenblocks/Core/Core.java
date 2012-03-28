@@ -151,7 +151,7 @@ public class Core extends JavaPlugin {
         this.baseListener = new BaseListener();
         this.blockListener = new BlockListener(this.areaManager, this.afkThread);
         this.chatListener = new ChatListener(this.filter, this.afkThread);
-        this.movementListener = new MovementListener(this.worldManager);
+        this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.loginListener = new LoginListener();
 
         // REGISTER LISTENERS
