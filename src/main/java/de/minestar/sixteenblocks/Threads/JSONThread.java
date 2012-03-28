@@ -21,6 +21,7 @@ package de.minestar.sixteenblocks.Threads;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.TimerTask;
 
 import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
@@ -30,7 +31,7 @@ import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 
-public class JSONThread implements Runnable {
+public class JSONThread extends TimerTask {
 
     private File JSONFile = new File(Settings.getJSONPath());
     private AreaManager aManager;
@@ -42,17 +43,25 @@ public class JSONThread implements Runnable {
     @SuppressWarnings("unchecked")
     @Override
     public void run() {
-        try {
-            JSONObject json = new JSONObject();
-            json.put("ConnectedUsers", Bukkit.getOnlinePlayers().length);
-            json.put("Skins", aManager.getUsedAreaCount());
-            json.put("Slots", Core.getAllowedMaxPlayer());
-            BufferedWriter bWriter = new BufferedWriter(new FileWriter(JSONFile));
-            bWriter.write(json.toJSONString());
-            bWriter.flush();
-            bWriter.close();
-        } catch (Exception e) {
-            ConsoleUtils.printException(e, Core.NAME, "Can't save JSON");
-        }
+        // Create sync thread to use notthreadsafe methods
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("ConnectedUsers", Bukkit.getOnlinePlayers().length);
+                    json.put("Skins", aManager.getUsedAreaCount());
+                    json.put("Slots", Core.getAllowedMaxPlayer());
+                    BufferedWriter bWriter = new BufferedWriter(new FileWriter(JSONFile));
+                    bWriter.write(json.toJSONString());
+                    bWriter.flush();
+                    bWriter.close();
+                } catch (Exception e) {
+                    ConsoleUtils.printException(e, Core.NAME, "Can't save JSON");
+                }
+            }
+        });
+
     }
 }

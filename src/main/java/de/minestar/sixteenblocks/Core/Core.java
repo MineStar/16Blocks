@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -217,14 +218,15 @@ public class Core extends JavaPlugin {
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
         scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
 
+        Timer t = new Timer();
         // Writing JSON with online player
-        scheduler.scheduleAsyncRepeatingTask(this, new JSONThread(this.areaManager), 20 * 10, 20 * 10);
+        t.schedule(new JSONThread(this.areaManager), 1000L * 5L);
+
         // Broadcasting information to player
         scheduler.scheduleSyncRepeatingTask(this, new BroadcastThread(this.getDataFolder()), 20 * 60, 20 * 60 * 5);
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }
-
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         commandList.handleCommand(sender, label, args);
