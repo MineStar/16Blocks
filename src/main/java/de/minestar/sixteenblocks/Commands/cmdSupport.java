@@ -35,7 +35,7 @@ public class cmdSupport extends AbstractCommand {
     public void execute(String[] args, Player player) {
 
         // CHECK: PLAYER IS OP OR SUPPORTER
-        if (!Core.isSupporter(player)) {
+        if (!player.isOp()) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }

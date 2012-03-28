@@ -239,6 +239,7 @@ public class Core extends JavaPlugin {
     }
 
     public boolean toggleSupporter(String playerName) {
+        playerName = playerName.toLowerCase();
         if (!Core.isSupporter(playerName))
             this.addSupporter(playerName);
         else
@@ -256,10 +257,14 @@ public class Core extends JavaPlugin {
         try {
             f.createNewFile();
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(f));
+            int count = 0;
             for (String name : Core.supporter) {
                 bWriter.write(name + System.getProperty("line.separator"));
+                count++;
             }
-            ConsoleUtils.printInfo(NAME, "Saved " + supporter.size() + " supporter!");
+            ConsoleUtils.printInfo(NAME, "Saved " + count + " supporter!");
+            bWriter.flush();
+            bWriter.close();
         } catch (Exception e) {
             ConsoleUtils.printException(e, NAME, "Can't save support file!");
         }
