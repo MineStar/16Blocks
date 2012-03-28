@@ -1,8 +1,10 @@
 package de.minestar.sixteenblocks.Core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,6 +37,7 @@ import de.minestar.sixteenblocks.Commands.cmdSlots;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
+import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
@@ -187,6 +190,7 @@ public class Core extends JavaPlugin {
                         new cmdUnban        ("/unban",      "<Playername>",             ""),
                         new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
+                        new cmdSupport      ("/support",    "<Playername>",             ""),  
                         
                         // BUG REPORTS
                         new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
@@ -226,9 +230,45 @@ public class Core extends JavaPlugin {
         return areaManager;
     }
 
+    public void addSupporter(String playerName) {
+        Core.supporter.add(playerName.toLowerCase());
+    }
+
+    public void removeSupporter(String playerName) {
+        Core.supporter.remove(playerName.toLowerCase());
+    }
+
+    public boolean toggleSupporter(String playerName) {
+        if (!Core.isSupporter(playerName))
+            this.addSupporter(playerName);
+        else
+            this.removeSupporter(playerName);
+        this.saveSupporter();
+        return Core.isSupporter(playerName);
+    }
+
+    private void saveSupporter() {
+        File f = new File(getDataFolder(), "supporter.txt");
+        if (f.exists()) {
+            f.delete();
+        }
+
+        try {
+            f.createNewFile();
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(f));
+            for (String name : Core.supporter) {
+                bWriter.write(name + System.getProperty("line.separator"));
+            }
+            ConsoleUtils.printInfo(NAME, "Saved " + supporter.size() + " supporter!");
+        } catch (Exception e) {
+            ConsoleUtils.printException(e, NAME, "Can't save support file!");
+        }
+    }
+
     private void loadSupporter() {
         File f = new File(getDataFolder(), "supporter.txt");
         supporter = new HashSet<String>(16);
+
         if (!f.exists()) {
             ConsoleUtils.printError(NAME, "Can't find supporter file! Only ops can execute support commands!");
             return;
@@ -238,8 +278,9 @@ public class Core extends JavaPlugin {
             BufferedReader bReader = new BufferedReader(new FileReader(f));
             String line = "";
             while ((line = bReader.readLine()) != null) {
+                line = line.trim().replace(" ", "");
                 if (!line.isEmpty())
-                    supporter.add(line.toLowerCase());
+                    this.addSupporter(line);
             }
             ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " supporter!");
         } catch (Exception e) {

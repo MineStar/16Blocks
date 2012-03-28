@@ -38,6 +38,9 @@ commands:
   unban:
     description: Unban a player
     usage: /unban <Player>  
+  support:
+    description: Toggle a supporter
+    usage: /support <Player>      
   save:
     description: Saves the current area as a structure
     usage: /save <Name>
