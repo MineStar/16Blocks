@@ -50,7 +50,7 @@ public class AFKThread implements Runnable {
             // if player was checked before
             if (lastActivity != null) {
                 if (currentTime - lastActivity >= AFK_TIMER)
-                    player.kickPlayer("You have been AFK!");
+                    player.kickPlayer("Y U NO MOVE?");
 
             } else {
                 afkTimes.put(player.getName(), currentTime);
