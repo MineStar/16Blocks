@@ -58,16 +58,17 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 9, Color.CYAN));
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 10, new Color(106, 50, 154)));
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 11, Color.BLUE));
-        blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 12, new Color(92, 58, 36)));
+        blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 12, new Color(94, 55, 41)));
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 13, Color.GREEN));
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 14, Color.RED));
+        blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 14, new Color(104, 0, 31)));
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 15, Color.BLACK));
 
         // WOOD
         blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 0, new Color(180, 144, 90)));
         blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 1, new Color(120, 88, 54)));
-        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 2, new Color(184, 135, 100)));
-        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 3, new Color(215, 193, 193)));
+        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 2, new Color(238, 180, 159)));
+        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 3, new Color(184, 135, 100)));
 
         // OTHER
         blockData.add(new ColorBlock(Material.OBSIDIAN.getId(), new Color(16, 16, 24)));
@@ -75,7 +76,7 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.ICE.getId(), new Color(170, 200, 255)));
         blockData.add(new ColorBlock(Material.GOLD_BLOCK.getId(), new Color(255, 255, 128)));
         blockData.add(new ColorBlock(Material.CLAY.getId(), new Color(159, 163, 174)));
-        blockData.add(new ColorBlock(Material.NETHER_BRICK.getId(), new Color(70, 38, 44)));
+        blockData.add(new ColorBlock(Material.NETHER_BRICK.getId(), new Color(70, 10, 20)));
         blockData.add(new ColorBlock(Material.SANDSTONE.getId(), (byte) 3, new Color(230, 223, 178)));
         blockData.add(new ColorBlock(Material.LAPIS_BLOCK.getId(), new Color(42, 79, 140)));
         blockData.add(new ColorBlock(Material.SNOW_BLOCK.getId(), Color.WHITE));
