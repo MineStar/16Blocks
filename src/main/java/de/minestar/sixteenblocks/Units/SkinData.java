@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -33,7 +34,6 @@ public class SkinData {
 
     private static List<ColorBlock> blockData;
 
-    private final String fileName;
     private final File file;
     private boolean loaded = false;
     private boolean updated = false;
@@ -64,7 +64,7 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.WOOL.getId(), (byte) 15, Color.BLACK));
 
         // WOOD
-        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 0, new Color(48, 31, 12)));
+        blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 0, new Color(180, 144, 90)));
         blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 1, new Color(120, 88, 54)));
         blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 2, new Color(184, 135, 100)));
         blockData.add(new ColorBlock(Material.WOOD.getId(), (byte) 3, new Color(215, 193, 193)));
@@ -81,14 +81,17 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.SNOW_BLOCK.getId(), Color.WHITE));
     }
 
-    public SkinData(String fileName) {
+    public SkinData(File file) {
         if (blockData == null) {
             initBlockData();
         }
-        this.fileName = fileName;
-        this.file = new File(this.fileName);
+        this.file = file;
         this.loadData();
         this.createColorTable();
+    }
+
+    public void createSkin(Location location) {
+        this.createSkin(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     public void createSkin(World world, int x, int y, int z) {
@@ -101,7 +104,7 @@ public class SkinData {
         // TODO: BUILD A REAL SKIN
         for (int thisX = 0; thisX < this.width; thisX++) {
             for (int thisY = 0; thisY < this.height; thisY++) {
-                world.getBlockAt(x + thisX, y + thisY, z).setTypeIdAndData(this.blockTypes[x][y].getTypeID(), this.blockTypes[x][y].getSubID(), false);
+                world.getBlockAt(x + thisX, y + thisY, z).setTypeIdAndData(this.blockTypes[thisX][thisY].getTypeID(), this.blockTypes[thisX][thisY].getSubID(), false);
             }
         }
     }
@@ -149,7 +152,7 @@ public class SkinData {
             this.blockTypes = new ColorBlock[this.width][this.height];
             for (int x = 0; x < this.width; x++) {
                 for (int y = 0; y < this.height; y++) {
-                    this.pixelData[x][y] = new Color(img.getRGB(x, y));
+                    this.pixelData[x][this.height - y - 1] = new Color(img.getRGB(x, y));
                 }
             }
             this.loaded = true;
