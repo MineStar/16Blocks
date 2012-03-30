@@ -21,8 +21,8 @@ public class cmdMe extends AbstractCommand {
         // CHECK: PLAYER IS OP OR SUPPORTER
 
         // TEST: BUILD SKIN
-//         SkinData thisSkin = new SkinData(new File(Core.getInstance().getDataFolder(), "GeMoschen.png"));
-//         thisSkin.createSkin(player.getLocation());
+//        SkinData thisSkin = new SkinData(new File(Core.getInstance().getDataFolder(), "GeMoschen.png"));
+//        thisSkin.createSkin(player.getLocation());
         // END TEST
 
         if (!Core.isSupporter(player)) {
