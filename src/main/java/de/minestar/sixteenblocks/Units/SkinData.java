@@ -76,6 +76,7 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.OBSIDIAN.getId(), new Color(43, 23, 71)));
         blockData.add(new ColorBlock(Material.OBSIDIAN.getId(), new Color(16, 16, 24)));
         blockData.add(new ColorBlock(Material.STONE.getId(), Color.GRAY));
+        blockData.add(new ColorBlock(Material.ICE.getId(), new Color(140, 152, 248)));
         blockData.add(new ColorBlock(Material.ICE.getId(), new Color(170, 200, 255)));
         blockData.add(new ColorBlock(Material.GOLD_BLOCK.getId(), new Color(255, 255, 128)));
         blockData.add(new ColorBlock(Material.CLAY.getId(), new Color(159, 163, 174)));
@@ -85,7 +86,6 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.LAPIS_BLOCK.getId(), new Color(42, 79, 140)));
         blockData.add(new ColorBlock(Material.SNOW_BLOCK.getId(), Color.WHITE));
     }
-
     public SkinData(File file) {
         if (blockData == null) {
             initBlockData();
@@ -108,14 +108,67 @@ public class SkinData {
         this.buildLegs(world, x, y, z);
         this.buildChest(world, x, y + 12, z);
         this.buildArms(world, x - 4, y + 12, z);
+        this.buildHead(world, x, y + 24, z - 2);
+    }
 
-//        // CREATE SKIN
-        // TODO: BUILD A REAL SKIN
-        for (int thisX = 0; thisX < this.width; thisX++) {
-            for (int thisY = 0; thisY < this.height; thisY++) {
-                // world.getBlockAt(x + thisX, y + thisY, z +
-                // 2).setTypeIdAndData(this.blockTypes[thisX][thisY].getTypeID(),
-                // this.blockTypes[thisX][thisY].getSubID(), false);
+    private void buildHead(World world, int x, int y, int z) {
+        // FRONT
+        int pixelOffSetX = 15;
+        int pixelOffSetY = 16;
+        for (int thisX = 0; thisX < 8; thisX++) {
+            for (int thisY = 0; thisY < 8; thisY++) {
+                world.getBlockAt(x + thisX, y + thisY, z).setTypeIdAndData(this.blockTypes[pixelOffSetX - thisX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[pixelOffSetX - thisX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // BACK
+        pixelOffSetX = 24;
+        for (int thisX = 0; thisX < 8; thisX++) {
+            for (int thisY = 0; thisY < 8; thisY++) {
+                world.getBlockAt(x + thisX, y + thisY, z + 7).setTypeIdAndData(this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // RIGHT
+        pixelOffSetX = 16;
+        for (int thisX = 1; thisX < 7; thisX++) {
+            for (int thisY = 0; thisY < 8; thisY++) {
+                world.getBlockAt(x, y + thisY, z + thisX).setTypeIdAndData(this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // LEFT
+        pixelOffSetX = 7;
+        for (int thisX = 1; thisX < 7; thisX++) {
+            for (int thisY = 0; thisY < 8; thisY++) {
+                world.getBlockAt(x + 7, y + thisY, z + thisX).setTypeIdAndData(this.blockTypes[pixelOffSetX - thisX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[pixelOffSetX - thisX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // TOP
+        pixelOffSetX = 8;
+        pixelOffSetY = 24;
+        for (int thisX = 1; thisX < 7; thisX++) {
+            for (int thisY = 1; thisY < 7; thisY++) {
+                world.getBlockAt(x + thisX, y + 7, z + thisY).setTypeIdAndData(this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // BOTTOM - FRONT
+        pixelOffSetX = 8;
+        pixelOffSetY = 22;
+        for (int thisX = 1; thisX < 7; thisX++) {
+            for (int thisY = 0; thisY < 1; thisY++) {
+                world.getBlockAt(x + thisX, y, z + 1).setTypeIdAndData(this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getSubID(), false);
+            }
+        }
+
+        // BOTTOM - BACK
+        pixelOffSetX = 8;
+        pixelOffSetY = 22;
+        for (int thisX = 1; thisX < 7; thisX++) {
+            for (int thisY = 0; thisY < 1; thisY++) {
+                world.getBlockAt(x + thisX, y, z + 6).setTypeIdAndData(this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getTypeID(), this.blockTypes[thisX + pixelOffSetX][thisY + pixelOffSetY].getSubID(), false);
             }
         }
     }
