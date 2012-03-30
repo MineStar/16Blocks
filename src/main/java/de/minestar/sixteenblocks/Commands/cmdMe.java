@@ -10,7 +10,7 @@ public class cmdMe extends AbstractCommand {
 
     public cmdMe(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.description = "Ban a player and delete the area";
+        this.description = "Catch /me";
     }
 
     @Override

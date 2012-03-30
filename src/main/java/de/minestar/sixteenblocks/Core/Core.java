@@ -30,6 +30,7 @@ import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
 import de.minestar.sixteenblocks.Commands.cmdMute;
+import de.minestar.sixteenblocks.Commands.cmdRebuild;
 import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdRow;
@@ -104,6 +105,9 @@ public class Core extends JavaPlugin {
     public void onEnable() {
         // INIT INSTANCE
         instance = this;
+
+        // CREATE SKIN-DIR
+        new File(this.getDataFolder(), "/skins/").mkdirs();
 
         // INIT SETTINGS
         Settings.init(this.getDataFolder());
@@ -190,6 +194,7 @@ public class Core extends JavaPlugin {
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        
                         new cmdTP           ("/tp",         "<Player>",                 ""),  
                         new cmdReload       ("/reload",     "",                         ""),  
+                        new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),                          
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),

@@ -77,6 +77,9 @@ commands:
   reload:
     description: Reload the server
     usage: /reload
+  rebuild:
+    description: Rebuild a skin
+    usage: /rebuild    
   slots:
     description: Set Slots 
     usage: /slots <Number>

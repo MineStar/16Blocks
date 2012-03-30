@@ -86,6 +86,7 @@ public class SkinData {
         blockData.add(new ColorBlock(Material.LAPIS_BLOCK.getId(), new Color(42, 79, 140)));
         blockData.add(new ColorBlock(Material.SNOW_BLOCK.getId(), Color.WHITE));
     }
+
     public SkinData(File file) {
         if (blockData == null) {
             initBlockData();
