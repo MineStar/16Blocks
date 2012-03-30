@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
+import de.minestar.sixteenblocks.Commands.cmdAdmin;
 import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
@@ -78,6 +79,7 @@ public class Core extends JavaPlugin {
     private ChatFilter filter;
 
     private static Set<String> supporter;
+    private Set<Player> connectedSupporter = new HashSet<Player>();
 
     private CheckTicketThread checkTread;
     private SuperBlockCreationThread extendThread;
@@ -163,7 +165,7 @@ public class Core extends JavaPlugin {
         this.blockListener = new BlockListener(this.areaManager, this.afkThread);
         this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
-        this.loginListener = new LoginListener(this.afkThread);
+        this.loginListener = new LoginListener(this.afkThread, this.connectedSupporter);
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
@@ -218,9 +220,13 @@ public class Core extends JavaPlugin {
                         // SET SLOTS
                         new cmdSlots        ("/slots",      "<Number>",                 ""),
                         
+                        // BROADCASTS
                         new cmdSay          ("/say",        "<Message>",                ""),
                         new cmdSay          ("/cast",       "<Message>",                ""),
-                        new cmdSay          ("/broadcast",  "<Message>",                "")
+                        new cmdSay          ("/broadcast",  "<Message>",                ""),
+                        
+                        // LOOKING FOR SUPPORTER
+                        new cmdAdmin        ("/admins",     "",                         "", this.connectedSupporter)
         );
         /* @formatter:on */
     }

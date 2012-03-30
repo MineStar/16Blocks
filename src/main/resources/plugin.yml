@@ -92,3 +92,6 @@ commands:
   cast:
     description: Broadcast a message 
     usage: /cast <Message>
+  admins:
+    description: Show list of connected supporter
+    usage: /admins
