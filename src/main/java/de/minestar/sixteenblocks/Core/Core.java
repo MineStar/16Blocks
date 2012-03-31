@@ -31,6 +31,7 @@ import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
 import de.minestar.sixteenblocks.Commands.cmdMessage;
 import de.minestar.sixteenblocks.Commands.cmdMute;
+import de.minestar.sixteenblocks.Commands.cmdNumberize;
 import de.minestar.sixteenblocks.Commands.cmdRebuild;
 import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
@@ -53,6 +54,7 @@ import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.NumberManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
@@ -75,6 +77,7 @@ public class Core extends JavaPlugin {
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
+    private NumberManager numberManager;
     private MailHandler mHandler;
     private ChatFilter filter;
 
@@ -157,6 +160,7 @@ public class Core extends JavaPlugin {
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
         this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
+        this.numberManager = new NumberManager();
     }
 
     private void registerListeners() {
@@ -196,7 +200,8 @@ public class Core extends JavaPlugin {
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        
                         new cmdTP           ("/tp",         "<Player>",                 ""),  
                         new cmdReload       ("/reload",     "",                         ""),  
-                        new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),                          
+                        new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),    
+                        new cmdNumberize    ("/numberize",    "",                       "", this.numberManager, this.areaManager),              
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
@@ -248,7 +253,7 @@ public class Core extends JavaPlugin {
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }
-    
+
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         commandList.handleCommand(sender, label, args);

@@ -11,6 +11,9 @@ commands:
   start:
     description: Gives you an random zone
     usage: /start  
+  numberize:
+    description: Numberize the rows
+    usage: /numberize      
   me:
     description: Fix it
     usage: /me     

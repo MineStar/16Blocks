@@ -81,10 +81,11 @@ public class AreaManager {
                     baseXLeft -= (Settings.getAreaSizeX());
                 }
 
+                // REBASE ZONES
                 int baseZ = thisZone.getBaseZ();
                 Block thisBlock;
                 for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
-                    for (int x = 0; x < Settings.getAreaSizeX(); x++) {
+                    for (int x = 0; x < Settings.getAreaSizeX() * 2; x++) {
                         thisWorld.getBlockAt(baseXLeft + x, 2, baseZ + z).setTypeId(Material.DIRT.getId(), false);
                         thisWorld.getBlockAt(baseXLeft + x, 3, baseZ + z).setTypeId(Material.GRASS.getId(), false);
                         thisBlock = thisWorld.getBlockAt(baseXLeft + x, 4, baseZ + z);
@@ -575,5 +576,26 @@ public class AreaManager {
             return this.unusedAreaList.get(minZ + ":" + minX);
         else
             return (SkinArea) this.unusedAreaList.values().toArray()[0];
+    }
+
+    /**
+     * @return the lastRow
+     */
+    public int getLastRow() {
+        int last = Integer.MIN_VALUE;
+
+        // UNUSED AREAS
+        for (SkinArea thisArea : this.unusedAreaList.values()) {
+            if (thisArea.getZoneXZ().getZ() > last)
+                last = thisArea.getZoneXZ().getZ();
+        }
+
+        // USED AREAS
+        for (SkinArea thisArea : this.usedAreaList.values()) {
+            if (thisArea.getZoneXZ().getZ() > last)
+                last = thisArea.getZoneXZ().getZ();
+        }
+
+        return last;
     }
 }
