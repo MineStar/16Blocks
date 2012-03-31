@@ -27,7 +27,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 
 public class BroadcastRunningThread implements Runnable {
 
-    private Random rand;
+    private Random rand = new Random();
     private AreaManager aManager;
     private String message;
 
