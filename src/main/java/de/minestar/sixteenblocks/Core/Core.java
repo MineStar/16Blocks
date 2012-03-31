@@ -243,11 +243,12 @@ public class Core extends JavaPlugin {
         timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
 
         // Broadcasting information to player
-        broadcastTimer.schedule(new BroadcastThread(this.getDataFolder(), this.areaManager), (long) (1000 * 60), (long) (1000 * 60 * 3));
+        broadcastTimer.schedule(new BroadcastThread(this.getDataFolder(), this.areaManager), (long) (1000 * 60), (long) (1000 * 60 * 5));
 
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
     }
+    
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         commandList.handleCommand(sender, label, args);
