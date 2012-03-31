@@ -83,7 +83,6 @@ public class Core extends JavaPlugin {
     private ChatFilter filter;
 
     private static Set<String> supporter;
-    private Set<Player> connectedSupporter = new HashSet<Player>();
 
     private CheckTicketThread checkTread;
     private SuperBlockCreationThread extendThread;
@@ -177,7 +176,7 @@ public class Core extends JavaPlugin {
         this.blockListener = new BlockListener(this.areaManager, this.afkThread);
         this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
-        this.loginListener = new LoginListener(this.afkThread, this.connectedSupporter);
+        this.loginListener = new LoginListener(this.afkThread);
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
@@ -240,7 +239,7 @@ public class Core extends JavaPlugin {
                         new cmdSay          ("/broadcast",  "<Message>",                ""),
                         
                         // LOOKING FOR SUPPORTER
-                        new cmdAdmin        ("/admins",     "",                         "", this.connectedSupporter)
+                        new cmdAdmin        ("/admins",     "",                         "")
         );
         /* @formatter:on */
     }

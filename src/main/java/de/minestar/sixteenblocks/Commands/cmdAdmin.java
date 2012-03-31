@@ -18,8 +18,7 @@
 
 package de.minestar.sixteenblocks.Commands;
 
-import java.util.Set;
-
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -28,11 +27,8 @@ import de.minestar.sixteenblocks.Core.TextUtils;
 
 public class cmdAdmin extends AbstractCommand {
 
-    private Set<Player> connectedSupporter;
-
-    public cmdAdmin(String syntax, String arguments, String node, Set<Player> connectedSupporter) {
+    public cmdAdmin(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.connectedSupporter = connectedSupporter;
 
         this.description = "Show current connected supporter";
     }
@@ -48,12 +44,15 @@ public class cmdAdmin extends AbstractCommand {
 
         TextUtils.sendSuccess(player, "Current connected supporter:");
         StringBuilder sBuilder = new StringBuilder(256);
-        for (Player supporter : connectedSupporter) {
-            sBuilder.append(supporter.getName());
-            sBuilder.append(" ,");
+        Player[] onlinePlayer = Bukkit.getOnlinePlayers();
+        for (Player online : onlinePlayer) {
+            if (Core.isSupporter(online)) {
+                sBuilder.append(online.getName());
+                sBuilder.append(" ,");
+            }
+            sBuilder.delete(sBuilder.length() - 2, sBuilder.length());
         }
+
         TextUtils.sendInfo(player, sBuilder.toString());
-
     }
-
 }

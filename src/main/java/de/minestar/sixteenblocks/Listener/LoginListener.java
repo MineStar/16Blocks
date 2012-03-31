@@ -18,13 +18,9 @@
 
 package de.minestar.sixteenblocks.Listener;
 
-import java.util.Set;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -37,11 +33,9 @@ import de.minestar.sixteenblocks.Threads.AFKThread;
 public class LoginListener implements Listener {
 
     private AFKThread afkThread;
-    private Set<Player> connectedSupporter;
 
-    public LoginListener(AFKThread afkThread, Set<Player> connectedSupporter) {
+    public LoginListener(AFKThread afkThread) {
         this.afkThread = afkThread;
-        this.connectedSupporter = connectedSupporter;
     }
 
     @EventHandler
@@ -54,12 +48,6 @@ public class LoginListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (Core.isSupporter(event.getPlayer()))
-            connectedSupporter.add(event.getPlayer());
-    }
-
-    @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         event.setMaxPlayers(Bukkit.getMaxPlayers() - Settings.getSupporterBuffer());
     }
@@ -67,7 +55,5 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         afkThread.removePlayer(event.getPlayer());
-        if (Core.isSupporter(event.getPlayer()))
-            connectedSupporter.remove(event.getPlayer());
     }
 }
