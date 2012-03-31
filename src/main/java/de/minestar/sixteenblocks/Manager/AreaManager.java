@@ -185,18 +185,19 @@ public class AreaManager {
         }
         int baseZ = thisZone.getBaseZ();
 
-        // CREATE SOCKET
-        extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX, baseZ));
-
         // CREATE BACK-STREETS
         if (row % 2 != 0) {
             // UNEVEN ROWS
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX + Settings.getAreaSizeX(), baseZ));
+
             extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(ZoneXZ.getBaseX(x - 1, row - 1), ZoneXZ.getBaseZ(row - 1)));
             if (thisZone.getX() >= Settings.getSkinsLeft()) {
                 extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(ZoneXZ.getBaseX(x, row - 1), ZoneXZ.getBaseZ(row - 1)));
             }
         } else {
             // EVEN ROWS
+            extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).getBlocksForExtension(baseX, baseZ));
+
             if (row != 0 || (thisZone.getX() >= -Settings.getSkinsRight())) {
                 extendThread.addBlockList(this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).getBlocksForExtension(baseX, baseZ - Settings.getAreaSizeZ()));
             }

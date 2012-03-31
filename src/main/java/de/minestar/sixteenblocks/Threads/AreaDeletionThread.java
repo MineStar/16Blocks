@@ -71,7 +71,9 @@ public class AreaDeletionThread implements Runnable {
                     // DELETE SIGN
                     int x = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0) + (Settings.getAreaSizeX() >> 1);
                     int z = thisZone.getZ() * Settings.getAreaSizeZ() + 12;
-                    world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setType(Material.AIR);
+                    if (this.totalRemove) {
+                        world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setType(Material.AIR);
+                    }
 
                     // CANCEL TASK & UNBLOCK AREA
                     Bukkit.getScheduler().cancelTask(this.TaskID);
@@ -95,8 +97,9 @@ public class AreaDeletionThread implements Runnable {
                 // DELETE SIGN
                 int x = thisZone.getX() * Settings.getAreaSizeX() - (thisZone.getZ() % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0) + (Settings.getAreaSizeX() >> 1);
                 int z = thisZone.getZ() * Settings.getAreaSizeZ() + 12;
-                world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setType(Material.AIR);
-
+                if (this.totalRemove) {
+                    world.getBlockAt(x, Settings.getMinimumBuildY() - 1, z).setType(Material.AIR);
+                }
                 // CANCEL TASK & UNBLOCK AREA
                 Bukkit.getScheduler().cancelTask(this.TaskID);
                 if (this.totalRemove) {
