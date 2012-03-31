@@ -26,10 +26,13 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
@@ -49,12 +52,23 @@ public class cmdSlots extends AbstractCommand {
             return;
         }
 
+        setSlots(args, player);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+
+        setSlots(args, console);
+    }
+
+    private void setSlots(String[] args, CommandSender sender) {
+
         try {
             Integer maxPlayer = Integer.valueOf(args[0]);
             CraftServer server = (CraftServer) Bukkit.getServer();
             server.getHandle().maxPlayers = maxPlayer;
 
-            TextUtils.sendSuccess(player, "MaxPlayers set to " + maxPlayer + " !");
+            ChatUtils.writeSuccess(sender, "MaxPlayers set to " + maxPlayer + " !");
 
             // Store new maxPlayer in server.properties
             Properties p = new Properties();
@@ -68,7 +82,7 @@ public class cmdSlots extends AbstractCommand {
         } catch (IOException IOE) {
             ConsoleUtils.printException(IOE, "Can't update server.properties!");
         } catch (NumberFormatException e) {
-            TextUtils.sendError(player, args[0] + " is not a number!");
+            ChatUtils.writeError(sender, args[0] + " is not a number!");
         }
     }
 }

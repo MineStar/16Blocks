@@ -20,6 +20,7 @@ package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -42,6 +43,15 @@ public class cmdSay extends AbstractExtendedCommand {
             return;
         }
 
+        broadcast(args);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        broadcast(args);
+    }
+
+    private void broadcast(String[] args) {
         Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] " + ChatColor.WHITE + ChatUtils.getMessage(args));
 
     }

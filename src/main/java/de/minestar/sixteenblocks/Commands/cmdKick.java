@@ -18,6 +18,8 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -42,10 +44,21 @@ public class cmdKick extends AbstractExtendedCommand {
             return;
         }
 
+        kick(args, player);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+
+        kick(args, console);
+    }
+
+    private void kick(String[] args, CommandSender sender) {
+
         Player target = PlayerUtils.getOnlinePlayer(args[0]);
-        if (target == null) {
-            TextUtils.sendError(player, "Player '" + target + "' does not exist or is offline!");
-        } else {
+        if (target == null)
+            ChatUtils.writeError(sender, "Player '" + target + "' does not exist or is offline!");
+        else {
             target.kickPlayer(getKickMessage(args));
             TextUtils.sendSuccess(target, "Player '" + target + "' was kicked from the server!");
         }
@@ -57,5 +70,4 @@ public class cmdKick extends AbstractExtendedCommand {
         else
             return ChatUtils.getMessage(args, " ", 1);
     }
-
 }

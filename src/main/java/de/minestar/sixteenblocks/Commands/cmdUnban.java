@@ -19,9 +19,12 @@
 package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
@@ -42,13 +45,24 @@ public class cmdUnban extends AbstractCommand {
             return;
         }
 
+        unbann(args, player);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+
+        unbann(args, console);
+    }
+
+    private void unbann(String[] args, CommandSender sender) {
+
         String playerName = PlayerUtils.getOfflinePlayerName(args[0]);
         if (playerName == null)
-            TextUtils.sendInfo(player, "Player '" + args[0] + "' doesn't exist(was never on the server)!");
+            ChatUtils.writeInfo(sender, "Player '" + args[0] + "' doesn't exist(was never on the server)!");
         else {
             // Unbann
             Bukkit.getOfflinePlayer(playerName).setBanned(false);
-            TextUtils.sendSuccess(player, "Player '" + args[0] + "' unbanned!");
+            ChatUtils.writeSuccess(sender, "Player '" + args[0] + "' unbanned!");
         }
     }
 }

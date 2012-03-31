@@ -1,9 +1,12 @@
 package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
@@ -16,7 +19,7 @@ public class cmdBan extends AbstractCommand {
     }
 
     @Override
-    public void execute(String[] arguments, Player player) {
+    public void execute(String[] args, Player player) {
 
         // CHECK: PLAYER IS OP OR SUPPORTER
         if (!Core.isSupporter(player)) {
@@ -24,45 +27,34 @@ public class cmdBan extends AbstractCommand {
             return;
         }
 
+        banPlayer(args, player);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+
+        banPlayer(args, console);
+    }
+
+    private void banPlayer(String[] args, CommandSender sender) {
         // GET AREA
-        Player target = PlayerUtils.getOnlinePlayer(arguments[0]);
+        Player target = PlayerUtils.getOnlinePlayer(args[0]);
         if (target == null) {
-            String playerName = PlayerUtils.getOfflinePlayerName(arguments[0]);
+            String playerName = PlayerUtils.getOfflinePlayerName(args[0]);
             if (playerName == null) {
-                TextUtils.sendInfo(player, "Player '" + arguments[0] + "' doesn't exist(was never on the server), but was banned!");
-                playerName = arguments[0];
+                ChatUtils.writeInfo(sender, "Player '" + args[0] + "' doesn't exist(was never on the server), but was banned!");
+                playerName = args[0];
             } else
-                TextUtils.sendInfo(player, "Player '" + arguments[0] + "' is offline!");
+                ChatUtils.writeInfo(sender, "Player '" + args[0] + "' is offline!");
 
             Bukkit.getOfflinePlayer(playerName).setBanned(true);
-            TextUtils.sendSuccess(player, "Player '" + arguments[0] + "' banned.");
+            ChatUtils.writeSuccess(sender, "Player '" + args[0] + "' banned.");
             return;
         }
 
         // BAN PLAYER
         target.setBanned(true);
-        TextUtils.sendSuccess(player, "Player '" + target.getName() + "' banned.");
-
-        /*
-         * SkinArea thisArea =
-         * this.areaManager.getExactPlayerArea(target.getName());
-         * 
-         * // CHECK: NO AREA FOUND if (thisArea == null) {
-         * TextUtils.sendSuccess(player, "Player '" + target.getName() +
-         * "' banned. This player did not have a skin.");
-         * target.kickPlayer("You were BANNED!"); return; }
-         * 
-         * // CHECK : AREA IS NOT BLOCKED if
-         * (this.areaManager.isAreaBlocked(thisArea.getZoneXZ())) {
-         * TextUtils.sendError(player, "Player '" + target.getName() +
-         * "' banned, but Skin was not deleted (blocked by another process!)");
-         * target.kickPlayer("You were BANNED!"); return; }
-         * 
-         * // DELETE THIS AREA this.areaManager.deletePlayerArea(thisArea,
-         * player); TextUtils.sendSuccess(player, "Player '" + target.getName()
-         * + "' banned and started deletion of '" + thisArea.getAreaOwner() +
-         * "'.");
-         */
+        ChatUtils.writeError(sender, "Player '" + target.getName() + "' banned.");
 
         // KICK PLAYER
         target.kickPlayer("You were BANNED!");

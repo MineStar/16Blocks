@@ -18,9 +18,12 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
@@ -40,11 +43,22 @@ public class cmdSupport extends AbstractCommand {
             return;
         }
 
-        boolean result = Core.getInstance().toggleSupporter(args[0]);
-        if (result) {
-            TextUtils.sendSuccess(player, "'" + args[0] + "' is now a supporter!");
-        } else {
-            TextUtils.sendSuccess(player, "'" + args[0] + "' is no longer a supporter!");
-        }
+        addSupporter(args, player);
     }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+
+        addSupporter(args, console);
+    }
+
+    private void addSupporter(String[] args, CommandSender sender) {
+        boolean result = Core.getInstance().toggleSupporter(args[0]);
+        if (result)
+            ChatUtils.writeSuccess(sender, "'" + args[0] + "' is now a supporter!");
+        else
+            ChatUtils.writeSuccess(sender, "'" + args[0] + "' is no longer a supporter!");
+
+    }
+
 }
