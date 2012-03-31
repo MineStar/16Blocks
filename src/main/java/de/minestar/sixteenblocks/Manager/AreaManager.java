@@ -107,6 +107,7 @@ public class AreaManager {
             this.createSingleZone(thisZone);
         }
     }
+
     public void incrementThreads() {
         this.runningThreads++;
     }
