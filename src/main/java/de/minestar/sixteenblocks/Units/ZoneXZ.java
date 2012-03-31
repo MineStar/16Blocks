@@ -32,7 +32,7 @@ public class ZoneXZ {
         if (this.z % 2 != 0) {
             offSet = (Settings.getAreaSizeX() >> 1);
         }
-        return (this.x * Settings.getAreaSizeX()) + offSet;
+        return (this.x * Settings.getAreaSizeX()) - offSet;
     }
 
     public static int getBaseX(int thisX, int thisZ) {

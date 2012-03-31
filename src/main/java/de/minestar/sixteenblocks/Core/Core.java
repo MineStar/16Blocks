@@ -35,6 +35,7 @@ import de.minestar.sixteenblocks.Commands.cmdNumberize;
 import de.minestar.sixteenblocks.Commands.cmdRebuild;
 import de.minestar.sixteenblocks.Commands.cmdReload;
 import de.minestar.sixteenblocks.Commands.cmdReply;
+import de.minestar.sixteenblocks.Commands.cmdReset;
 import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSay;
@@ -152,6 +153,13 @@ public class Core extends JavaPlugin {
         TextUtils.logInfo("Enabled!");
     }
 
+    /**
+     * @return the structureManager
+     */
+    public StructureManager getStructureManager() {
+        return structureManager;
+    }
+
     private void createManager() {
         this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
         this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
@@ -201,6 +209,7 @@ public class Core extends JavaPlugin {
                         new cmdTP           ("/tp",         "<Player>",                 ""),  
                         new cmdReload       ("/reload",     "",                         ""),  
                         new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),    
+                        new cmdReset        ("/reset",    "",                           "", this.areaManager),   
                         new cmdNumberize    ("/numberize",    "",                       "", this.numberManager, this.areaManager),              
                         
                         // MESSAGE SYSTEM

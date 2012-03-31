@@ -22,11 +22,14 @@ public class BlockCreationThread implements Runnable {
     public boolean createSign = false;
     private Player player = null;
 
+    private ZoneXZ thisZone;
+
     public BlockCreationThread(World world, int baseX, int baseZ, ArrayList<StructureBlock> blockList) {
         this.world = world;
         this.baseX = baseX;
         this.baseZ = baseZ;
         this.blockList = blockList;
+        this.thisZone = ZoneXZ.fromPoint(baseX, baseZ);
     }
 
     public void createSign(Player player) {
@@ -36,6 +39,7 @@ public class BlockCreationThread implements Runnable {
 
     public void initTask(int TaskID) {
         this.TaskID = TaskID;
+        Core.getInstance().getAreaManager().blockArea(thisZone);
         Core.getInstance().getAreaManager().incrementThreads();
     }
 
@@ -45,7 +49,7 @@ public class BlockCreationThread implements Runnable {
             return;
 
         StructureBlock thisBlock = null;
-        for (int i = 0; i < Settings.getMaxBlockxReplaceAtOnce(); i++) {
+        for (int i = 0; i < Settings.getMaxBlocksReplaceAtOnce(); i++) {
             try {
                 thisBlock = blockList.get(counter);
 
@@ -56,6 +60,7 @@ public class BlockCreationThread implements Runnable {
                         Core.getInstance().getAreaManager().createPlayerSign(this.player, ZoneXZ.fromPoint(baseX, baseZ));
                     }
                     Bukkit.getScheduler().cancelTask(this.TaskID);
+                    Core.getInstance().getAreaManager().unblockArea(thisZone);
                     Core.getInstance().getAreaManager().decrementThreads();
                     break;
                 }
@@ -63,6 +68,7 @@ public class BlockCreationThread implements Runnable {
                 if (this.createSign && this.player != null) {
                     Core.getInstance().getAreaManager().createPlayerSign(this.player, ZoneXZ.fromPoint(baseX, baseZ));
                 }
+                Core.getInstance().getAreaManager().unblockArea(thisZone);
                 Bukkit.getScheduler().cancelTask(this.TaskID);
                 Core.getInstance().getAreaManager().decrementThreads();
                 break;

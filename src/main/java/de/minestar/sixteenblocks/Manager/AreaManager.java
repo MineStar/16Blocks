@@ -22,6 +22,7 @@ import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Threads.AreaDeletionThread;
 import de.minestar.sixteenblocks.Threads.SuperBlockCreationThread;
+import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaManager {
@@ -55,6 +56,23 @@ public class AreaManager {
         this.loadAreas();
         this.initMaximumZ();
         this.checkForZoneExtension();
+    }
+
+    public ArrayList<StructureBlock> getChangedBlocks(ZoneXZ thisZone) {
+        ArrayList<StructureBlock> blockList = new ArrayList<StructureBlock>();
+        int baseX = thisZone.getBaseX();
+        int baseZ = thisZone.getBaseZ();
+        World world = Bukkit.getWorlds().get(0);
+        for (int y = Settings.getMaximumBuildY(); y >= Settings.getMinimumBuildY(); y--) {
+            for (int x = 0; x < Settings.getAreaSizeX(); x++) {
+                for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
+                    if (world.getBlockTypeIdAt(baseX + x, y, baseZ + z) != Material.AIR.getId()) {
+                        blockList.add(new StructureBlock(x, y, z, 0));
+                    }
+                }
+            }
+        }
+        return blockList;
     }
 
     private void createNotExistingAreas() {

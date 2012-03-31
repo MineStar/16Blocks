@@ -56,6 +56,9 @@ commands:
   report:
     description: Send a bugreport
     usage: /report <Message>
+  reset:
+    description: Reset a skin
+    usage: /reset   
   m:
     description: Send a message to the player
     usage: /m <PlayerName> <Message>

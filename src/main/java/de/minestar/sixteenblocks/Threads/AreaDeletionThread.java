@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
@@ -28,6 +29,8 @@ public class AreaDeletionThread implements Runnable {
     private ZoneXZ thisZone;
     private int percent = 0, oldPercent = 0;
 
+    public boolean totalRemove = true;
+
     public AreaDeletionThread(World world, int baseX, int baseZ, ZoneXZ thisZone, String playerName) {
         this.world = world;
         this.baseX = baseX;
@@ -36,29 +39,30 @@ public class AreaDeletionThread implements Runnable {
         this.playerName = playerName;
     }
 
+    public AreaDeletionThread(World world, ZoneXZ thisZone, String playerName) {
+        this.world = world;
+        this.baseX = thisZone.getBaseX();
+        this.baseZ = thisZone.getBaseZ();
+        this.thisZone = thisZone;
+        this.playerName = playerName;
+        this.totalRemove = false;
+    }
+
     public void initTask(int TaskID) {
         this.blockList = new ArrayList<StructureBlock>();
-
-        for (int y = Settings.getMaximumBuildY(); y >= Settings.getMinimumBuildY(); y--) {
-            for (int x = 0; x < Settings.getAreaSizeX(); x++) {
-                for (int z = 0; z < Settings.getAreaSizeZ(); z++) {
-                    if (world.getBlockTypeIdAt(this.baseX + x, y, this.baseZ + z) != Material.AIR.getId()) {
-                        this.blockList.add(new StructureBlock(x, y, z, 0));
-                    }
-                }
-            }
-        }
-
+        this.blockList = Core.getInstance().getAreaManager().getChangedBlocks(this.thisZone);
         this.TaskID = TaskID;
         Core.getInstance().getAreaManager().incrementThreads();
+        Core.getInstance().getAreaManager().blockArea(thisZone);
     }
+
     @Override
     public void run() {
         if (TaskID == -9999)
             return;
 
         StructureBlock thisBlock = null;
-        for (int i = 0; i < Settings.getMaxBlockxReplaceAtOnce(); i++) {
+        for (int i = 0; i < Settings.getMaxBlocksReplaceAtOnce(); i++) {
             try {
                 thisBlock = blockList.get(counter);
                 world.getBlockAt(baseX + thisBlock.getX(), thisBlock.getY(), baseZ + thisBlock.getZ()).setType(Material.AIR);
@@ -71,14 +75,19 @@ public class AreaDeletionThread implements Runnable {
 
                     // CANCEL TASK & UNBLOCK AREA
                     Bukkit.getScheduler().cancelTask(this.TaskID);
-                    Core.getInstance().getAreaManager().removePlayerArea(thisZone);
-                    Core.getInstance().getAreaManager().unblockArea(this.thisZone);
-
+                    if (this.totalRemove) {
+                        Core.getInstance().getAreaManager().removePlayerArea(thisZone);
+                        Core.getInstance().getAreaManager().unblockArea(this.thisZone);
+                    } else {
+                        // REBUILD STEVE
+                        Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ());
+                    }
                     // PRINT INFO
                     Player player = Bukkit.getPlayer(this.playerName);
                     if (player != null) {
                         TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
                     }
+
                     Core.getInstance().getAreaManager().decrementThreads();
                     break;
                 }
@@ -90,14 +99,19 @@ public class AreaDeletionThread implements Runnable {
 
                 // CANCEL TASK & UNBLOCK AREA
                 Bukkit.getScheduler().cancelTask(this.TaskID);
-                Core.getInstance().getAreaManager().removePlayerArea(thisZone);
-                Core.getInstance().getAreaManager().unblockArea(this.thisZone);
-
+                if (this.totalRemove) {
+                    Core.getInstance().getAreaManager().removePlayerArea(thisZone);
+                    Core.getInstance().getAreaManager().unblockArea(this.thisZone);
+                } else {
+                    // REBUILD STEVE
+                    Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ());
+                }
                 // PRINT INFO
                 Player player = Bukkit.getPlayer(this.playerName);
-                if (player != null) {
+                if (player != null && this.totalRemove) {
                     TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
                 }
+
                 Core.getInstance().getAreaManager().decrementThreads();
                 break;
             }

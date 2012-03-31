@@ -148,7 +148,7 @@ public class Settings {
         return BASE_Y;
     }
 
-    public static int getMaxBlockxReplaceAtOnce() {
+    public static int getMaxBlocksReplaceAtOnce() {
         return MAX_BLOCKS_REPLACE_AT_ONCE;
     }
 

@@ -48,7 +48,7 @@ public class SuperBlockCreationThread implements Runnable {
                 world.getBlockAt(thisBlock.getX(), thisBlock.getY(), thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
 
                 counter++;
-                if (counter >= Settings.getMaxBlockxReplaceAtOnce()) {
+                if (counter >= Settings.getMaxBlocksReplaceAtOnce()) {
                     System.out.println("Blocks left: " + this.blockList.size());
                     return;
                 }
