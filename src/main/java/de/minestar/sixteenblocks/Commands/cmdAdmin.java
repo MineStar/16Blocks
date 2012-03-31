@@ -48,7 +48,7 @@ public class cmdAdmin extends AbstractCommand {
         for (Player online : onlinePlayer) {
             if (Core.isSupporter(online)) {
                 sBuilder.append(online.getName());
-                sBuilder.append(" ,");
+                sBuilder.append(", ");
             }
 
         }
