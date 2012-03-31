@@ -47,8 +47,12 @@ public class cmdAdmin extends AbstractCommand {
         }
 
         TextUtils.sendSuccess(player, "Current connected supporter:");
-        for (Player supporter : connectedSupporter)
-            TextUtils.sendInfo(player, supporter.getName());
+        StringBuilder sBuilder = new StringBuilder(256);
+        for (Player supporter : connectedSupporter) {
+            sBuilder.append(supporter.getName());
+            sBuilder.append(" ,");
+        }
+        TextUtils.sendInfo(player, sBuilder.toString());
 
     }
 
