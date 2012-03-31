@@ -85,7 +85,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
     protected void createStatements(String pluginName, Connection connection) throws Exception {
         this.loadAreas = dbConnection.getConnection().prepareStatement("SELECT areaOwner, x, z FROM zones");
         this.insertArea = dbConnection.getConnection().prepareStatement("INSERT INTO zones (areaOwner, x, z) VALUES(?, ?, ?)");
-        this.updateArea = dbConnection.getConnection().prepareStatement("UPDATE zones SET areaOwner = ? WHERE x = ? AND z = ?");
+        this.updateArea = dbConnection.getConnection().prepareStatement("UPDATE zones SET areaOwner = ? , creationDate = ? WHERE x = ? AND z = ?");
         this.checkExistance = dbConnection.getConnection().prepareStatement("SELECT * FROM zones WHERE x = ? AND z = ? LIMIT 1");
     }
 
@@ -121,8 +121,9 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
     public void updateAreaOwner(SkinArea thisArea) {
         try {
             updateArea.setString(1, thisArea.getAreaOwner());
-            updateArea.setInt(2, thisArea.getZoneXZ().getX());
-            updateArea.setInt(3, thisArea.getZoneXZ().getZ());
+            updateArea.setLong(2, System.currentTimeMillis());
+            updateArea.setInt(3, thisArea.getZoneXZ().getX());
+            updateArea.setInt(4, thisArea.getZoneXZ().getZ());
             updateArea.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
