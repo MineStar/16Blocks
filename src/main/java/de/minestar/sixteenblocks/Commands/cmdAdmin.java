@@ -50,9 +50,10 @@ public class cmdAdmin extends AbstractCommand {
                 sBuilder.append(online.getName());
                 sBuilder.append(" ,");
             }
-            sBuilder.delete(sBuilder.length() - 2, sBuilder.length());
-        }
 
+        }
+        if (sBuilder.length() > 2)
+            sBuilder.delete(sBuilder.length() - 2, sBuilder.length());
         TextUtils.sendInfo(player, sBuilder.toString());
     }
 }
