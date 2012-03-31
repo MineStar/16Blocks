@@ -326,7 +326,7 @@ public class Core extends JavaPlugin {
             while ((line = bReader.readLine()) != null) {
                 line = line.trim().replace(" ", "");
                 if (!line.isEmpty())
-                    this.addSupporter(line);
+                    this.addSupporter(line.toLowerCase());
             }
             ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " supporter!");
         } catch (Exception e) {
