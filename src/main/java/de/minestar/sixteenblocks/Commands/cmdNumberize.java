@@ -31,6 +31,7 @@ public class cmdNumberize extends AbstractCommand {
 
         for (int i = 1; i <= this.areaManager.getLastRow(); i = i + 2) {
             this.numberManager.print((-Settings.getSkinsRight() - 1) * Settings.getAreaSizeX() + 16, i * Settings.getAreaSizeZ() + 11, i + 1);
+            this.numberManager.print((Settings.getSkinsLeft() + 2) * Settings.getAreaSizeX() + this.numberManager.getWidth(i + 1) - 20, i * Settings.getAreaSizeZ() + 11, i + 1);
         }
     }
 }

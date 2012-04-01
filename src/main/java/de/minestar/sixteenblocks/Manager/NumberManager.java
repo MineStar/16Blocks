@@ -35,6 +35,20 @@ public class NumberManager {
         }
     }
 
+    public int getWidth(int number) {
+        String text = String.valueOf(number);
+        int thisX = 0;
+        for (int i = 0; i < text.length(); i++) {
+            int num = Integer.valueOf(String.valueOf(text.charAt(i)));
+            if (i < (text.length() - 1)) {
+                thisX += (numberMap.get(num).getWidth() - 1);
+            } else {
+                thisX += (numberMap.get(num).getWidth());
+            }
+        }
+        return thisX;
+    }
+
     public void print(int baseX, int baseZ, int number) {
         String text = String.valueOf(number);
         int thisX = 0;
