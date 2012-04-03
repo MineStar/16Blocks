@@ -250,16 +250,16 @@ public class Core extends JavaPlugin {
 
         // Check tickets
         checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
-        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20 * 60, 20 * 60 * 10);
+        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20L * 60L, 20L * 60L * 10L);
 
         // Writing JSON with online player
         timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
 
         // Broadcasting information to player
-        broadcastTimer.schedule(new BroadcastThread(this.getDataFolder(), this.areaManager), (long) (1000 * 60), (long) (1000 * 60 * 5));
+        broadcastTimer.schedule(new BroadcastThread(this.getDataFolder(), this.areaManager), 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
 
         // AFK Thread
-        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20 * 10, 20 * 30);
+        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20L * 10L, 20L * 30L);
     }
 
     @Override

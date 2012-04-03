@@ -26,6 +26,8 @@ public class Settings {
 
     private static int CHAT_RADIUS = 150;
 
+    private static long JAMES_INTERVAL = 2L;
+
     /**
      * @param cHAT_RADIUS
      *            the cHAT_RADIUS to set
@@ -78,6 +80,8 @@ public class Settings {
             JSON_PATH = config.getString("general.JSON", JSON_PATH);
 
             SUPPORTER_BUFFER = config.getInt("general.supportBuffer", SUPPORTER_BUFFER);
+
+            JAMES_INTERVAL = config.getLong("general.jamesInterval", JAMES_INTERVAL);
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);
@@ -198,5 +202,9 @@ public class Settings {
 
     public static int getSupporterBuffer() {
         return SUPPORTER_BUFFER;
+    }
+
+    public static long getJAMES_INTERVAL() {
+        return JAMES_INTERVAL;
     }
 }

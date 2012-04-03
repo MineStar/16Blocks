@@ -27,7 +27,7 @@ import de.minestar.sixteenblocks.Manager.AreaManager;
 
 public class BroadcastRunningThread implements Runnable {
 
-    private Random rand = new Random();
+    private static Random rand = new Random();
     private AreaManager aManager;
     private String message;
 
@@ -38,9 +38,9 @@ public class BroadcastRunningThread implements Runnable {
 
     @Override
     public void run() {
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + message);
+        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + message);
         // Inform player about current skin count
         if (rand.nextBoolean())
-            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] :" + aManager.getUsedAreaCount() + " Skins at the moment!");
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + aManager.getUsedAreaCount() + " Skins at the moment!");
     }
 }
