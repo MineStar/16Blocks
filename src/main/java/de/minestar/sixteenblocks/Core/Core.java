@@ -307,6 +307,10 @@ public class Core extends JavaPlugin {
         return Core.isSupporter(playerName);
     }
 
+    public static Set<String> getSupporter() {
+        return Core.supporter;
+    }
+
     private void saveSupporter() {
         File f = new File(getDataFolder(), "supporter.txt");
         if (f.exists()) {
