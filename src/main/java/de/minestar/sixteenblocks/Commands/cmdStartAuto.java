@@ -29,11 +29,11 @@ public class cmdStartAuto extends AbstractCommand {
         }
 
         // CHECK : PLAYER HAS NO AREA
-//        if (this.areaManager.hasPlayerArea(player)) {
-//            TextUtils.sendError(player, "You already own an area.");
-//            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
-//            return;
-//        }
+        if (this.areaManager.hasPlayerArea(player)) {
+            TextUtils.sendError(player, "You already own an area.");
+            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
+            return;
+        }
 
         // TAKE THIS AREA
         SkinArea randomArea = this.areaManager.getRandomUnusedArea();
