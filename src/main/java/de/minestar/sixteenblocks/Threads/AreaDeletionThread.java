@@ -82,6 +82,7 @@ public class AreaDeletionThread implements Runnable {
                     } else {
                         // REBUILD STEVE
                         Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ(), Core.getInstance().getExtendThread());
+                        Core.getInstance().getAreaManager().unblockArea(this.thisZone);
                     }
                     // PRINT INFO
                     Player player = Bukkit.getPlayer(this.playerName);
@@ -106,6 +107,7 @@ public class AreaDeletionThread implements Runnable {
                 } else {
                     // REBUILD STEVE
                     Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ(), Core.getInstance().getExtendThread());
+                    Core.getInstance().getAreaManager().unblockArea(this.thisZone);
                 }
                 // PRINT INFO
                 Player player = Bukkit.getPlayer(this.playerName);
