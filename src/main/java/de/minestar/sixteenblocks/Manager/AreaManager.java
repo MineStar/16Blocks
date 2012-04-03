@@ -21,7 +21,7 @@ import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Enums.EnumStructures;
 import de.minestar.sixteenblocks.Threads.AreaDeletionThread;
-import de.minestar.sixteenblocks.Threads.SuperBlockCreationThread;
+import de.minestar.sixteenblocks.Threads.BlockThread;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
@@ -37,7 +37,7 @@ public class AreaManager {
 
     private int lastRow = 0;
 
-    private int runningThreads = 0;
+    private BlockThread blockThread;
 
     // ////////////////////////////////////////////////
     //
@@ -56,6 +56,10 @@ public class AreaManager {
         this.loadAreas();
         this.initMaximumZ();
         this.checkForZoneExtension();
+    }
+
+    public void updateThread(BlockThread thread) {
+        this.blockThread = thread;
     }
 
     public ArrayList<StructureBlock> getChangedBlocks(ZoneXZ thisZone) {
@@ -126,20 +130,6 @@ public class AreaManager {
         }
     }
 
-    public void incrementThreads() {
-        this.runningThreads++;
-    }
-
-    public void decrementThreads() {
-        this.runningThreads--;
-        if (this.runningThreads < 0)
-            this.runningThreads = 0;
-    }
-
-    public int getRunningThreadCount() {
-        return this.runningThreads;
-    }
-
     // ////////////////////////////////////////////////
     //
     // AREA CREATION
@@ -150,32 +140,32 @@ public class AreaManager {
         for (int x = -Settings.getSkinsRight() + (z % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
             this.createUnusedArea(new SkinArea(x, z, ""), true);
             if (z % 2 != 0) {
-                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
-                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, z - 1);
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1, blockThread);
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, z - 1, blockThread);
             } else {
                 if (x > -Settings.getSkinsRight()) {
-                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1);
+                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, z - 1, blockThread);
                 }
             }
         }
         if (z == 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), z - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), z - 1, this.blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1, blockThread);
 
-            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, z - 1);
-            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, z - 1);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, z - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, z - 1, blockThread);
 
         } else if (z % 2 != 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, z - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, z - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1, blockThread);
         } else {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), z - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), z - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, z - 1, blockThread);
         }
     }
 
     public void createSingleZone(ZoneXZ thisZone) {
-        SuperBlockCreationThread extendThread = Core.getInstance().getExtendThread();
+        BlockThread extendThread = Core.getInstance().getExtendThread();
 
         int x = thisZone.getX();
         int row = thisZone.getZ();
@@ -234,29 +224,29 @@ public class AreaManager {
     public void createRowStructures(int row) {
         for (int x = -Settings.getSkinsRight() + (row % 2 == 0 ? 0 : 1); x <= Settings.getSkinsLeft(); x++) {
             if (row % 2 != 0) {
-                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1);
-                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, row - 1);
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1, blockThread);
+                this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x - 1, row - 1, blockThread);
             } else {
                 if (x > -Settings.getSkinsRight()) {
-                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1);
+                    this.structureManager.getStructure(EnumStructures.ZONE_STREETS_BACK).createStructure(x, row - 1, blockThread);
                 }
             }
-            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(x, row);
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(x, row, blockThread);
         }
 
         if (row == 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(-Settings.getSkinsRight(), row - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_CORNER).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1, blockThread);
 
-            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, row - 1);
-            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, row - 1);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_1).createStructure(1, row - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.INFO_WALL_2).createStructure(0, row - 1, blockThread);
 
         } else if (row % 2 != 0) {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(-Settings.getSkinsRight() - 1, row - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_1).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1, blockThread);
         } else {
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), row - 1);
-            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(-Settings.getSkinsRight(), row - 1, blockThread);
+            this.structureManager.getStructure(EnumStructures.STREETS_SIDE_2).createStructure(EnumDirection.FLIP_X, Settings.getSkinsLeft() + 1, row - 1, blockThread);
         }
     }
 
@@ -336,7 +326,7 @@ public class AreaManager {
         this.unusedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
         this.usedAreaList.remove(skinArea.getZoneXZ().toString());
         if (createStructures) {
-            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ());
+            this.structureManager.getStructure(EnumStructures.ZONE_STREETS_AND_SOCKET).createStructure(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ(), blockThread);
         }
 
         return true;
@@ -442,7 +432,8 @@ public class AreaManager {
         this.usedAreaList.put(skinArea.getZoneXZ().toString(), skinArea);
         this.unusedAreaList.remove(skinArea.getZoneXZ().toString());
         if (createStructures) {
-            this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructureWithSign(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ(), player);
+            this.structureManager.getStructure(EnumStructures.ZONE_STEVE).createStructureWithSign(skinArea.getZoneXZ().getX(), skinArea.getZoneXZ().getZ(), player, blockThread);
+            this.createPlayerSign(player, skinArea.getZoneXZ());
         }
 
         this.checkForZoneExtension();

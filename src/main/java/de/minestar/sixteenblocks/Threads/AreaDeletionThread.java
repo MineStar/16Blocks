@@ -52,7 +52,6 @@ public class AreaDeletionThread implements Runnable {
         this.blockList = new ArrayList<StructureBlock>();
         this.blockList = Core.getInstance().getAreaManager().getChangedBlocks(this.thisZone);
         this.TaskID = TaskID;
-        Core.getInstance().getAreaManager().incrementThreads();
         Core.getInstance().getAreaManager().blockArea(thisZone);
     }
 
@@ -82,7 +81,7 @@ public class AreaDeletionThread implements Runnable {
                         Core.getInstance().getAreaManager().unblockArea(this.thisZone);
                     } else {
                         // REBUILD STEVE
-                        Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ());
+                        Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ(), Core.getInstance().getExtendThread());
                     }
                     // PRINT INFO
                     Player player = Bukkit.getPlayer(this.playerName);
@@ -90,7 +89,6 @@ public class AreaDeletionThread implements Runnable {
                         TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
                     }
 
-                    Core.getInstance().getAreaManager().decrementThreads();
                     break;
                 }
             } catch (Exception e) {
@@ -107,7 +105,7 @@ public class AreaDeletionThread implements Runnable {
                     Core.getInstance().getAreaManager().unblockArea(this.thisZone);
                 } else {
                     // REBUILD STEVE
-                    Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ());
+                    Core.getInstance().getStructureManager().getStructure(EnumStructures.ZONE_STEVE).createStructure(thisZone.getX(), thisZone.getZ(), Core.getInstance().getExtendThread());
                 }
                 // PRINT INFO
                 Player player = Bukkit.getPlayer(this.playerName);
@@ -115,7 +113,6 @@ public class AreaDeletionThread implements Runnable {
                     TextUtils.sendSuccess(player, "Area [ " + this.thisZone.getX() + " / " + this.thisZone.getZ() + " ] deleted successfully!");
                 }
 
-                Core.getInstance().getAreaManager().decrementThreads();
                 break;
             }
         }

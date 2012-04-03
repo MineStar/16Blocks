@@ -21,12 +21,19 @@ public class cmdStartAuto extends AbstractCommand {
 
     @Override
     public void execute(String[] arguments, Player player) {
-        // CHECK : PLAYER HAS NO AREA
-        if (this.areaManager.hasPlayerArea(player)) {
-            TextUtils.sendError(player, "You already own an area.");
-            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
+        // CHECK : SHUTDOWN / RELOAD
+        if (Core.shutdownServer) {
+            TextUtils.sendError(player, "/start is not possible at this moment. Server will reload or restart in a few moments.");
+            TextUtils.sendLine(player, ChatColor.GRAY, "Please try again in a few moments.");
             return;
         }
+
+        // CHECK : PLAYER HAS NO AREA
+//        if (this.areaManager.hasPlayerArea(player)) {
+//            TextUtils.sendError(player, "You already own an area.");
+//            TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
+//            return;
+//        }
 
         // TAKE THIS AREA
         SkinArea randomArea = this.areaManager.getRandomUnusedArea();

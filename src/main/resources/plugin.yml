@@ -80,9 +80,12 @@ commands:
   createrow:
     description: Recreate rowstructures
     usage: /createrow <Number>      
-  reload:
+  rel:
     description: Reload the server
-    usage: /reload
+    usage: /rel
+  shutdown:
+    description: Stop the server
+    usage: /shutdown    
   rebuild:
     description: Rebuild a skin
     usage: /rebuild    

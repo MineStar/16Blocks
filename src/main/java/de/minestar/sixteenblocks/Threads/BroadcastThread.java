@@ -74,6 +74,9 @@ public class BroadcastThread extends TimerTask {
     @Override
     public void run() {
         // CREATE THE TASK
+        if (messages == null) {
+            return;
+        }
         Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new BroadcastRunningThread(this.aManager, messages.get(index++)));
         // shuffle the messages and reset index
         if (index == messages.size()) {

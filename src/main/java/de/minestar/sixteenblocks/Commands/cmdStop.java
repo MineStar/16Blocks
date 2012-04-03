@@ -26,11 +26,11 @@ import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
-public class cmdReload extends AbstractExtendedCommand {
+public class cmdStop extends AbstractExtendedCommand {
 
-    public cmdReload(String syntax, String arguments, String node) {
+    public cmdStop(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        this.description = "Reload the server";
+        this.description = "Stop the server";
     }
 
     @Override
@@ -48,8 +48,8 @@ public class cmdReload extends AbstractExtendedCommand {
 
         // SHUTDOWN / RELOAD
         Core.shutdownServer = true;
-        Core.isShutDown = false;
-        TextUtils.sendInfo(player, "Server is marked as 'reloading'...");
+        Core.isShutDown = true;
+        TextUtils.sendInfo(player, "Server is marked as 'stop'...");
     }
 
     @Override
@@ -62,7 +62,7 @@ public class cmdReload extends AbstractExtendedCommand {
 
         // SHUTDOWN / RELOAD
         Core.shutdownServer = true;
-        Core.isShutDown = false;
-        ConsoleUtils.printInfo("Server is marked as 'reloading'...");
+        Core.isShutDown = true;
+        ConsoleUtils.printInfo("Server is marked as 'stop'...");
     }
 }

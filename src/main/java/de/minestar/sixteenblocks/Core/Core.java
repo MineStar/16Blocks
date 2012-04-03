@@ -43,6 +43,7 @@ import de.minestar.sixteenblocks.Commands.cmdSlots;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
+import de.minestar.sixteenblocks.Commands.cmdStop;
 import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
@@ -57,14 +58,12 @@ import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.NumberManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
-import de.minestar.sixteenblocks.Manager.TicketDatabaseManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.AFKThread;
+import de.minestar.sixteenblocks.Threads.BlockThread;
 import de.minestar.sixteenblocks.Threads.BroadcastThread;
-import de.minestar.sixteenblocks.Threads.CheckTicketThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Threads.JSONThread;
-import de.minestar.sixteenblocks.Threads.SuperBlockCreationThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class Core extends JavaPlugin {
@@ -74,7 +73,7 @@ public class Core extends JavaPlugin {
     private ChatListener chatListener;
 
     private AreaDatabaseManager areaDatabaseManager;
-    private TicketDatabaseManager ticketDatabaseManager;
+    // private TicketDatabaseManager ticketDatabaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
@@ -84,8 +83,8 @@ public class Core extends JavaPlugin {
 
     private static Set<String> supporter;
 
-    private CheckTicketThread checkTread;
-    private SuperBlockCreationThread extendThread;
+    // private CheckTicketThread checkTread;
+    private BlockThread blockThread;
     private AFKThread afkThread;
 
     private CommandList commandList;
@@ -95,11 +94,14 @@ public class Core extends JavaPlugin {
 
     public final static String NAME = "16Blocks";
 
+    public static boolean shutdownServer = false;
+    public static boolean isShutDown = false;
+
     @Override
     public void onDisable() {
         this.areaDatabaseManager.closeConnection();
-        this.ticketDatabaseManager.closeConnection();
-        checkTread.saveCheckTickets();
+//        this.ticketDatabaseManager.closeConnection();
+//        checkTread.saveCheckTickets();
         Settings.saveSettings(this.getDataFolder());
         timer.cancel();
         broadcastTimer.cancel();
@@ -121,14 +123,16 @@ public class Core extends JavaPlugin {
         TextUtils.setPluginName("YAM");
 
         // SUPER EXTENSION-THREAD
-        this.extendThread = new SuperBlockCreationThread(Bukkit.getWorlds().get(0));
-        this.extendThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.extendThread, 0, Settings.getTicksBetweenReplace()));
+        this.blockThread = new BlockThread(Bukkit.getWorlds().get(0));
+        this.blockThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.blockThread, 0, Settings.getTicksBetweenReplace()));
 
         // AFK THREAD
         this.afkThread = new AFKThread();
 
         // STARTUP
         this.createManager();
+
+        this.areaManager.updateThread(this.blockThread);
 
         // INIT AREAMANAGER
         this.areaManager.init();
@@ -161,7 +165,8 @@ public class Core extends JavaPlugin {
 
     private void createManager() {
         this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
-        this.ticketDatabaseManager = new TicketDatabaseManager(NAME, getDataFolder());
+        // this.ticketDatabaseManager = new TicketDatabaseManager(NAME,
+        // getDataFolder());
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
@@ -205,11 +210,14 @@ public class Core extends JavaPlugin {
                         
                         new cmdRow          ("/row",        "<Number>",                 ""),                        
                         new cmdRow          ("/jump",       "<Number>",                 ""),                        
-                        new cmdTP           ("/tp",         "<Player>",                 ""),  
-                        new cmdReload       ("/reload",     "",                         ""),  
+                        new cmdTP           ("/tp",         "<Player>",                 ""),                         
                         new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),    
                         new cmdReset        ("/reset",    "",                           "", this.areaManager),   
                         new cmdNumberize    ("/numberize",    "",                       "", this.numberManager, this.areaManager),              
+                        
+                        // STOP RELOAD
+                        new cmdStop         ("/shutdown",        "",                         ""),                          
+                        new cmdReload       ("/rel",        "",                         ""),  
                         
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
@@ -249,8 +257,10 @@ public class Core extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
 
         // Check tickets
-        checkTread = new CheckTicketThread(this.ticketDatabaseManager, getDataFolder());
-        scheduler.scheduleSyncRepeatingTask(this, checkTread, 20L * 60L, 20L * 60L * 10L);
+        // checkTread = new CheckTicketThread(this.ticketDatabaseManager,
+        // getDataFolder());
+        // scheduler.scheduleSyncRepeatingTask(this, checkTread, 20L * 60L, 20L
+        // * 60L * 10L);
 
         // Writing JSON with online player
         timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
@@ -364,7 +374,7 @@ public class Core extends JavaPlugin {
     /**
      * @return the extendThread
      */
-    public SuperBlockCreationThread getExtendThread() {
-        return extendThread;
+    public BlockThread getExtendThread() {
+        return blockThread;
     }
 }

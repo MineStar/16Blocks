@@ -22,6 +22,13 @@ public class cmdStartHere extends AbstractCommand {
 
     @Override
     public void execute(String[] arguments, Player player) {
+        // CHECK : SHUTDOWN / RELOAD
+        if (Core.shutdownServer) {
+            TextUtils.sendError(player, "/starthere is not possible at this moment. Server will reload or restart in a few moments.");
+            TextUtils.sendLine(player, ChatColor.GRAY, "Please try again in a few moments.");
+            return;
+        }
+
         ZoneXZ thisZone = ZoneXZ.fromPoint(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
         // CHECK : PLAYER HAS NO AREA
         if (this.areaManager.hasPlayerArea(player)) {

@@ -1,6 +1,7 @@
 package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -23,6 +24,13 @@ public class cmdReset extends AbstractCommand {
 
     @Override
     public void execute(String[] arguments, Player player) {
+        // CHECK : SHUTDOWN / RELOAD
+        if (Core.shutdownServer) {
+            TextUtils.sendError(player, "/reset is not possible at this moment. Server will reload or restart in a few moments.");
+            TextUtils.sendLine(player, ChatColor.GRAY, "Please try again in a few moments.");
+            return;
+        }
+
         // CHECK: PLAYER IS OP OR SUPPORTER
         if (!Core.isSupporter(player)) {
             TextUtils.sendError(player, "You are not allowed to do this!");

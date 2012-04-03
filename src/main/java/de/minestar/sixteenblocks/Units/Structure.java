@@ -3,16 +3,13 @@ package de.minestar.sixteenblocks.Units;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Enums.EnumDirection;
 import de.minestar.sixteenblocks.Manager.StructureManager;
-import de.minestar.sixteenblocks.Threads.BlockCreationThread;
+import de.minestar.sixteenblocks.Threads.BlockThread;
 
 public class Structure {
     private HashMap<EnumDirection, ArrayList<StructureBlock>> blockList = new HashMap<EnumDirection, ArrayList<StructureBlock>>();
@@ -31,29 +28,26 @@ public class Structure {
         }
     }
 
-    public void createStructure(int zoneX, int zoneZ) {
-        if (this.blockList == null)
+    public void createStructure(int zoneX, int zoneZ, BlockThread thread) {
+        if (this.blockList.get(EnumDirection.NORMAL) == null)
             return;
-        World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(EnumDirection.NORMAL));
-        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+
+        ZoneXZ thisZone = ZoneXZ.fromCoordinates(zoneX, zoneZ);
+        thread.addRelativeBlockList(this.blockList.get(EnumDirection.NORMAL), thisZone);
     }
 
-    public void createStructureWithSign(int zoneX, int zoneZ, Player player) {
-        if (this.blockList == null)
+    public void createStructureWithSign(int zoneX, int zoneZ, Player player, BlockThread thread) {
+        if (this.blockList.get(EnumDirection.NORMAL) == null)
             return;
-        World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(EnumDirection.NORMAL));
-        thisThread.createSign(player);
-        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+        ZoneXZ thisZone = ZoneXZ.fromCoordinates(zoneX, zoneZ);
+        thread.addRelativeBlockList(this.blockList.get(EnumDirection.NORMAL), thisZone);
     }
 
-    public void createStructure(EnumDirection direction, int zoneX, int zoneZ) {
-        if (this.blockList == null)
+    public void createStructure(EnumDirection direction, int zoneX, int zoneZ, BlockThread thread) {
+        if (this.blockList.get(direction) == null)
             return;
-        World world = Bukkit.getWorlds().get(0);
-        BlockCreationThread thisThread = new BlockCreationThread(world, zoneX * Settings.getAreaSizeX() - (zoneZ % 2 != 0 ? (Settings.getAreaSizeX() >> 1) : 0), zoneZ * Settings.getAreaSizeZ(), this.blockList.get(direction));
-        thisThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), thisThread, 0, Settings.getTicksBetweenReplace()));
+        ZoneXZ thisZone = ZoneXZ.fromCoordinates(zoneX, zoneZ);
+        thread.addRelativeBlockList(this.blockList.get(direction), thisZone);
     }
 
     private ArrayList<StructureBlock> flipX(ArrayList<StructureBlock> BlockList) {
