@@ -82,7 +82,7 @@ public class ChatFilter {
             }
 
             // LOAD BLACK LIST
-            File blackListFile = new File(dataFolder, "whitelist.txt");
+            File blackListFile = new File(dataFolder, "blacklist.txt");
             if (!blackListFile.exists())
                 ConsoleUtils.printInfo(Core.NAME, blackListFile + " not found! No Blacklist for ChatFilter created!");
             else {
