@@ -42,8 +42,11 @@ public class BroadcastThread extends TimerTask {
 
     private AreaManager aManager;
 
+    private BroadcastRunningThread subThread;
+
     public BroadcastThread(File dataFolder, AreaManager aManager) {
         loadMessages(dataFolder);
+        initBrodacastThread();
         this.aManager = aManager;
     }
 
@@ -71,13 +74,19 @@ public class BroadcastThread extends TimerTask {
         }
     }
 
+    private void initBrodacastThread() {
+        subThread = new BroadcastRunningThread(this.aManager);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), subThread, 5L, 5L);
+    }
+
     @Override
     public void run() {
         // CREATE THE TASK
-        if (messages == null) {
+        if (messages == null)
             return;
-        }
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new BroadcastRunningThread(this.aManager, messages.get(index++)));
+        // SAY SUBTHREAD HE CAN BROADCAST
+        subThread.setMessage(messages.get(index++));
+
         // shuffle the messages and reset index
         if (index == messages.size()) {
             Collections.shuffle(messages);

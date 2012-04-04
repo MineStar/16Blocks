@@ -31,16 +31,25 @@ public class BroadcastRunningThread implements Runnable {
     private AreaManager aManager;
     private String message;
 
-    public BroadcastRunningThread(AreaManager aManager, String message) {
-        this.message = message;
+    public BroadcastRunningThread(AreaManager aManager) {
+        this.message = null;
         this.aManager = aManager;
     }
 
     @Override
     public void run() {
-        Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + message);
-        // Inform player about current skin count
-        if (rand.nextBoolean())
-            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + aManager.getUsedAreaCount() + " Skins at the moment!");
+        if (message == null)
+            return;
+        else {
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + message);
+            // Inform player about current skin count
+            if (rand.nextBoolean())
+                Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] : " + aManager.getUsedAreaCount() + " Skins at the moment!");
+            message = null;
+        }
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
