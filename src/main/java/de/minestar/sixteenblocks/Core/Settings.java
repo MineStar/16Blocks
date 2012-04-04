@@ -5,6 +5,8 @@ import java.io.File;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
+import de.minestar.sixteenblocks.Listener.ChatListener;
+
 public class Settings {
     private static int AREA_SIZE_X = 32, AREA_SIZE_Z = 32;
     private static int MINIMUM_BUILD_Y = 6, MAXIMUM_BUILD_Y = 50;
@@ -82,6 +84,12 @@ public class Settings {
             SUPPORTER_BUFFER = config.getInt("general.supportBuffer", SUPPORTER_BUFFER);
 
             JAMES_INTERVAL = config.getLong("general.jamesInterval", JAMES_INTERVAL);
+
+            if (CHAT_RADIUS < 1) {
+                ChatListener.radiusOff = true;
+            } else {
+                ChatListener.radiusOff = false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             saveSettings(dataFolder);

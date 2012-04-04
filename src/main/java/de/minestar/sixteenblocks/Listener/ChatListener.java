@@ -31,6 +31,8 @@ public class ChatListener implements Listener {
 
     private long chatPause = Settings.getChatPauseTimeInSeconds() * 1000;
 
+    public static boolean radiusOff = false;
+
     public ChatListener(ChatFilter filter, AFKThread afkThread) {
         this.filter = filter;
         this.lastChatList = new HashMap<String, Long>();
@@ -137,14 +139,16 @@ public class ChatListener implements Listener {
         }
 
         // CHAT-RADIUS
-        if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
-            Location chatLocation = event.getPlayer().getLocation();
-            Iterator<Player> iterator = event.getRecipients().iterator();
-            Player thisPlayer;
-            while (iterator.hasNext()) {
-                thisPlayer = iterator.next();
-                if (!isSupporter && Math.abs(thisPlayer.getLocation().distance(chatLocation)) > Settings.getChatRadius()) {
-                    iterator.remove();
+        if (radiusOff) {
+            if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
+                Location chatLocation = event.getPlayer().getLocation();
+                Iterator<Player> iterator = event.getRecipients().iterator();
+                Player thisPlayer;
+                while (iterator.hasNext()) {
+                    thisPlayer = iterator.next();
+                    if (!isSupporter && Math.abs(thisPlayer.getLocation().distance(chatLocation)) > Settings.getChatRadius()) {
+                        iterator.remove();
+                    }
                 }
             }
         }

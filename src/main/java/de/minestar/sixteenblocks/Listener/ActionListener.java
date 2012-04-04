@@ -15,13 +15,13 @@ import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Threads.AFKThread;
 
-public class BlockListener implements Listener {
+public class ActionListener implements Listener {
 
     private AreaManager areaManager;
 
     private AFKThread afkThread;
 
-    public BlockListener(AreaManager areaManager, AFKThread afkThread) {
+    public ActionListener(AreaManager areaManager, AFKThread afkThread) {
         this.areaManager = areaManager;
         this.afkThread = afkThread;
     }

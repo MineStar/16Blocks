@@ -49,7 +49,7 @@ import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Listener.BaseListener;
-import de.minestar.sixteenblocks.Listener.BlockListener;
+import de.minestar.sixteenblocks.Listener.ActionListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.LoginListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
@@ -178,7 +178,7 @@ public class Core extends JavaPlugin {
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener();
-        this.blockListener = new BlockListener(this.areaManager, this.afkThread);
+        this.blockListener = new ActionListener(this.areaManager, this.afkThread);
         this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.loginListener = new LoginListener(this.afkThread);
