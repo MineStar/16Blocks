@@ -58,7 +58,7 @@ public class ChatFilter {
             else {
                 bReader = new BufferedReader(new FileReader(whiteListFile));
                 // HEAD FOR REGEX
-                sBuilder.append("(\\w|\\s)*(");
+                sBuilder.append("(\\w|\\W|\\s)*(");
                 while ((line = bReader.readLine()) != null) {
                     line = line.trim();
                     if (!line.isEmpty()) {
@@ -71,7 +71,7 @@ public class ChatFilter {
                 // DELETE LAST |
                 sBuilder.deleteCharAt(sBuilder.length() - 1);
                 // TAIL FOR REGEX
-                sBuilder.append(")+(\\w|\\s)*");
+                sBuilder.append(")+(\\w|\\W|\\s)*");
                 bReader.close();
 
                 // COMPILE CASE INSENSITIVE REGEX
@@ -88,7 +88,7 @@ public class ChatFilter {
             else {
                 bReader = new BufferedReader(new FileReader(blackListFile));
                 // HEAD FOR REGEX
-                sBuilder.append("(\\w|\\s)*(");
+                sBuilder.append("(\\w|\\W|\\s)*(");
                 while ((line = bReader.readLine()) != null) {
                     line = line.trim();
                     if (!line.isEmpty()) {
@@ -101,7 +101,7 @@ public class ChatFilter {
                 // DELETE LAST |
                 sBuilder.deleteCharAt(sBuilder.length() - 1);
                 // TAIL FOR REGEX
-                sBuilder.append(")+(\\w|\\s)*");
+                sBuilder.append(")+(\\w|\\W|\\s)*");
                 bReader.close();
 
                 // COMPILE CASE INSENSITIVE REGEX
