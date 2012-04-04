@@ -39,6 +39,12 @@ public class ActionListener implements Listener {
         if (Core.isSupporter(event.getPlayer()))
             return;
 
+        if (Core.shutdownServer) {
+            TextUtils.sendError(event.getPlayer(), "Server is shutting down...");
+            event.setCancelled(false);
+            return;
+        }
+
         afkThread.takeAktion(event.getPlayer());
 
         if (event.hasBlock()) {

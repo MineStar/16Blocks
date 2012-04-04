@@ -40,6 +40,11 @@ public class LoginListener implements Listener {
 
     @EventHandler
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
+        if (Core.isShutDown) {
+            event.disallow(Result.KICK_OTHER, "Server is shutting down...");
+            return;
+        }
+
         int onlinePlayer = Bukkit.getOnlinePlayers().length;
         // Only supporter can join a full server
         if (!Core.isSupporter(event.getName()) && onlinePlayer >= Core.getAllowedMaxPlayer()) {
