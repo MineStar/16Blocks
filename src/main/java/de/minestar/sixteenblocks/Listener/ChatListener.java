@@ -146,13 +146,13 @@ public class ChatListener implements Listener {
 
         // CHAT-RADIUS
         if (!radiusOff) {
-            if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
+            if (Settings.getChatRadius() > 0 && !isSupporter) {
                 Location chatLocation = event.getPlayer().getLocation();
                 Iterator<Player> iterator = event.getRecipients().iterator();
                 Player thisPlayer;
                 while (iterator.hasNext()) {
                     thisPlayer = iterator.next();
-                    if (!isSupporter && Math.abs(thisPlayer.getLocation().distance(chatLocation)) > Settings.getChatRadius()) {
+                    if (!Core.isSupporter(thisPlayer) && Math.abs(thisPlayer.getLocation().distance(chatLocation)) > Settings.getChatRadius()) {
                         iterator.remove();
                     }
                 }
