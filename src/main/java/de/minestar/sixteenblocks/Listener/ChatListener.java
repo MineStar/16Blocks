@@ -145,7 +145,7 @@ public class ChatListener implements Listener {
         }
 
         // CHAT-RADIUS
-        if (radiusOff) {
+        if (!radiusOff) {
             if (Settings.getChatRadius() > 0 && !Core.isSupporter(event.getPlayer())) {
                 Location chatLocation = event.getPlayer().getLocation();
                 Iterator<Player> iterator = event.getRecipients().iterator();
