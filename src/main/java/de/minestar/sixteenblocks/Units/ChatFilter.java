@@ -31,11 +31,21 @@ public class ChatFilter {
     private Pattern whiteList;
     private Pattern blackList;
 
+    private final File dataFolder;
+
     public ChatFilter(File dataFolder) {
-        loadLists(dataFolder);
+        this.dataFolder = dataFolder;
+        loadLists();
     }
 
-    private void loadLists(File dataFolder) {
+    // RELOAD PATTERN
+    public void reloadLists() {
+        loadLists();
+
+        ConsoleUtils.printInfo(Core.NAME, "Reloaded white and black list");
+    }
+
+    private void loadLists() {
         try {
             BufferedReader bReader = null;
             StringBuilder sBuilder = new StringBuilder(1024);

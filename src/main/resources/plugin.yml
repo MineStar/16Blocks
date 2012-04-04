@@ -29,6 +29,9 @@ commands:
   delete:
     description: Delete an area
     usage: /delete <Player>    
+  filter:
+    description: Reload the filter lists
+    usage: /filter
   ban:
     description: Ban a player and delete the area
     usage: /ban <Player>

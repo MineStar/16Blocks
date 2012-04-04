@@ -34,6 +34,7 @@ import de.minestar.sixteenblocks.Commands.cmdMute;
 import de.minestar.sixteenblocks.Commands.cmdNumberize;
 import de.minestar.sixteenblocks.Commands.cmdRebuild;
 import de.minestar.sixteenblocks.Commands.cmdReload;
+import de.minestar.sixteenblocks.Commands.cmdReloadFilter;
 import de.minestar.sixteenblocks.Commands.cmdReply;
 import de.minestar.sixteenblocks.Commands.cmdReset;
 import de.minestar.sixteenblocks.Commands.cmdRow;
@@ -48,8 +49,8 @@ import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
-import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ActionListener;
+import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.LoginListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
@@ -247,7 +248,10 @@ public class Core extends JavaPlugin {
                         new cmdSay          ("/broadcast",  "<Message>",                ""),
                         
                         // LOOKING FOR SUPPORTER
-                        new cmdAdmin        ("/admins",     "",                         "")
+                        new cmdAdmin        ("/admins",     "",                         ""),
+                        
+                        // RELOAD CHATFILTER
+                        new cmdReloadFilter ("/filter",     "",                         "", this.filter)
         );
         /* @formatter:on */
     }
