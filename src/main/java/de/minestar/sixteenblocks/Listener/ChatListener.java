@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -110,12 +111,17 @@ public class ChatListener implements Listener {
             event.getRecipients().clear();
             event.setCancelled(true);
 
-            // WARN ADMINS
+            // WARN SUPPORTER
             for (String playerName : Core.getSupporter()) {
                 Player player = Bukkit.getPlayer(playerName);
                 if (player != null && player.isOnline()) {
                     TextUtils.sendLine(player, ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
                 }
+            }
+            for (OfflinePlayer op : Bukkit.getOperators()) {
+                if (op.isOnline())
+                    TextUtils.sendLine(op.getPlayer(), ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
+
             }
             return;
         }
