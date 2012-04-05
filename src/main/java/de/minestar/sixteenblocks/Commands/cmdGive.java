@@ -42,7 +42,8 @@ public class cmdGive extends AbstractExtendedCommand {
             return;
         }
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/give " + ChatUtils.getMessage(args));
+        if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/give " + ChatUtils.getMessage(args)))
+            TextUtils.sendInfo(player, "/give <player> <item> [amount [data]]");
     }
 
 }
