@@ -60,14 +60,25 @@ public class ActionListener implements Listener {
         }
 
         if (event.hasItem()) {
-            if (event.getMaterial().getId() == Material.SNOW_BALL.getId() || event.getMaterial().getId() == Material.POWERED_MINECART.getId() || event.getMaterial().getId() == Material.STORAGE_MINECART.getId() || event.getMaterial().getId() == Material.EGG.getId() || event.getMaterial().getId() == Material.BOAT.getId() || event.getMaterial().getId() == Material.MINECART.getId() || event.getMaterial().getId() == Material.MONSTER_EGG.getId() || event.getMaterial().getId() == Material.MONSTER_EGGS.getId() || event.getMaterial().getId() == Material.POTION.getId() || event.getMaterial().getId() == Material.EXP_BOTTLE.getId()) {
-                event.setCancelled(true);
-            } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getMaterial().equals(Material.PAINTING)) {
-                event.setCancelled(true);
+            // CANCEL EVENTS WITH SPECIAL ITEMS
+            switch (event.getMaterial()) {
+                case SNOW_BALL :
+                case POWERED_MINECART :
+                case STORAGE_MINECART :
+                case EGG :
+                case BOAT :
+                case MINECART :
+                case MONSTER_EGG :
+                case MONSTER_EGGS :
+                case POTION :
+                case EXP_BOTTLE :
+                case FISHING_ROD :
+                case PAINTING :
+                case BOW :
+                    event.setCancelled(true);
             }
         }
     }
-
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
