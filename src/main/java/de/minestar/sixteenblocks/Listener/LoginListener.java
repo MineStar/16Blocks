@@ -76,7 +76,7 @@ public class LoginListener implements Listener {
     }
 
     private void checkServerFull() {
-        if (Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers() - 30) {
+        if (Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers() - Settings.getSupporterBuffer()) {
             if (!file.exists()) {
                 try {
                     file.createNewFile();
