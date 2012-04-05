@@ -18,11 +18,9 @@
 
 package de.minestar.sixteenblocks.Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
-import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
@@ -41,9 +39,10 @@ public class cmdGive extends AbstractExtendedCommand {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }
+        TextUtils.sendError(player, "Not implemented...");
+        // TODO: Implement give
+        return;
 
-        if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/give " + ChatUtils.getMessage(args)))
-            TextUtils.sendInfo(player, "/give <player> <item> [amount [data]]");
     }
 
 }
