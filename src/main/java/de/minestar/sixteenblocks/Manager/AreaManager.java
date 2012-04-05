@@ -2,6 +2,7 @@ package de.minestar.sixteenblocks.Manager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TreeMap;
 
 import net.minecraft.server.Packet130UpdateSign;
@@ -257,13 +258,13 @@ public class AreaManager {
     // ////////////////////////////////////////////////
 
     private void loadAreas() {
-        ArrayList<SkinArea> loadedAreas = databaseManager.loadZones();
+        List<SkinArea> loadedAreas = databaseManager.loadZones();
         for (SkinArea thisArea : loadedAreas) {
-            if (thisArea.getAreaOwner().equalsIgnoreCase("")) {
+            if (thisArea.getAreaOwner().equalsIgnoreCase(""))
                 this.unusedAreaList.put(thisArea.getZoneXZ().toString(), thisArea);
-            } else {
+            else
                 this.usedAreaList.put(thisArea.getZoneXZ().toString(), thisArea);
-            }
+
         }
         TextUtils.logInfo(this.unusedAreaList.size() + " unused Areas loaded.");
         TextUtils.logInfo(this.usedAreaList.size() + " used Areas loaded.");

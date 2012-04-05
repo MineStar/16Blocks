@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -40,7 +42,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
     }
 
     public ArrayList<SkinArea> createNotExistingAreas() {
-        ArrayList<SkinArea> currentZones = this.loadZones();
+        List<SkinArea> currentZones = this.loadZones();
 
         // GET MAXIMUM ROW
         ZoneXZ thisZone;
@@ -71,10 +73,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
             this.checkExistance.setInt(1, x);
             this.checkExistance.setInt(2, z);
             ResultSet result = this.checkExistance.executeQuery();
-            while (result != null && result.next()) {
-                return true;
-            }
-            return false;
+            return result != null && result.next();
         } catch (Exception e) {
             e.printStackTrace();
             return true;
@@ -86,7 +85,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
         this.loadAreas = dbConnection.getConnection().prepareStatement("SELECT areaOwner, x, z FROM zones");
         this.insertArea = dbConnection.getConnection().prepareStatement("INSERT INTO zones (areaOwner, x, z) VALUES(?, ?, ?)");
         this.updateArea = dbConnection.getConnection().prepareStatement("UPDATE zones SET areaOwner = ? , creationDate = ? WHERE x = ? AND z = ?");
-        this.checkExistance = dbConnection.getConnection().prepareStatement("SELECT * FROM zones WHERE x = ? AND z = ? LIMIT 1");
+        this.checkExistance = dbConnection.getConnection().prepareStatement("SELECT 1 FROM zones WHERE x = ? AND z = ? LIMIT 1");
     }
 
     @Override
@@ -94,13 +93,13 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
         DatabaseUtils.createStructure(this.getClass().getResourceAsStream("/structure.sql"), connection, Core.getInstance().getDescription().getName());
     }
 
-    public ArrayList<SkinArea> loadZones() {
-        ArrayList<SkinArea> thisList = new ArrayList<SkinArea>();
+    public List<SkinArea> loadZones() {
+        List<SkinArea> thisList = new LinkedList<SkinArea>();
         try {
             ResultSet result = this.loadAreas.executeQuery();
-            while (result != null && result.next()) {
+            while (result.next())
                 thisList.add(new SkinArea(result.getInt(2), result.getInt(3), result.getString(1)));
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
