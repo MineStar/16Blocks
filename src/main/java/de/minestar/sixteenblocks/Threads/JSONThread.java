@@ -48,17 +48,25 @@ public class JSONThread extends TimerTask {
 
             @Override
             public void run() {
+                BufferedWriter bWriter = null;
                 try {
                     JSONObject json = new JSONObject();
                     json.put("ConnectedUsers", Bukkit.getOnlinePlayers().length);
                     json.put("Skins", aManager.getUsedAreaCount());
                     json.put("Slots", Core.getAllowedMaxPlayer());
-                    BufferedWriter bWriter = new BufferedWriter(new FileWriter(JSONFile));
+                    bWriter = new BufferedWriter(new FileWriter(JSONFile));
                     bWriter.write(json.toJSONString());
                     bWriter.flush();
                     bWriter.close();
                 } catch (Exception e) {
                     ConsoleUtils.printException(e, Core.NAME, "Can't save JSON");
+                } finally {
+                    try {
+                        if (bWriter != null)
+                            bWriter.close();
+                    } catch (Exception e2) {
+                        // IGNORE SECOND EXCEPTION
+                    }
                 }
             }
         });

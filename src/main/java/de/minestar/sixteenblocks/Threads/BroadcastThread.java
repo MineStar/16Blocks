@@ -46,8 +46,8 @@ public class BroadcastThread extends TimerTask {
 
     public BroadcastThread(File dataFolder, AreaManager aManager) {
         loadMessages(dataFolder);
-        initBrodacastThread();
         this.aManager = aManager;
+        initBrodacastThread();
     }
 
     private void loadMessages(File dataFolder) {
