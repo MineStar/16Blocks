@@ -76,7 +76,7 @@ public class BroadcastThread extends TimerTask {
 
     private void initBrodacastThread() {
         subThread = new BroadcastRunningThread(this.aManager);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), subThread, 5L, 5L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), subThread, 20L, 20L);
     }
 
     @Override
