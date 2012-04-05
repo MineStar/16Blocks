@@ -125,7 +125,7 @@ public class Core extends JavaPlugin {
 
         // SUPER EXTENSION-THREAD
         this.blockThread = new BlockThread(Bukkit.getWorlds().get(0));
-        this.blockThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.blockThread, 0, Settings.getTicksBetweenReplace()));
+        this.blockThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.blockThread, 0L, Settings.getTicksBetweenReplace()));
 
         // AFK THREAD
         this.afkThread = new AFKThread();

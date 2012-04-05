@@ -23,7 +23,7 @@ public class Settings {
     private static long TIME = 6000;
 
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
-    private static int TICKS_BETWEEN_REPLACE = 5;
+    private static long TICKS_BETWEEN_REPLACE = 5L;
     private static int CREATE_ROWS_AT_ONCE = 2;
 
     private static int CHAT_RADIUS = 150;
@@ -73,7 +73,7 @@ public class Settings {
             OLD_SKINS_RIGHT = config.getInt("Skins.oldRight", SKINS_RIGHT);
 
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
-            TICKS_BETWEEN_REPLACE = config.getInt("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
+            TICKS_BETWEEN_REPLACE = config.getLong("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
             CREATE_ROWS_AT_ONCE = config.getInt("Threads.Structures.createRowsAtOnce", CREATE_ROWS_AT_ONCE);
 
             SPAWN_VECTOR = config.getVector("Locations.spawn", SPAWN_VECTOR);
@@ -164,7 +164,7 @@ public class Settings {
         return MAX_BLOCKS_REPLACE_AT_ONCE;
     }
 
-    public static int getTicksBetweenReplace() {
+    public static long getTicksBetweenReplace() {
         return TICKS_BETWEEN_REPLACE;
     }
 
