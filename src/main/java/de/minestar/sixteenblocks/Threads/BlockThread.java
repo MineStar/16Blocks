@@ -13,7 +13,7 @@ import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class BlockThread implements Runnable {
 
-    private final ConcurrentLinkedQueue<StructureBlock> blockList = new ConcurrentLinkedQueue<StructureBlock>();
+    private final ConcurrentLinkedQueue<StructureBlock> queue = new ConcurrentLinkedQueue<StructureBlock>();
     private final World world;
     private int TaskID = -9999;
 
@@ -22,12 +22,12 @@ public class BlockThread implements Runnable {
     }
 
     public void addBlockList(final List<StructureBlock> extendList) {
-        this.blockList.addAll(extendList);
+        this.queue.addAll(extendList);
     }
 
     public void addRelativeBlockList(final List<StructureBlock> extendList, ZoneXZ thisZone) {
         for (StructureBlock block : extendList) {
-            this.blockList.add(block.clone(thisZone.getBaseX(), thisZone.getBaseZ()));
+            this.queue.add(block.clone(thisZone.getBaseX(), thisZone.getBaseZ()));
         }
     }
 
@@ -36,7 +36,7 @@ public class BlockThread implements Runnable {
     }
 
     public boolean isRunning() {
-        return !this.blockList.isEmpty();
+        return !this.queue.isEmpty();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class BlockThread implements Runnable {
         if (TaskID == -9999)
             return;
 
-        if (this.blockList.isEmpty()) {
+        if (this.queue.isEmpty()) {
             // CHECK FOR RELOAD / STOP
             if (Core.shutdownServer) {
                 if (!Core.isShutDown) {
@@ -66,15 +66,11 @@ public class BlockThread implements Runnable {
         }
 
         StructureBlock thisBlock = null;
-        int counter = 0;
-        while (!blockList.isEmpty()) {
-            thisBlock = blockList.remove();
-            world.getBlockAt(thisBlock.getX(), thisBlock.getY(), thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
 
-            counter++;
-            if (counter >= Settings.getMaxBlocksReplaceAtOnce()) {
-                return;
-            }
+        // RUN THE QUEUE
+        for (int i = 0; i < Settings.getMaxBlocksReplaceAtOnce() && !queue.isEmpty(); ++i) {
+            thisBlock = queue.remove();
+            world.getBlockAt(thisBlock.getX(), thisBlock.getY(), thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
         }
     }
 }
