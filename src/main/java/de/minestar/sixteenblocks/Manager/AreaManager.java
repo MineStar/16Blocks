@@ -1,9 +1,11 @@
 package de.minestar.sixteenblocks.Manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.server.Packet130UpdateSign;
 
@@ -27,10 +29,10 @@ import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
 public class AreaManager {
-    private TreeMap<String, SkinArea> usedAreaList = new TreeMap<String, SkinArea>();
-    private TreeMap<String, SkinArea> unusedAreaList = new TreeMap<String, SkinArea>();
+    private Map<String, SkinArea> usedAreaList = new HashMap<String, SkinArea>();
+    private Map<String, SkinArea> unusedAreaList = new HashMap<String, SkinArea>();
 
-    private HashSet<String> blockedAreas = new HashSet<String>();
+    private Set<String> blockedAreas = new HashSet<String>();
 
     private StructureManager structureManager;
     private AreaDatabaseManager databaseManager;
