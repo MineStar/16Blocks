@@ -25,6 +25,7 @@ import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
+import de.minestar.sixteenblocks.Commands.cmdGive;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
@@ -251,7 +252,9 @@ public class Core extends JavaPlugin {
                         new cmdAdmin        ("/admins",     "",                         ""),
                         
                         // RELOAD CHATFILTER
-                        new cmdReloadFilter ("/filter",     "",                         "", this.filter)
+                        new cmdReloadFilter ("/filter",     "",                         "", this.filter),
+                        
+                        new cmdGive         ("/give",       "",                         "")
         );
         /* @formatter:on */
     }
