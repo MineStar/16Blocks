@@ -55,6 +55,7 @@ public class MovementListener implements Listener {
             return;
         }
     }
+
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (!worldManager.canGoTo(event.getTo().getBlockX(), event.getTo().getBlockY(), event.getTo().getBlockZ())) {
