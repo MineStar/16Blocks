@@ -131,14 +131,14 @@ public class AreaDeletionThread implements Runnable {
     }
 
     private String getPercentString(int percent) {
-        String text = ChatColor.GOLD + "";
-        for (int i = 0; i < percent; i += 10) {
-            text += "|";
-        }
-        text += ChatColor.DARK_GRAY;
-        for (int i = percent; i <= 100; i += 10) {
-            text += "|";
-        }
-        return text;
+        StringBuilder sBuilder = new StringBuilder(ChatColor.GOLD.toString());
+        for (int i = 0; i < percent; i += 10)
+            sBuilder.append('|');
+
+        sBuilder.append(ChatColor.DARK_GRAY.toString());
+        for (int i = percent; i <= 100; i += 10)
+            sBuilder.append('|');
+
+        return sBuilder.toString();
     }
 }
