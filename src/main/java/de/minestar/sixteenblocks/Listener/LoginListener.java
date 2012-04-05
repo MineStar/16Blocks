@@ -18,9 +18,12 @@
 
 package de.minestar.sixteenblocks.Listener;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -34,8 +37,11 @@ public class LoginListener implements Listener {
 
     private AFKThread afkThread;
 
+    private File file;
+
     public LoginListener(AFKThread afkThread) {
         this.afkThread = afkThread;
+        this.file = new File("serverfull.txt");
     }
 
     @EventHandler
@@ -53,6 +59,11 @@ public class LoginListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerLogin(PlayerJoinEvent event) {
+        this.checkServerFull();
+    }
+
+    @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         event.setMaxPlayers(Bukkit.getMaxPlayers() - Settings.getSupporterBuffer());
     }
@@ -60,5 +71,27 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         afkThread.removePlayer(event.getPlayer());
+
+        this.checkServerFull();
+    }
+
+    private void checkServerFull() {
+        if (Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers() - 30) {
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (Exception e) {
+
+                }
+            }
+        } else {
+            if (file.exists()) {
+                try {
+                    file.delete();
+                } catch (Exception e) {
+
+                }
+            }
+        }
     }
 }
