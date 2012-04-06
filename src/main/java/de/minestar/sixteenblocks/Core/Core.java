@@ -83,7 +83,7 @@ public class Core extends JavaPlugin {
     private MailHandler mHandler;
     private ChatFilter filter;
 
-    private static Set<String> supporter;
+    private static Set<String> supporter, vips;
 
     // private CheckTicketThread checkTread;
     private BlockThread blockThread;
@@ -308,9 +308,31 @@ public class Core extends JavaPlugin {
         playerName = playerName.toLowerCase();
         if (!Core.isSupporter(playerName))
             this.addSupporter(playerName);
-        else
+        else {
             this.removeSupporter(playerName);
+            this.removeVip(playerName);
+        }
         this.saveSupporter();
+        return Core.isSupporter(playerName);
+    }
+
+    public void addVip(String playerName) {
+        Core.vips.add(playerName.toLowerCase());
+    }
+
+    public void removeVip(String playerName) {
+        Core.vips.remove(playerName.toLowerCase());
+    }
+
+    public boolean toggleVip(String playerName) {
+        playerName = playerName.toLowerCase();
+        if (!Core.isSupporter(playerName))
+            this.addVip(playerName);
+        else {
+            this.removeVip(playerName);
+            this.removeSupporter(playerName);
+        }
+        this.saveVips();
         return Core.isSupporter(playerName);
     }
 
@@ -319,7 +341,16 @@ public class Core extends JavaPlugin {
     }
 
     private void saveSupporter() {
-        File f = new File(getDataFolder(), "supporter.txt");
+        this.saveUsers(Core.supporter, "supporter.txt");
+    }
+
+    private void saveVips() {
+        this.saveUsers(Core.vips, "vips.txt");
+    }
+
+    private void saveUsers(Set<String> map, String fileName) {
+        File f = new File(getDataFolder(), fileName);
+        // IF FILE EXISTS: DELETE IT
         if (f.exists()) {
             f.delete();
         }
@@ -328,24 +359,35 @@ public class Core extends JavaPlugin {
             f.createNewFile();
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(f));
             int count = 0;
-            for (String name : Core.supporter) {
+            for (String name : map) {
                 bWriter.write(name + System.getProperty("line.separator"));
                 count++;
             }
-            ConsoleUtils.printInfo(NAME, "Saved " + count + " supporter!");
+            ConsoleUtils.printInfo(NAME, "Saved " + count + " users in '" + fileName + "'!");
             bWriter.flush();
             bWriter.close();
         } catch (Exception e) {
-            ConsoleUtils.printException(e, NAME, "Can't save support file!");
+            ConsoleUtils.printException(e, NAME, "Error while saving file '" + fileName + "'!");
         }
     }
 
     private void loadSupporter() {
-        File f = new File(getDataFolder(), "supporter.txt");
-        supporter = new HashSet<String>(16);
+        Core.supporter = new HashSet<String>(16);
+        Core.vips = new HashSet<String>(16);
+        this.loadUsers(Core.supporter, "supporter.txt");
+        this.loadUsers(Core.vips, "vips.txt");
+    }
 
+    private void loadUsers(Set<String> map, String fileName) {
+        File f = new File(getDataFolder(), fileName);
+        // CHECK: FILE EXISTS
         if (!f.exists()) {
-            ConsoleUtils.printError(NAME, "Can't find supporter file! Only ops can execute support commands!");
+            ConsoleUtils.printError(NAME, "File '" + fileName + "' not found! No Users were loaded.");
+            try {
+                f.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -354,21 +396,23 @@ public class Core extends JavaPlugin {
             String line = "";
             while ((line = bReader.readLine()) != null) {
                 line = line.trim().replace(" ", "");
-                if (!line.isEmpty())
-                    this.addSupporter(line.toLowerCase());
+                if (!line.isEmpty()) {
+                    map.add(line.toLowerCase());
+                }
             }
-            ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " supporter!");
+            ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " users from '" + fileName + "'!");
         } catch (Exception e) {
-            ConsoleUtils.printException(e, NAME, "Can't load support file!");
+            ConsoleUtils.printException(e, NAME, "Error while reading file: '" + fileName + "'");
         }
     }
 
     public static boolean isSupporter(Player player) {
-        return player.isOp() || supporter.contains(player.getName().toLowerCase());
+        return Core.isSupporter(player.getName());
     }
 
     public static boolean isSupporter(String playerName) {
-        return Bukkit.getOfflinePlayer(playerName).isOp() || supporter.contains(playerName.toLowerCase());
+        String name = playerName.toLowerCase();
+        return Bukkit.getOfflinePlayer(name).isOp() || supporter.contains(name) || vips.contains(name);
     }
 
     public static int getAllowedMaxPlayer() {
