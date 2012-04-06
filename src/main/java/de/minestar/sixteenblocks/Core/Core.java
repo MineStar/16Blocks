@@ -329,13 +329,13 @@ public class Core extends JavaPlugin {
     public boolean toggleVip(String playerName) {
         playerName = playerName.toLowerCase();
         this.removeSupporter(playerName);
-        if (!Core.isSupporter(playerName)) {
+        if (!Core.isVip(playerName)) {
             this.addVip(playerName);
         } else {
             this.removeVip(playerName);
         }
         this.saveVips();
-        return Core.isSupporter(playerName);
+        return Core.isVip(playerName);
     }
 
     public static Set<String> getSupporter() {
