@@ -44,13 +44,21 @@ public class BroadcastThread extends TimerTask {
 
     private BroadcastRunningThread subThread;
 
+    private File dataFolder;
+
     public BroadcastThread(File dataFolder, AreaManager aManager) {
-        loadMessages(dataFolder);
+        this.dataFolder = dataFolder;
+        loadMessages();
         this.aManager = aManager;
         initBrodacastThread();
     }
 
-    private void loadMessages(File dataFolder) {
+    public void reloadMessage() {
+        messages = null;
+        loadMessages();
+    }
+
+    private void loadMessages() {
         File file = new File(dataFolder, "messages.txt");
         if (!file.exists()) {
             ConsoleUtils.printWarning(Core.NAME, "Can't find " + file + "! No messages for broadcast thread are loaded!");
