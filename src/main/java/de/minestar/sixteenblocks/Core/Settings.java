@@ -151,10 +151,6 @@ public class Settings {
             config.set("Skins.oldLeft", SKINS_LEFT);
             config.set("Skins.oldRight", SKINS_RIGHT);
 
-            config.set("Color.supporter", String.valueOf(colorSupporter.getChar()));
-            config.set("Color.normal", String.valueOf(colorNormal.getChar()));
-            config.set("Color.vips", String.valueOf(colorVips.getChar()));
-
             // SAVE COLORCODES
             config.set("ChatColor.AQUA", String.valueOf(ChatColor.AQUA.getChar()));
             config.set("ChatColor.BLACK", String.valueOf(ChatColor.BLACK.getChar()));
