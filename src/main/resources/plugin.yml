@@ -47,6 +47,9 @@ commands:
   support:
     description: Toggle a supporter
     usage: /support <Player>
+  vip:
+    description: Toggle a vip
+    usage: /vip <Player>    
   save:
     description: Saves the current area as a structure
     usage: /save <Name>

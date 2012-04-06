@@ -50,6 +50,7 @@ import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
+import de.minestar.sixteenblocks.Commands.cmdVip;
 import de.minestar.sixteenblocks.Listener.ActionListener;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
@@ -234,6 +235,7 @@ public class Core extends JavaPlugin {
                         new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
                         new cmdSupport      ("/support",    "<Playername>",             ""),  
+                        new cmdVip          ("/vip",        "<Playername>",             ""),  
                         
                         // BUG REPORTS
                         new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
