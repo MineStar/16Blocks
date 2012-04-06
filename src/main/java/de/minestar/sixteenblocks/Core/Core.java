@@ -254,7 +254,7 @@ public class Core extends JavaPlugin {
                         // RELOAD CHATFILTER
                         new cmdReloadFilter ("/filter",     "",                         "", this.filter),
                         
-                        new cmdGive         ("/give",       "",                         "")
+                        new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", "")
         );
         /* @formatter:on */
     }
