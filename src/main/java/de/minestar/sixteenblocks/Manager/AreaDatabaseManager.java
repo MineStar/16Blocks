@@ -132,8 +132,9 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
     public void deleteAreaOwner(ZoneXZ thisZone) {
         try {
             updateArea.setString(1, "");
-            updateArea.setInt(2, thisZone.getX());
-            updateArea.setInt(3, thisZone.getZ());
+            updateArea.setLong(2, 0L);
+            updateArea.setInt(3, thisZone.getX());
+            updateArea.setInt(4, thisZone.getZ());
             updateArea.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
