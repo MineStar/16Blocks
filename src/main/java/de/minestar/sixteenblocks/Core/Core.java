@@ -306,11 +306,11 @@ public class Core extends JavaPlugin {
 
     public boolean toggleSupporter(String playerName) {
         playerName = playerName.toLowerCase();
-        if (!Core.isSupporter(playerName))
+        this.removeVip(playerName);
+        if (!Core.isSupporter(playerName)) {
             this.addSupporter(playerName);
-        else {
+        } else {
             this.removeSupporter(playerName);
-            this.removeVip(playerName);
         }
         this.saveSupporter();
         return Core.isSupporter(playerName);
@@ -326,11 +326,11 @@ public class Core extends JavaPlugin {
 
     public boolean toggleVip(String playerName) {
         playerName = playerName.toLowerCase();
-        if (!Core.isSupporter(playerName))
+        this.removeSupporter(playerName);
+        if (!Core.isSupporter(playerName)) {
             this.addVip(playerName);
-        else {
+        } else {
             this.removeVip(playerName);
-            this.removeSupporter(playerName);
         }
         this.saveVips();
         return Core.isSupporter(playerName);
@@ -340,11 +340,17 @@ public class Core extends JavaPlugin {
         return Core.supporter;
     }
 
+    public static Set<String> getVips() {
+        return Core.vips;
+    }
+
     private void saveSupporter() {
         this.saveUsers(Core.supporter, "supporter.txt");
+        this.saveUsers(Core.vips, "vips.txt");
     }
 
     private void saveVips() {
+        this.saveUsers(Core.supporter, "supporter.txt");
         this.saveUsers(Core.vips, "vips.txt");
     }
 
@@ -406,13 +412,21 @@ public class Core extends JavaPlugin {
         }
     }
 
+    public static boolean isVip(Player player) {
+        return Core.isVip(player.getName());
+    }
+
+    public static boolean isVip(String playerName) {
+        return vips.contains(playerName.toLowerCase());
+    }
+
     public static boolean isSupporter(Player player) {
         return Core.isSupporter(player.getName());
     }
 
     public static boolean isSupporter(String playerName) {
         String name = playerName.toLowerCase();
-        return Bukkit.getOfflinePlayer(name).isOp() || supporter.contains(name) || vips.contains(name);
+        return Bukkit.getOfflinePlayer(name).isOp() || supporter.contains(name) || Core.isVip(name);
     }
 
     public static int getAllowedMaxPlayer() {
