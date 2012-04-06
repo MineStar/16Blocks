@@ -53,7 +53,6 @@ public class cmdSay extends AbstractExtendedCommand {
 
     private void broadcast(String[] args) {
         Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "[YAM] " + ChatColor.WHITE + ChatUtils.getMessage(args));
-
     }
 
 }
