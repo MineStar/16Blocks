@@ -36,7 +36,7 @@ public class cmdReload extends AbstractExtendedCommand {
     @Override
     public void execute(String[] args, Player player) {
         // CHECK: PLAYER IS OP
-        if (!player.isOp()) {
+        if (!player.isOp() || Core.isVip(player)) {
             TextUtils.sendError(player, "You are not allowed to do this!");
             return;
         }
