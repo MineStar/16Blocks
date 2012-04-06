@@ -161,10 +161,13 @@ public class ChatListener implements Listener {
 
         // FORMAT CHAT
         event.setFormat("%2$s");
-        if (isSupporter)
-            event.setMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
-        else
-            event.setMessage(ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+        if (Core.isVip(event.getPlayer())) {
+            event.setMessage(Settings.getColorVips() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+        } else if (isSupporter) {
+            event.setMessage(Settings.getColorSupporter() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+        } else {
+            event.setMessage(Settings.getColorNormal() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+        }
 
         lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
     }

@@ -2,6 +2,7 @@ package de.minestar.sixteenblocks.Core;
 
 import java.io.File;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
@@ -29,6 +30,31 @@ public class Settings {
     private static int CHAT_RADIUS = 150;
 
     private static long JAMES_INTERVAL = 2L;
+
+    private static ChatColor colorNormal = ChatColor.GREEN;
+    private static ChatColor colorSupporter = ChatColor.RED;
+    private static ChatColor colorVips = ChatColor.GREEN;
+
+    /**
+     * @return the colorNormal
+     */
+    public static ChatColor getColorNormal() {
+        return colorNormal;
+    }
+
+    /**
+     * @return the colorSupporter
+     */
+    public static ChatColor getColorSupporter() {
+        return colorSupporter;
+    }
+
+    /**
+     * @return the colorVips
+     */
+    public static ChatColor getColorVips() {
+        return colorVips;
+    }
 
     /**
      * @param cHAT_RADIUS
@@ -71,6 +97,10 @@ public class Settings {
 
             OLD_SKINS_LEFT = config.getInt("Skins.oldLeft", SKINS_LEFT);
             OLD_SKINS_RIGHT = config.getInt("Skins.oldRight", SKINS_RIGHT);
+
+            colorNormal = ChatColor.getByChar(config.getString("Color.normal", String.valueOf(colorNormal.getChar())));
+            colorSupporter = ChatColor.getByChar(config.getString("Color.supporter", String.valueOf(colorSupporter.getChar())));
+            colorVips = ChatColor.getByChar(config.getString("Color.vips", String.valueOf(colorVips.getChar())));
 
             MAX_BLOCKS_REPLACE_AT_ONCE = config.getInt("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             TICKS_BETWEEN_REPLACE = config.getLong("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
@@ -120,6 +150,28 @@ public class Settings {
 
             config.set("Skins.oldLeft", SKINS_LEFT);
             config.set("Skins.oldRight", SKINS_RIGHT);
+
+            config.set("Color.supporter", ChatColor.RED.getChar());
+            config.set("Color.normal", ChatColor.GREEN.getChar());
+            config.set("Color.vips", ChatColor.GREEN.getChar());
+
+            // SAVE COLORCODES
+            config.set("ChatColor.AQUA", ChatColor.AQUA.getChar());
+            config.set("ChatColor.BLACK", ChatColor.BLACK.getChar());
+            config.set("ChatColor.BLUE", ChatColor.BLUE.getChar());
+            config.set("ChatColor.DARK_AQUA", ChatColor.DARK_AQUA.getChar());
+            config.set("ChatColor.DARK_BLUE", ChatColor.DARK_BLUE.getChar());
+            config.set("ChatColor.DARK_GRAY", ChatColor.DARK_GRAY.getChar());
+            config.set("ChatColor.DARK_GREEN", ChatColor.DARK_GREEN.getChar());
+            config.set("ChatColor.DARK_PURPLE", ChatColor.DARK_PURPLE.getChar());
+            config.set("ChatColor.DARK_RED", ChatColor.DARK_RED.getChar());
+            config.set("ChatColor.GOLD", ChatColor.GOLD.getChar());
+            config.set("ChatColor.GRAY", ChatColor.GRAY.getChar());
+            config.set("ChatColor.GREEN", ChatColor.GREEN.getChar());
+            config.set("ChatColor.LIGHT_PURPLE", ChatColor.LIGHT_PURPLE.getChar());
+            config.set("ChatColor.RED", ChatColor.RED.getChar());
+            config.set("ChatColor.WHITE", ChatColor.WHITE.getChar());
+            config.set("ChatColor.YELLOW", ChatColor.YELLOW.getChar());
 
             config.set("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             config.set("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
