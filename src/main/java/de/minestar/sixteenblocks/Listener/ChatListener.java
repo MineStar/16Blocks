@@ -7,7 +7,6 @@ import java.util.Iterator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +22,7 @@ import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class ChatListener implements Listener {
 
-    private ChatFilter filter;
+    // private ChatFilter filter;
     private HashMap<String, Long> lastChatList;
 
     private HashSet<String> mutedPlayers = new HashSet<String>();
@@ -35,7 +34,7 @@ public class ChatListener implements Listener {
     public static boolean radiusOff = false;
 
     public ChatListener(ChatFilter filter, AFKThread afkThread) {
-        this.filter = filter;
+        // this.filter = filter;
         this.lastChatList = new HashMap<String, Long>();
         this.afkThread = afkThread;
     }
@@ -104,27 +103,28 @@ public class ChatListener implements Listener {
         }
 
         // USED BAD WORD
-        String message = " " + event.getMessage().toLowerCase() + " ";
-        if (!isSupporter && !filter.acceptMessage(message)) {
-            // troll them by sending the message to them but to no other player
-            TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-            event.getRecipients().clear();
-            event.setCancelled(true);
-
-            // WARN SUPPORTER
-            for (String playerName : Core.getSupporter()) {
-                Player player = Bukkit.getPlayer(playerName);
-                if (player != null && player.isOnline()) {
-                    TextUtils.sendLine(player, ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
-                }
-            }
-            for (OfflinePlayer op : Bukkit.getOperators()) {
-                if (op.isOnline())
-                    TextUtils.sendLine(op.getPlayer(), ChatColor.RED, "CAUTION! User '" + event.getPlayer().getName() + "' is trolling around. Message: " + ChatColor.GRAY + event.getMessage());
-
-            }
-            return;
-        }
+        /*
+         * String message = " " + event.getMessage().toLowerCase() + " "; if
+         * (!isSupporter && !filter.acceptMessage(message)) { // troll them by
+         * sending the message to them but to no other player
+         * TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN,
+         * event.getPlayer().getName() + ChatColor.WHITE + ": " +
+         * event.getMessage()); event.getRecipients().clear();
+         * event.setCancelled(true);
+         * 
+         * // WARN SUPPORTER for (String playerName : Core.getSupporter()) {
+         * Player player = Bukkit.getPlayer(playerName); if (player != null &&
+         * player.isOnline()) { TextUtils.sendLine(player, ChatColor.RED,
+         * "CAUTION! User '" + event.getPlayer().getName() +
+         * "' is trolling around. Message: " + ChatColor.GRAY +
+         * event.getMessage()); } } for (OfflinePlayer op :
+         * Bukkit.getOperators()) { if (op.isOnline())
+         * TextUtils.sendLine(op.getPlayer(), ChatColor.RED, "CAUTION! User '" +
+         * event.getPlayer().getName() + "' is trolling around. Message: " +
+         * ChatColor.GRAY + event.getMessage());
+         * 
+         * } return; }
+         */
 
         // IS PLAYER MUTED
         if (this.isMuted(event.getPlayer())) {
@@ -152,7 +152,7 @@ public class ChatListener implements Listener {
                 Player thisPlayer;
                 while (iterator.hasNext()) {
                     thisPlayer = iterator.next();
-                    if (!Core.isSupporter(thisPlayer) && Math.abs(thisPlayer.getLocation().distance(chatLocation)) > Settings.getChatRadius()) {
+                    if (!Core.isSupporter(thisPlayer) && !isInArea(chatLocation, thisPlayer.getLocation())) {
                         iterator.remove();
                     }
                 }
@@ -170,5 +170,13 @@ public class ChatListener implements Listener {
         }
 
         lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
+    }
+
+    public boolean isInArea(Location base, Location other) {
+        if (other.getX() < base.getX() - Settings.getChatRadius() || other.getX() > base.getX() + Settings.getChatRadius())
+            return false;
+        if (other.getZ() < base.getZ() - Settings.getChatRadius() || other.getZ() > base.getZ() + Settings.getChatRadius())
+            return false;
+        return true;
     }
 }
