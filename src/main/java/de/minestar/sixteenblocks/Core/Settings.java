@@ -151,27 +151,27 @@ public class Settings {
             config.set("Skins.oldLeft", SKINS_LEFT);
             config.set("Skins.oldRight", SKINS_RIGHT);
 
-            config.set("Color.supporter", ChatColor.RED.getChar());
-            config.set("Color.normal", ChatColor.GREEN.getChar());
-            config.set("Color.vips", ChatColor.GREEN.getChar());
+            config.set("Color.supporter", String.valueOf(ChatColor.RED.getChar()));
+            config.set("Color.normal", String.valueOf(ChatColor.GREEN.getChar()));
+            config.set("Color.vips", String.valueOf(ChatColor.GREEN.getChar()));
 
             // SAVE COLORCODES
-            config.set("ChatColor.AQUA", ChatColor.AQUA.getChar());
-            config.set("ChatColor.BLACK", ChatColor.BLACK.getChar());
-            config.set("ChatColor.BLUE", ChatColor.BLUE.getChar());
-            config.set("ChatColor.DARK_AQUA", ChatColor.DARK_AQUA.getChar());
-            config.set("ChatColor.DARK_BLUE", ChatColor.DARK_BLUE.getChar());
-            config.set("ChatColor.DARK_GRAY", ChatColor.DARK_GRAY.getChar());
-            config.set("ChatColor.DARK_GREEN", ChatColor.DARK_GREEN.getChar());
-            config.set("ChatColor.DARK_PURPLE", ChatColor.DARK_PURPLE.getChar());
-            config.set("ChatColor.DARK_RED", ChatColor.DARK_RED.getChar());
-            config.set("ChatColor.GOLD", ChatColor.GOLD.getChar());
-            config.set("ChatColor.GRAY", ChatColor.GRAY.getChar());
-            config.set("ChatColor.GREEN", ChatColor.GREEN.getChar());
-            config.set("ChatColor.LIGHT_PURPLE", ChatColor.LIGHT_PURPLE.getChar());
-            config.set("ChatColor.RED", ChatColor.RED.getChar());
-            config.set("ChatColor.WHITE", ChatColor.WHITE.getChar());
-            config.set("ChatColor.YELLOW", ChatColor.YELLOW.getChar());
+            config.set("ChatColor.AQUA", String.valueOf(ChatColor.AQUA.getChar()));
+            config.set("ChatColor.BLACK", String.valueOf(ChatColor.BLACK.getChar()));
+            config.set("ChatColor.BLUE", String.valueOf(ChatColor.BLUE.getChar()));
+            config.set("ChatColor.DARK_AQUA", String.valueOf(ChatColor.DARK_AQUA.getChar()));
+            config.set("ChatColor.DARK_BLUE", String.valueOf(ChatColor.DARK_BLUE.getChar()));
+            config.set("ChatColor.DARK_GRAY", String.valueOf(ChatColor.DARK_GRAY.getChar()));
+            config.set("ChatColor.DARK_GREEN", String.valueOf(ChatColor.DARK_GREEN.getChar()));
+            config.set("ChatColor.DARK_PURPLE", String.valueOf(ChatColor.DARK_PURPLE.getChar()));
+            config.set("ChatColor.DARK_RED", String.valueOf(ChatColor.DARK_RED.getChar()));
+            config.set("ChatColor.GOLD", String.valueOf(ChatColor.GOLD.getChar()));
+            config.set("ChatColor.GRAY", String.valueOf(ChatColor.GRAY.getChar()));
+            config.set("ChatColor.GREEN", String.valueOf(ChatColor.GREEN.getChar()));
+            config.set("ChatColor.LIGHT_PURPLE", String.valueOf(ChatColor.LIGHT_PURPLE.getChar()));
+            config.set("ChatColor.RED", String.valueOf(ChatColor.RED.getChar()));
+            config.set("ChatColor.WHITE", String.valueOf(ChatColor.WHITE.getChar()));
+            config.set("ChatColor.YELLOW", String.valueOf(ChatColor.YELLOW.getChar()));
 
             config.set("Threads.Structures.MaxReplaceAtOnce", MAX_BLOCKS_REPLACE_AT_ONCE);
             config.set("Threads.Structures.ticksBetweenReplace", TICKS_BETWEEN_REPLACE);
