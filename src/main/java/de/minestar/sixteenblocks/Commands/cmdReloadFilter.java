@@ -23,15 +23,18 @@ import org.bukkit.entity.Player;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Threads.BroadcastThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class cmdReloadFilter extends AbstractCommand {
 
     private ChatFilter chatFilter;
+    private BroadcastThread bThread;
 
-    public cmdReloadFilter(String syntax, String arguments, String node, ChatFilter filter) {
+    public cmdReloadFilter(String syntax, String arguments, String node, ChatFilter filter, BroadcastThread thread) {
         super(syntax, arguments, node);
         this.chatFilter = filter;
+        this.bThread = thread;
 
         this.description = "Reload the black and white list for the chatfilter";
     }
@@ -46,6 +49,7 @@ public class cmdReloadFilter extends AbstractCommand {
         }
 
         chatFilter.reloadLists();
+        bThread.reloadMessage();
         TextUtils.sendSuccess(player, "Successfull reloaded!");
     }
 }

@@ -89,6 +89,7 @@ public class Core extends JavaPlugin {
     // private CheckTicketThread checkTread;
     private BlockThread blockThread;
     private AFKThread afkThread;
+    private BroadcastThread bThread;
 
     private CommandList commandList;
 
@@ -143,14 +144,14 @@ public class Core extends JavaPlugin {
         // LOAD SUPPORTER (NOT ALL ADMINS ARE OPS)
         loadSupporter();
 
-        // INIT COMMANDS
-        this.initCommands();
-
         this.registerListeners();
 
         // FINAL INTITIALIZATION
         this.areaManager.checkForZoneExtension();
         createThreads(Bukkit.getScheduler());
+
+        // INIT COMMANDS
+        this.initCommands();
 
         // UPDATE SPAWN
         Bukkit.getWorlds().get(0).setSpawnLocation(Settings.getSpawnVector().getBlockX(), Settings.getSpawnVector().getBlockY(), Settings.getSpawnVector().getBlockZ());
@@ -254,7 +255,7 @@ public class Core extends JavaPlugin {
                         new cmdAdmin        ("/admins",     "",                         ""),
                         
                         // RELOAD CHATFILTER
-                        new cmdReloadFilter ("/filter",     "",                         "", this.filter),
+                        new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),
                         
                         new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", "")
         );
@@ -275,7 +276,8 @@ public class Core extends JavaPlugin {
         timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
 
         // Broadcasting information to player
-        broadcastTimer.schedule(new BroadcastThread(this.getDataFolder(), this.areaManager), 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
+        bThread = new BroadcastThread(this.getDataFolder(), this.areaManager);
+        broadcastTimer.schedule(bThread, 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
 
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20L * 10L, 20L * 30L);
