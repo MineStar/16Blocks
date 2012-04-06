@@ -74,10 +74,10 @@ public class BaseListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onItemSpawnEvent(ItemSpawnEvent event) {
-        event.setCancelled(true);
-    }
+//    @EventHandler
+//    public void onItemSpawnEvent(ItemSpawnEvent event) {
+//        event.setCancelled(true);
+//    }
 
     // ////////////////////////////////////////////////
     //
