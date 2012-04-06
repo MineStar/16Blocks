@@ -62,16 +62,16 @@ public class ActionListener implements Listener {
         if (event.hasItem()) {
             // CANCEL EVENTS WITH SPECIAL ITEMS
             switch (event.getMaterial()) {
-//                case SNOW_BALL :
-//                case POWERED_MINECART :
-//                case STORAGE_MINECART :
-//                case EGG :
-//                case BOAT :
-//                case MINECART :
-//                case MONSTER_EGG :
-//                case MONSTER_EGGS :
-//                case POTION :
-//                case EXP_BOTTLE :
+                case SNOW_BALL :
+                case POWERED_MINECART :
+                case STORAGE_MINECART :
+                case EGG :
+                case BOAT :
+                case MINECART :
+                case MONSTER_EGG :
+                case MONSTER_EGGS :
+                case POTION :
+                case EXP_BOTTLE :
                 case FISHING_ROD :
                 case PAINTING :
                 case BOW :
