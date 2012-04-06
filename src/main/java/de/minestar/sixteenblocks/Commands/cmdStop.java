@@ -18,6 +18,7 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -50,6 +51,14 @@ public class cmdStop extends AbstractExtendedCommand {
         Core.shutdownServer = true;
         Core.isShutDown = true;
         TextUtils.sendInfo(player, "Server is marked as 'stop'...");
+
+        // KICK ALL PLAYERS
+        Player[] players = Bukkit.getOnlinePlayers();
+        for (Player thisPlayer : players) {
+            if (Core.isSupporter(thisPlayer)) {
+                thisPlayer.kickPlayer("YAM-Server is restarting...");
+            }
+        }
     }
 
     @Override

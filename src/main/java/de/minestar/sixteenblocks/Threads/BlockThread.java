@@ -67,8 +67,14 @@ public class BlockThread implements Runnable {
 
         StructureBlock thisBlock = null;
 
+        int maxPlace = Settings.getMaxBlocksReplaceAtOnce();
+        // IF SERVER IS IN SHUTDOWN-MODE: REPLACE 50.000 BLOCKS AT ONCE
+        if (Core.shutdownServer) {
+            maxPlace = 50000;
+        }
+
         // RUN THE QUEUE
-        for (int i = 0; i < Settings.getMaxBlocksReplaceAtOnce() && !queue.isEmpty(); ++i) {
+        for (int i = 0; i < maxPlace && !queue.isEmpty(); ++i) {
             thisBlock = queue.remove();
             world.getBlockAt(thisBlock.getX(), thisBlock.getY(), thisBlock.getZ()).setTypeIdAndData(thisBlock.getTypeID(), thisBlock.getSubID(), false);
         }
