@@ -27,9 +27,9 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
-public class cmdSupport extends AbstractCommand {
+public class cmdSupporter extends AbstractCommand {
 
-    public cmdSupport(String syntax, String arguments, String node) {
+    public cmdSupporter(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
         this.description = "Toggle a supporter";
     }

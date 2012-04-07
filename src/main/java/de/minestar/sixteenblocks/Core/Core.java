@@ -46,7 +46,7 @@ import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
 import de.minestar.sixteenblocks.Commands.cmdStop;
-import de.minestar.sixteenblocks.Commands.cmdSupport;
+import de.minestar.sixteenblocks.Commands.cmdSupporter;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdURL;
@@ -236,7 +236,7 @@ public class Core extends JavaPlugin {
                         new cmdUnban        ("/unban",      "<Playername>",             ""),
                         new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
-                        new cmdSupport      ("/support",    "<Playername>",             ""),  
+                        new cmdSupporter    ("/supporter",  "<Playername>",             ""),  
                         new cmdVip          ("/vip",        "<Playername>",             ""),  
                         
                         // BUG REPORTS
