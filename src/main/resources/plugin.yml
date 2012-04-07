@@ -2,6 +2,9 @@ name: 16Blocks
 main: de.minestar.sixteenblocks.Core.Core
 version: ${pom.version}
 commands:
+  livemap:
+    description: Creates an URL to the livemap
+    usage: /livemap [Player]
   spawn:
     description: Takes you to the spawn
     usage: /spawn

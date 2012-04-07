@@ -49,6 +49,7 @@ import de.minestar.sixteenblocks.Commands.cmdStop;
 import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
+import de.minestar.sixteenblocks.Commands.cmdURL;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Commands.cmdVip;
 import de.minestar.sixteenblocks.Listener.ActionListener;
@@ -257,7 +258,10 @@ public class Core extends JavaPlugin {
                         // RELOAD CHATFILTER
                         new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),
                         
-                        new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", "")
+                        new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", ""),
+                        
+                        // URL TO LIVE MAP
+                        new cmdURL          ("/livemap",    "[Player]",                 "", this.areaManager)
         );
         /* @formatter:on */
     }
