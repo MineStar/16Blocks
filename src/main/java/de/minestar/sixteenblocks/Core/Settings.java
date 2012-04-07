@@ -135,7 +135,7 @@ public class Settings {
             if (fileExists)
                 config.load(file);
 
-            config.set("general.dayTime", TIME);
+//            config.set("general.dayTime", TIME);
             config.set("general.baseLevel", BASE_Y);
             config.set("general.chatPauseInSeconds", CHAT_PAUSE_IN_SECONDS);
             config.set("general.chatRadius", CHAT_RADIUS);

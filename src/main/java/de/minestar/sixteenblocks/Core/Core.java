@@ -264,7 +264,7 @@ public class Core extends JavaPlugin {
 
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
-//        scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
+        scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);
 
         // Check tickets
         // checkTread = new CheckTicketThread(this.ticketDatabaseManager,
