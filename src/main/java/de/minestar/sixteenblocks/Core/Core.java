@@ -55,6 +55,7 @@ import de.minestar.sixteenblocks.Commands.cmdVip;
 import de.minestar.sixteenblocks.Listener.ActionListener;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
+import de.minestar.sixteenblocks.Listener.CommandListener;
 import de.minestar.sixteenblocks.Listener.LoginListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
@@ -73,11 +74,12 @@ import de.minestar.sixteenblocks.Units.ChatFilter;
 public class Core extends JavaPlugin {
     private static Core instance;
 
-    private Listener baseListener, blockListener, movementListener, loginListener;
+    // LISTENER
+    private Listener baseListener, blockListener, movementListener, loginListener, commandListener;
     private ChatListener chatListener;
 
+    // MANAGER
     private AreaDatabaseManager areaDatabaseManager;
-    // private TicketDatabaseManager ticketDatabaseManager;
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
@@ -85,17 +87,17 @@ public class Core extends JavaPlugin {
     private MailHandler mHandler;
     private ChatFilter filter;
 
-    private static Set<String> supporter, vips;
-
-    // private CheckTicketThread checkTread;
+    // THREADS
     private BlockThread blockThread;
     private AFKThread afkThread;
     private BroadcastThread bThread;
 
-    private CommandList commandList;
-
     private Timer timer = new Timer();
     private Timer broadcastTimer = new Timer();
+
+    private CommandList commandList;
+
+    // GLOBAL VARIABLES
 
     public final static String NAME = "16Blocks";
 
@@ -187,6 +189,7 @@ public class Core extends JavaPlugin {
         this.chatListener = new ChatListener(this.filter, this.afkThread);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.loginListener = new LoginListener(this.afkThread);
+        this.commandListener = new CommandListener();
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
@@ -194,6 +197,7 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
         Bukkit.getPluginManager().registerEvents(this.loginListener, this);
+        Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }
 
     private void initCommands() {
@@ -229,7 +233,7 @@ public class Core extends JavaPlugin {
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
                         new cmdMe           ("/me",         "<Message>",                ""),
-                        new cmdMute         ("/mute",       "<Player>",                 ""),
+                        new cmdMute         ("/mute",       "<Player>",                 "", this.chatListener),
                         
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),
@@ -304,6 +308,10 @@ public class Core extends JavaPlugin {
         return areaManager;
     }
 
+    // SUPPORT AND VIP HANDELING
+
+    private static Set<String> supporter, vips;
+
     public void addSupporter(String playerName) {
         Core.supporter.add(playerName.toLowerCase());
     }
@@ -362,7 +370,7 @@ public class Core extends JavaPlugin {
         this.saveUsers(Core.vips, "vips.txt");
     }
 
-    private void saveUsers(Set<String> map, String fileName) {
+    private void saveUsers(Set<String> set, String fileName) {
         File f = new File(getDataFolder(), fileName);
         // IF FILE EXISTS: DELETE IT
         if (f.exists()) {
@@ -373,7 +381,7 @@ public class Core extends JavaPlugin {
             f.createNewFile();
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(f));
             int count = 0;
-            for (String name : map) {
+            for (String name : set) {
                 bWriter.write(name + System.getProperty("line.separator"));
                 count++;
             }
@@ -392,7 +400,7 @@ public class Core extends JavaPlugin {
         this.loadUsers(Core.vips, "vips.txt");
     }
 
-    private void loadUsers(Set<String> map, String fileName) {
+    private void loadUsers(Set<String> set, String fileName) {
         File f = new File(getDataFolder(), fileName);
         // CHECK: FILE EXISTS
         if (!f.exists()) {
@@ -411,10 +419,10 @@ public class Core extends JavaPlugin {
             while ((line = bReader.readLine()) != null) {
                 line = line.trim().replace(" ", "");
                 if (!line.isEmpty()) {
-                    map.add(line.toLowerCase());
+                    set.add(line.toLowerCase());
                 }
             }
-            ConsoleUtils.printInfo(NAME, "Loaded " + supporter.size() + " users from '" + fileName + "'!");
+            ConsoleUtils.printInfo(NAME, "Loaded " + set.size() + " users from '" + fileName + "'!");
         } catch (Exception e) {
             ConsoleUtils.printException(e, NAME, "Error while reading file: '" + fileName + "'");
         }
@@ -439,13 +447,6 @@ public class Core extends JavaPlugin {
 
     public static int getAllowedMaxPlayer() {
         return Bukkit.getMaxPlayers() - Settings.getSupporterBuffer();
-    }
-
-    /**
-     * @return the chatListener
-     */
-    public ChatListener getChatListener() {
-        return chatListener;
     }
 
     /**

@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
@@ -58,29 +56,6 @@ public class ChatListener implements Listener {
 
     public boolean isMuted(Player player) {
         return this.mutedPlayers.contains(player.getName());
-    }
-
-    @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().isOp())
-            return;
-
-        // ON RELOAD > TUNNEL THE COMMAND
-        if (event.getMessage().toLowerCase().startsWith("/reload")) {
-            event.setMessage("/rel");
-        } else if (event.getMessage().toLowerCase().startsWith("/stop")) {
-            event.setMessage("/shutdown");
-        }
-    }
-
-    @EventHandler
-    public void onServerCommand(ServerCommandEvent event) {
-        // ON RELOAD > TUNNEL THE COMMAND
-        if (event.getCommand().toLowerCase().startsWith("reload")) {
-            event.setCommand("rel");
-        } else if (event.getCommand().toLowerCase().startsWith("stop")) {
-            event.setCommand("shutdown");
-        }
     }
 
     @EventHandler

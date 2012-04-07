@@ -9,12 +9,17 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Listener.ChatListener;
 
 public class cmdMute extends AbstractCommand {
 
-    public cmdMute(String syntax, String arguments, String node) {
+    private ChatListener chatListener;
+
+    public cmdMute(String syntax, String arguments, String node, ChatListener chatListener) {
         super(Core.NAME, syntax, arguments, node);
-        this.description = "Jump to a specific player";
+        this.chatListener = chatListener;
+
+        this.description = "Mute a player";
     }
 
     @Override
@@ -41,7 +46,7 @@ public class cmdMute extends AbstractCommand {
             ChatUtils.writeError(sender, "Player '" + args[0] + "' was not found (maybe he is offline?)");
 
         else {
-            boolean muted = Core.getInstance().getChatListener().toggleMute(target);
+            boolean muted = chatListener.toggleMute(target);
             if (muted)
                 ChatUtils.writeInfo(sender, "Player '" + target.getName() + "' is now muted...");
             else
