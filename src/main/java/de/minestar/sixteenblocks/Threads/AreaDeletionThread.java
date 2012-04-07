@@ -2,14 +2,11 @@ package de.minestar.sixteenblocks.Threads;
 
 import java.util.ArrayList;
 
-import net.minecraft.server.Packet130UpdateSign;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.utils.ConsoleUtils;

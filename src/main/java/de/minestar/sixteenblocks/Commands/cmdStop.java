@@ -55,7 +55,7 @@ public class cmdStop extends AbstractExtendedCommand {
         // KICK ALL PLAYERS
         Player[] players = Bukkit.getOnlinePlayers();
         for (Player thisPlayer : players) {
-            if (Core.isSupporter(thisPlayer)) {
+            if (!Core.isSupporter(thisPlayer)) {
                 thisPlayer.kickPlayer("YAM-Server is restarting...");
             }
         }
