@@ -2,6 +2,18 @@ name: 16Blocks
 main: de.minestar.sixteenblocks.Core.Core
 version: ${pom.version}
 commands:
+  support:
+    description: Joins the support channel
+    usage: /support [Player]
+  nochat:
+    description: Disable the chat
+    usage: /nochat
+  hidechat:
+    description: Disable the chat
+    usage: /hidechat
+  chat:
+    description: Join the normal chat
+    usage: /chat 
   livemap:
     description: Creates an URL to the livemap
     usage: /livemap [Player]

@@ -22,10 +22,12 @@ import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Commands.cmdAdmin;
 import de.minestar.sixteenblocks.Commands.cmdBan;
+import de.minestar.sixteenblocks.Commands.cmdChat;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdGive;
+import de.minestar.sixteenblocks.Commands.cmdHideChat;
 import de.minestar.sixteenblocks.Commands.cmdHome;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
@@ -46,6 +48,7 @@ import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
 import de.minestar.sixteenblocks.Commands.cmdStop;
+import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdSupporter;
 import de.minestar.sixteenblocks.Commands.cmdTP;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
@@ -204,7 +207,8 @@ public class Core extends JavaPlugin {
         /* @formatter:off */
         // Empty permission because permissions are handeld in the commands
         Map<Player, Player> recipients = new HashMap<Player, Player>(256);
-        commandList = new CommandList(Core.NAME, 
+        commandList = new CommandList(Core.NAME,
+
                         new cmdSpawn        ("/spawn",      "",                         ""),
                         new cmdInfo         ("/info",       "",                         ""),
                         new cmdStartAuto    ("/start",      "",                         "", this.areaManager),
@@ -212,64 +216,70 @@ public class Core extends JavaPlugin {
                         new cmdStartHere    ("/starthere",  "",                         "", this.areaManager),
                         new cmdHome         ("/home",       "[Playername]",             "", this.areaManager),
                         new cmdSaveArea     ("/save",       "<StructureName>",          "", this.areaManager, this.structureManager),
-                        
+
                         // TELEPORT
-                        new cmdCreateRow    ("/createrow",  "<Number>",                 ""),                        
-                        new cmdChatRadius   ("/chatradius", "<Number>",                 ""),                        
-                        
-                        new cmdRow          ("/row",        "<Number>",                 ""),                        
-                        new cmdRow          ("/jump",       "<Number>",                 ""),                        
-                        new cmdTP           ("/tp",         "<Player>",                 ""),                         
-                        new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),    
-                        new cmdReset        ("/reset",    "",                           "", this.areaManager),   
-                        new cmdNumberize    ("/numberize",    "",                       "", this.numberManager, this.areaManager),              
-                        
+                        new cmdCreateRow    ("/createrow",  "<Number>",                 ""),
+                        new cmdChatRadius   ("/chatradius", "<Number>",                 ""),
+
+                        new cmdRow          ("/row",        "<Number>",                 ""),
+                        new cmdRow          ("/jump",       "<Number>",                 ""),
+                        new cmdTP           ("/tp",         "<Player>",                 ""),
+                        new cmdRebuild      ("/rebuild",    "",                         "", this.areaManager),
+                        new cmdReset        ("/reset",    "",                           "", this.areaManager),
+                        new cmdNumberize    ("/numberize",    "",                       "", this.numberManager, this.areaManager),
+
                         // STOP RELOAD
-                        new cmdStop         ("/shutdown",        "",                         ""),                          
-                        new cmdReload       ("/rel",        "",                         ""),  
-                        
+                        new cmdStop         ("/shutdown",        "",                    ""),
+                        new cmdReload       ("/rel",        "",                         ""),
+
                         // MESSAGE SYSTEM
                         new cmdMessage      ("/m",          "<PlayerName> <Message>",   "", recipients),
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
                         new cmdMe           ("/me",         "<Message>",                ""),
                         new cmdMute         ("/mute",       "<Player>",                 "", this.chatListener),
-                        
+
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),
                         new cmdUnban        ("/unban",      "<Playername>",             ""),
-                        new cmdKick         ("/kick",       "<Playername> [Message]",   ""),      
+                        new cmdKick         ("/kick",       "<Playername> [Message]",   ""),
                         new cmdDeleteArea   ("/delete",     "[Playername]",             "", this.areaManager),
-                        new cmdSupporter    ("/supporter",  "<Playername>",             ""),  
-                        new cmdVip          ("/vip",        "<Playername>",             ""),  
-                        
+                        new cmdSupporter    ("/supporter",  "<Playername>",             ""),
+                        new cmdVip          ("/vip",        "<Playername>",             ""),
+
                         // BUG REPORTS
                         new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
                         new cmdTicket       ("/bug",        "<Text>",                   "", mHandler),
                         new cmdTicket       ("/report",     "<Text>",                   "", mHandler),
-                        
+
                         // SET SLOTS
                         new cmdSlots        ("/slots",      "<Number>",                 ""),
-                        
+
                         // BROADCASTS
                         new cmdSay          ("/say",        "<Message>",                ""),
                         new cmdSay          ("/cast",       "<Message>",                ""),
                         new cmdSay          ("/broadcast",  "<Message>",                ""),
-                        
+
                         // LOOKING FOR SUPPORTER
                         new cmdAdmin        ("/admins",     "",                         ""),
-                        
+
                         // RELOAD CHATFILTER
                         new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),
-                        
+
                         new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", ""),
-                        
+
                         // URL TO LIVE MAP
-                        new cmdURL          ("/livemap",    "[Player]",                 "", this.areaManager)
+                        new cmdURL          ("/livemap",    "[Player]",                 "", this.areaManager),
+
+                        // CHAT HANDELING
+                        new cmdChat         ("/chat",       "",                         "", this.chatListener),
+                        new cmdHideChat     ("/hidechat",   "",                         "", this.chatListener),
+                        new cmdHideChat     ("/nochat",     "",                         "", this.chatListener),
+                        new cmdSupport      ("/support",    "",                         "", this.chatListener)
+
         );
         /* @formatter:on */
     }
-
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);

@@ -3,6 +3,7 @@ package de.minestar.sixteenblocks.Listener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,6 +77,8 @@ public class ChatListener implements Listener {
                 }
             }
         }
+
+        handleChannels(event);
 
         // USED BAD WORD
         /*
@@ -153,5 +156,34 @@ public class ChatListener implements Listener {
         if (other.getZ() < base.getZ() - Settings.getChatRadius() || other.getZ() > base.getZ() + Settings.getChatRadius())
             return false;
         return true;
+    }
+
+    // CHANNEL HANDELING
+
+    private Set<Player> supportChannel = new HashSet<Player>(256);
+
+    public void setSupportChannel(Player player, boolean setEnable) {
+
+        if (setEnable) {
+            supportChannel.add(player);
+        } else {
+            supportChannel.remove(player);
+        }
+    }
+
+    private Set<Player> hiddenChat = new HashSet<Player>(256);
+
+    public void setHiddenChannel(Player player, boolean setEnable) {
+        if (setEnable) {
+            hiddenChat.add(player);
+        } else {
+            hiddenChat.remove(player);
+        }
+    }
+
+    private void handleChannels(PlayerChatEvent event) {
+
+        // TODO: Implement methods to filter the channels
+
     }
 }
