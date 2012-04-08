@@ -33,6 +33,8 @@ public class Settings {
 
     private static long JAMES_INTERVAL = 2L;
 
+    private static String HI_MESSAGE = "TO ACTIVATE THE CHAT, type /chat";
+
     private static ChatColor colorNormal = ChatColor.GREEN;
     private static ChatColor colorSupporter = ChatColor.RED;
     private static ChatColor colorVips = ChatColor.GREEN;
@@ -99,6 +101,8 @@ public class Settings {
 
             SUPPORT_TIME = config.getLong("Channel.supportTime", SUPPORT_TIME);
 
+            HI_MESSAGE = config.getString("Message.hi", HI_MESSAGE);
+
             OLD_SKINS_LEFT = config.getInt("Skins.oldLeft", SKINS_LEFT);
             OLD_SKINS_RIGHT = config.getInt("Skins.oldRight", SKINS_RIGHT);
 
@@ -157,6 +161,8 @@ public class Settings {
 
             config.set("Channel.supportTime", SUPPORT_TIME);
 
+            config.set("Message.hi", HI_MESSAGE);
+
             // SAVE COLORCODES
             config.set("ChatColor.AQUA", String.valueOf(ChatColor.AQUA.getChar()));
             config.set("ChatColor.BLACK", String.valueOf(ChatColor.BLACK.getChar()));
@@ -200,6 +206,10 @@ public class Settings {
 
     public static long getTime() {
         return TIME;
+    }
+
+    public static String getHiMessage() {
+        return HI_MESSAGE;
     }
 
     public static long getSupportTime() {
