@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -89,13 +88,5 @@ public class ChatListener implements Listener {
 
         lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
         event.setCancelled(this.channelManager.handleChat(event.getPlayer(), message));
-    }
-
-    public boolean isInArea(Location base, Location other) {
-        if (other.getX() < base.getX() - Settings.getChatRadius() || other.getX() > base.getX() + Settings.getChatRadius())
-            return false;
-        if (other.getZ() < base.getZ() - Settings.getChatRadius() || other.getZ() > base.getZ() + Settings.getChatRadius())
-            return false;
-        return true;
     }
 }
