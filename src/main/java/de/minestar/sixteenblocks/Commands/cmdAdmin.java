@@ -73,7 +73,7 @@ public class cmdAdmin extends AbstractCommand {
             TextUtils.sendError(player, "No supporter online");
 
         if (vips.length() > 2) {
-            vips.delete(supporter.length() - 2, vips.length());
+            vips.delete(vips.length() - 2, vips.length());
             TextUtils.sendSuccess(player, "Online VIPs:");
             TextUtils.sendInfo(player, vips.toString());
         } else
