@@ -37,7 +37,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.ChannelManager;
 
 public class BaseListener implements Listener {
@@ -121,9 +121,10 @@ public class BaseListener implements Listener {
         event.getPlayer().setGameMode(GameMode.CREATIVE);
         event.setJoinMessage("");
         this.channelManager.updatePlayer(event.getPlayer(), this.channelManager.getChannelByChannelName("Hidden"));
-        event.getPlayer().sendMessage(ChatColor.LIGHT_PURPLE + Settings.getHiMessage());
-        event.getPlayer().sendMessage(ChatColor.LIGHT_PURPLE + Settings.getHiMessage());
-        event.getPlayer().sendMessage(ChatColor.LIGHT_PURPLE + Settings.getHiMessage());
+        TextUtils.sendInfo(event.getPlayer(), ChatColor.RED + "WELCOME TO YOUAREMINECRAFT!");
+        TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get into the chat, type /chat");
+        TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get into the support chat, type /support");
+        TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get back here, type /nochat or /hidechat"); 
     }
 
     @EventHandler
