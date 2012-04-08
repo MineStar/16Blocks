@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.Timer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -168,6 +169,9 @@ public class Core extends JavaPlugin {
 
         // INFO
         TextUtils.logInfo("Enabled!");
+
+        for (OfflinePlayer oPlayer : Bukkit.getOperators())
+            operator.add(oPlayer.getName().toLowerCase());
     }
 
     /**
@@ -454,13 +458,15 @@ public class Core extends JavaPlugin {
         return vips.contains(playerName.toLowerCase());
     }
 
+    private static Set<String> operator = new HashSet<String>(64);
+
     public static boolean isSupporter(Player player) {
         return Core.isSupporter(player.getName());
     }
 
     public static boolean isSupporter(String playerName) {
         String name = playerName.toLowerCase();
-        return Bukkit.getOfflinePlayer(name).isOp() || supporter.contains(name) || Core.isVip(name);
+        return operator.contains(name) || supporter.contains(name) || Core.isVip(name);
     }
 
     public static int getAllowedMaxPlayer() {

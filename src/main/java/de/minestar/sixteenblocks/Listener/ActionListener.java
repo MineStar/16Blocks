@@ -104,18 +104,40 @@ public class ActionListener implements Listener {
 
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+        // DISALLOW USING BUCKET
+        if (Core.isSupporter(event.getPlayer()))
+            return;
+
+        if (event.getBucket().getId() == Material.BUCKET.getId()) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
+            return;
         }
+
+        if (!areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+            TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
+            event.setCancelled(true);
+            return;
+        }
+
     }
 
     @EventHandler
     public void onBucketFill(PlayerBucketEmptyEvent event) {
         // DISALLOW USING BUCKET
-        if (!Core.isSupporter(event.getPlayer()) && (!areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace())) || areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getLocation()))) {
+        if (Core.isSupporter(event.getPlayer()))
+            return;
+
+        if (event.getBucket().getId() == Material.BUCKET.getId()) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
+            return;
+        }
+
+        if (!areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+            TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
+            event.setCancelled(true);
+            return;
         }
     }
 }
