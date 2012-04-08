@@ -266,7 +266,7 @@ public class Core extends JavaPlugin {
                         new cmdSay          ("/broadcast",  "<Message>",                ""),
 
                         // LOOKING FOR SUPPORTER
-                        new cmdAdmin        ("/admins",     "",                         ""),
+                        new cmdAdmin        ("/admins",     "",                         "", this.channelManager),
 
                         // RELOAD CHATFILTER
                         new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),

@@ -24,11 +24,15 @@ import org.bukkit.entity.Player;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Manager.ChannelManager;
 
 public class cmdAdmin extends AbstractCommand {
 
-    public cmdAdmin(String syntax, String arguments, String node) {
+    private ChannelManager cManager;
+
+    public cmdAdmin(String syntax, String arguments, String node, ChannelManager cManager) {
         super(Core.NAME, syntax, arguments, node);
+        this.cManager = cManager;
 
         this.description = "Show current connected supporter";
     }
@@ -42,18 +46,43 @@ public class cmdAdmin extends AbstractCommand {
             return;
         }
 
-        TextUtils.sendSuccess(player, "Current connected supporter:");
-        StringBuilder sBuilder = new StringBuilder(256);
+        StringBuilder supporter = new StringBuilder(256);
+        StringBuilder vips = new StringBuilder(256);
         Player[] onlinePlayer = Bukkit.getOnlinePlayers();
+
+        // CREATE LISTS
         for (Player online : onlinePlayer) {
-            if (Core.isSupporter(online)) {
-                sBuilder.append(online.getName());
-                sBuilder.append(", ");
+            if (Core.isSupporter(online) && !Core.isVip(online)) {
+                supporter.append(online.getName());
+                appendChannel(online, supporter);
+                supporter.append(", ");
+            } else if (Core.isVip(online)) {
+                vips.append(online.getName());
+                appendChannel(online, vips);
+                vips.append(", ");
             }
 
         }
-        if (sBuilder.length() > 2)
-            sBuilder.delete(sBuilder.length() - 2, sBuilder.length());
-        TextUtils.sendInfo(player, sBuilder.toString());
+
+        // DISPLAY LISTS
+        if (supporter.length() > 2) {
+            supporter.delete(supporter.length() - 2, supporter.length());
+            TextUtils.sendSuccess(player, "Online Supporter:");
+            TextUtils.sendInfo(player, supporter.toString());
+        } else
+            TextUtils.sendError(player, "No supporter online");
+
+        if (vips.length() > 2) {
+            vips.delete(supporter.length() - 2, vips.length());
+            TextUtils.sendSuccess(player, "Online VIPs:");
+            TextUtils.sendInfo(player, vips.toString());
+        } else
+            TextUtils.sendError(player, "No VIP online");
+    }
+
+    private void appendChannel(Player online, StringBuilder sBuilder) {
+        sBuilder.append('(');
+        sBuilder.append(cManager.getChannelOfPlayer(online).getChannelName());
+        sBuilder.append(')');
     }
 }
