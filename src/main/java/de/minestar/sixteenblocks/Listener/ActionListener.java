@@ -66,6 +66,7 @@ public class ActionListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+
         }
 
         if (event.hasItem()) {
@@ -88,6 +89,7 @@ public class ActionListener implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlock())) {
@@ -109,7 +111,8 @@ public class ActionListener implements Listener {
 
     @EventHandler
     public void onBucketFill(PlayerBucketEmptyEvent event) {
-        if (!Core.isSupporter(event.getPlayer()) && !areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace()))) {
+        // DISALLOW USING BUCKET
+        if (!Core.isSupporter(event.getPlayer()) && (!areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getRelative(event.getBlockFace())) || areaManager.isInArea(event.getPlayer(), event.getBlockClicked().getLocation()))) {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
