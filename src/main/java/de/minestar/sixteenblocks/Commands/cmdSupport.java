@@ -18,12 +18,14 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.ChannelManager;
+import de.minestar.sixteenblocks.Units.Channel;
 
 public class cmdSupport extends AbstractCommand {
 
@@ -37,12 +39,17 @@ public class cmdSupport extends AbstractCommand {
     @Override
     public void execute(String[] args, Player player) {
         if (this.channelManager.getChannelOfPlayer(player).getChannelName().equalsIgnoreCase("Lobby")) {
-            this.channelManager.updatePlayer(player, this.channelManager.getChannelByChannelName("Support"));
+            Channel ch = channelManager.getChannelByChannelName("Support");
+
+            if (Core.isSupporter(player) && !Core.isVip(player)) {
+                for (Player thisPlayer : ch.getPlayers())
+                    TextUtils.sendMessage(thisPlayer, ChatColor.RED, "Support " + player.getName() + " has joined your channel");
+            }
+            this.channelManager.updatePlayer(player, ch);
             TextUtils.sendSuccess(player, "You are now in the support channel.");
         } else {
             this.channelManager.updatePlayer(player, this.channelManager.getChannelByChannelName("Lobby"));
             TextUtils.sendSuccess(player, "You are now in the lobby.");
         }
     }
-
 }
