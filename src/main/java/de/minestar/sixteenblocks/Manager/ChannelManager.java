@@ -102,8 +102,9 @@ public class ChannelManager {
         if (newChannel != null) {
             this.playerList.put(player, newChannel);
             newChannel.updatePlayer(player, true);
-        } else
+        } else {
             this.playerList.remove(player);
+        }
         return newChannel;
     }
 

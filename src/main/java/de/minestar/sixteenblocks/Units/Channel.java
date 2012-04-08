@@ -79,8 +79,9 @@ public class Channel {
             return;
 
         Location chatLocation = player.getLocation();
+        boolean isSupporter = Core.isSupporter(player);
         for (Player thisPlayer : this.playerList) {
-            if (Core.isSupporter(thisPlayer) || this.isInArea(chatLocation, thisPlayer.getLocation())) {
+            if (isSupporter || Core.isSupporter(thisPlayer) || this.isInArea(chatLocation, thisPlayer.getLocation())) {
                 thisPlayer.sendMessage(message);
             }
         }
