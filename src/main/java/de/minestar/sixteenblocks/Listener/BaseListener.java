@@ -1,5 +1,6 @@
 package de.minestar.sixteenblocks.Listener;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -118,7 +119,11 @@ public class BaseListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setGameMode(GameMode.CREATIVE);
         event.setJoinMessage("");
-        this.channelManager.updatePlayer(event.getPlayer(), this.channelManager.getChannelByChannelName("Lobby"));
+        this.channelManager.updatePlayer(event.getPlayer(), this.channelManager.getChannelByChannelName("Hidden"));
+        String message = ChatColor.LIGHT_PURPLE + "TO ACTIVATE THE CHAT, type /chat";
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
     }
 
     @EventHandler
