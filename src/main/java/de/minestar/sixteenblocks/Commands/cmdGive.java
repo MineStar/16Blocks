@@ -31,7 +31,7 @@ public class cmdGive extends AbstractExtendedCommand {
 
     public cmdGive(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
-        // TODO Auto-generated constructor stub
+
     }
 
     @Override
@@ -105,16 +105,11 @@ public class cmdGive extends AbstractExtendedCommand {
 
     public static short getData(String txt) {
         String[] split = txt.split(":");
-        if (split == null)
+        if (split == null || split.length != 2)
             return 0;
 
-        if (split.length != 2)
-            return 0;
-
-        String dataPart = split[1];
         try {
-            short data = Short.valueOf(dataPart);
-            return data;
+            return Short.valueOf(split[1]);
         } catch (Exception e) {
             return 0;
         }
