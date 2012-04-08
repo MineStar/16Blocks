@@ -7,7 +7,7 @@ import de.minestar.sixteenblocks.Core.Settings;
 public class WorldManager {
     // private StructureManager structureManager;
 
-    private static int minZ = -50, maxZ = 200;
+    private static int minZ = -30, maxZ = 200;
     private static int minX, maxX;
 
     public WorldManager() {

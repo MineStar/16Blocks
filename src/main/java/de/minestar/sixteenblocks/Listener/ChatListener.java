@@ -92,7 +92,9 @@ public class ChatListener implements Listener {
     public boolean hasWritten(Player player, long time) {
         if (Core.isSupporter(player))
             return true;
-        long lastChatEvent = this.lastChatList.get(player.getName());
+        Long lastChatEvent = this.lastChatList.get(player.getName());
+        if (lastChatEvent == null)
+            return true;
         long delta = time - lastChatEvent;
         return (delta < Settings.getSupportTime());
     }
