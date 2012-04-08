@@ -42,9 +42,22 @@ public class cmdSupport extends AbstractCommand {
             Channel ch = channelManager.getChannelByChannelName("Support");
 
             if (Core.isSupporter(player) && !Core.isVip(player)) {
+                // DISPLAY CHANNEL MEMBER THAT A SUPPORTER HAS JOINED
                 for (Player thisPlayer : ch.getPlayers())
-                    TextUtils.sendMessage(thisPlayer, ChatColor.RED, "Support " + player.getName() + " has joined your channel");
+                    TextUtils.sendMessage(thisPlayer, ChatColor.RED, "Supporter " + player.getName() + " has joined the channel");
+            } else {
+                // COUNT CURRENT CONNECTED SUPPORTER
+                int count = 0;
+                for (Player thisPlayer : ch.getPlayers()) {
+                    if (Core.isSupporter(thisPlayer))
+                        ++count;
+                    if (count == 0)
+                        TextUtils.sendMessage(player, ChatColor.RED, "There are not any supporter at the moment in this channel");
+                    else
+                        TextUtils.sendInfo(player, "There are " + count + " supporter in this channel");
+                }
             }
+
             this.channelManager.updatePlayer(player, ch);
             TextUtils.sendSuccess(player, "You are now in the support channel.");
         } else {
