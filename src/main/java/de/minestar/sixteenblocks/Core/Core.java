@@ -64,6 +64,7 @@ import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.ChannelManager;
 import de.minestar.sixteenblocks.Manager.NumberManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
@@ -86,6 +87,7 @@ public class Core extends JavaPlugin {
     private AreaManager areaManager;
     private WorldManager worldManager;
     private StructureManager structureManager;
+    private ChannelManager channelManager;
     private NumberManager numberManager;
     private MailHandler mHandler;
     private ChatFilter filter;
@@ -183,13 +185,14 @@ public class Core extends JavaPlugin {
         this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
         this.numberManager = new NumberManager();
+        this.channelManager = new ChannelManager();
     }
 
     private void registerListeners() {
         // CREATE LISTENERS
-        this.baseListener = new BaseListener();
-        this.blockListener = new ActionListener(this.areaManager, this.afkThread);
-        this.chatListener = new ChatListener(this.filter, this.afkThread);
+        this.baseListener = new BaseListener(this.channelManager);
+        this.blockListener = new ActionListener(this.areaManager, this.afkThread, this.channelManager);
+        this.chatListener = new ChatListener(this.filter, this.afkThread, this.channelManager);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.loginListener = new LoginListener(this.afkThread);
         this.commandListener = new CommandListener();
@@ -272,10 +275,10 @@ public class Core extends JavaPlugin {
                         new cmdURL          ("/livemap",    "[Player]",                 "", this.areaManager),
 
                         // CHAT HANDELING
-                        new cmdChat         ("/chat",       "",                         "", this.chatListener),
-                        new cmdHideChat     ("/hidechat",   "",                         "", this.chatListener),
-                        new cmdHideChat     ("/nochat",     "",                         "", this.chatListener),
-                        new cmdSupport      ("/support",    "",                         "", this.chatListener)
+                        new cmdChat         ("/chat",       "",                         "", this.channelManager),
+                        new cmdHideChat     ("/hidechat",   "",                         "", this.channelManager),
+                        new cmdHideChat     ("/nochat",     "",                         "", this.channelManager),
+                        new cmdSupport      ("/support",    "",                         "", this.channelManager)
 
         );
         /* @formatter:on */

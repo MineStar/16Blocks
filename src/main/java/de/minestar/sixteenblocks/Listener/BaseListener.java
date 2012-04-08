@@ -36,7 +36,15 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
+import de.minestar.sixteenblocks.Manager.ChannelManager;
+
 public class BaseListener implements Listener {
+
+    private ChannelManager channelManager;
+
+    public BaseListener(ChannelManager channelManager) {
+        this.channelManager = channelManager;
+    }
 
     // ////////////////////////////////////////////////
     //
@@ -110,11 +118,13 @@ public class BaseListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setGameMode(GameMode.CREATIVE);
         event.setJoinMessage("");
+        this.channelManager.updatePlayer(event.getPlayer(), this.channelManager.getChannelByChannelName("Lobby"));
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage("");
+        this.channelManager.removePlayerFromChannel(event.getPlayer());
     }
 
     public void onPlayerDeath(PlayerDeathEvent event) {

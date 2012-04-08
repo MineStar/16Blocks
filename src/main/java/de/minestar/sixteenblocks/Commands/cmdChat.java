@@ -23,25 +23,22 @@ import org.bukkit.entity.Player;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
-import de.minestar.sixteenblocks.Listener.ChatListener;
+import de.minestar.sixteenblocks.Manager.ChannelManager;
 
 public class cmdChat extends AbstractCommand {
 
-    private ChatListener chatListener;
+    private ChannelManager channelManager;
 
-    public cmdChat(String syntax, String arguments, String node, ChatListener chatListener) {
+    public cmdChat(String syntax, String arguments, String node, ChannelManager channelManager) {
         super(Core.NAME, syntax, arguments, node);
 
-        this.chatListener = chatListener;
+        this.channelManager = channelManager;
     }
 
     @Override
     public void execute(String[] args, Player player) {
-
-        chatListener.setHiddenChannel(player, false);
-        chatListener.setSupportChannel(player, false);
-
-        TextUtils.sendSuccess(player, "You are now in normal chat mode");
+        this.channelManager.updatePlayer(player, this.channelManager.getChannelByChannelName("Lobby"));
+        TextUtils.sendSuccess(player, "You are now in the lobby.");
     }
 
 }

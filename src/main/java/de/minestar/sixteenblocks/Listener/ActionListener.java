@@ -9,21 +9,25 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.ChannelManager;
 import de.minestar.sixteenblocks.Threads.AFKThread;
 
 public class ActionListener implements Listener {
 
     private AreaManager areaManager;
+    private ChannelManager channelManager;
 
     private AFKThread afkThread;
 
-    public ActionListener(AreaManager areaManager, AFKThread afkThread) {
+    public ActionListener(AreaManager areaManager, AFKThread afkThread, ChannelManager channelManager) {
         this.areaManager = areaManager;
         this.afkThread = afkThread;
+        this.channelManager = channelManager;
     }
 
     @EventHandler
@@ -32,6 +36,11 @@ public class ActionListener implements Listener {
             TextUtils.sendError(event.getPlayer(), "You are not allowed to build here.");
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        this.channelManager.updatePlayer(event.getPlayer());
     }
 
     @EventHandler

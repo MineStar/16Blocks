@@ -2,10 +2,7 @@ package de.minestar.sixteenblocks.Listener;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -16,6 +13,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
+import de.minestar.sixteenblocks.Manager.ChannelManager;
 import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
@@ -27,15 +25,17 @@ public class ChatListener implements Listener {
     private HashSet<String> mutedPlayers = new HashSet<String>();
 
     private AFKThread afkThread;
+    private ChannelManager channelManager;
 
     private long chatPause = Settings.getChatPauseTimeInSeconds() * 1000;
 
     public static boolean radiusOff = false;
 
-    public ChatListener(ChatFilter filter, AFKThread afkThread) {
+    public ChatListener(ChatFilter filter, AFKThread afkThread, ChannelManager channelManager) {
         // this.filter = filter;
         this.lastChatList = new HashMap<String, Long>();
         this.afkThread = afkThread;
+        this.channelManager = channelManager;
     }
 
     public boolean toggleMute(Player player) {
@@ -78,7 +78,18 @@ public class ChatListener implements Listener {
             }
         }
 
-        handleChannels(event);
+        String message = null;
+        if (Core.isVip(event.getPlayer())) {
+            message = Settings.getColorVips() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", "");
+        } else if (isSupporter) {
+            message = Settings.getColorSupporter() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", "");
+        } else {
+            message = Settings.getColorNormal() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", "");
+        }
+
+        lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
+        event.setCancelled(this.channelManager.handleChat(event.getPlayer(), message));
+        return;
 
         // USED BAD WORD
         /*
@@ -105,85 +116,56 @@ public class ChatListener implements Listener {
          */
 
         // IS PLAYER MUTED
-        if (this.isMuted(event.getPlayer())) {
-            // troll them by sending the message to them but to no other player
-            TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-            event.getRecipients().clear();
-            event.setCancelled(true);
-
-            // WARN ADMINS
-            for (String playerName : Core.getSupporter()) {
-                Player player = Bukkit.getPlayer(playerName);
-                if (player != null && player.isOnline()) {
-                    TextUtils.sendLine(player, ChatColor.RED, "[Muted] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-                }
-            }
-
-            return;
-        }
+//        if (this.isMuted(event.getPlayer())) {
+//            // troll them by sending the message to them but to no other player
+//            TextUtils.sendLine(event.getPlayer(), ChatColor.GREEN, event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+//            event.getRecipients().clear();
+//            event.setCancelled(true);
+//
+//            // WARN ADMINS
+//            for (String playerName : Core.getSupporter()) {
+//                Player player = Bukkit.getPlayer(playerName);
+//                if (player != null && player.isOnline()) {
+//                    TextUtils.sendLine(player, ChatColor.RED, "[Muted] " + ChatColor.GREEN + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+//                }
+//            }
+//
+//            return;
+//        }
 
         // CHAT-RADIUS
-        if (!radiusOff) {
-            if (Settings.getChatRadius() > 0 && !isSupporter) {
-                Location chatLocation = event.getPlayer().getLocation();
-                Iterator<Player> iterator = event.getRecipients().iterator();
-                Player thisPlayer;
-                while (iterator.hasNext()) {
-                    thisPlayer = iterator.next();
-                    if (!Core.isSupporter(thisPlayer) && !isInArea(chatLocation, thisPlayer.getLocation())) {
-                        iterator.remove();
-                    }
-                }
-            }
-        }
+//        if (!radiusOff) {
+//            if (Settings.getChatRadius() > 0 && !isSupporter) {
+//                Location chatLocation = event.getPlayer().getLocation();
+//                Iterator<Player> iterator = event.getRecipients().iterator();
+//                Player thisPlayer;
+//                while (iterator.hasNext()) {
+//                    thisPlayer = iterator.next();
+//                    if (!Core.isSupporter(thisPlayer) && !isInArea(chatLocation, thisPlayer.getLocation())) {
+//                        iterator.remove();
+//                    }
+//                }
+//            }
+//        }
 
         // FORMAT CHAT
-        event.setFormat("%2$s");
-        if (Core.isVip(event.getPlayer())) {
-            event.setMessage(Settings.getColorVips() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
-        } else if (isSupporter) {
-            event.setMessage(Settings.getColorSupporter() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
-        } else {
-            event.setMessage(Settings.getColorNormal() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
-        }
+//        event.setFormat("%2$s");
+//        if (Core.isVip(event.getPlayer())) {
+//            event.setMessage(Settings.getColorVips() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+//        } else if (isSupporter) {
+//            event.setMessage(Settings.getColorSupporter() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+//        } else {
+//            event.setMessage(Settings.getColorNormal() + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage().replace("$", ""));
+//        }
 
-        lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
+        // lastChatList.put(event.getPlayer().getName(),
+        // System.currentTimeMillis());
     }
-
     public boolean isInArea(Location base, Location other) {
         if (other.getX() < base.getX() - Settings.getChatRadius() || other.getX() > base.getX() + Settings.getChatRadius())
             return false;
         if (other.getZ() < base.getZ() - Settings.getChatRadius() || other.getZ() > base.getZ() + Settings.getChatRadius())
             return false;
         return true;
-    }
-
-    // CHANNEL HANDELING
-
-    private Set<Player> supportChannel = new HashSet<Player>(256);
-
-    public void setSupportChannel(Player player, boolean setEnable) {
-
-        if (setEnable) {
-            supportChannel.add(player);
-        } else {
-            supportChannel.remove(player);
-        }
-    }
-
-    private Set<Player> hiddenChat = new HashSet<Player>(256);
-
-    public void setHiddenChannel(Player player, boolean setEnable) {
-        if (setEnable) {
-            hiddenChat.add(player);
-        } else {
-            hiddenChat.remove(player);
-        }
-    }
-
-    private void handleChannels(PlayerChatEvent event) {
-
-        // TODO: Implement methods to filter the channels
-
     }
 }
