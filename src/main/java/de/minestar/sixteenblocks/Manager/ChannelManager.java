@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Units.Channel;
 
 public class ChannelManager {
@@ -36,11 +37,20 @@ public class ChannelManager {
         this.channelList.add(new Channel("Lobby", true));
         this.channelList.add(new Channel("Support", true));
         this.channelList.add(new Channel("Hidden", false));
+        this.channelList.add(new Channel("MutedPlayers", false));
 
+        this.startUp();
+    }
+
+    /**
+     * PUT ALL USERS INTO THE LOBBY
+     */
+    private void startUp() {
         // ON STARTUP: PUT ALL PLAYERS INTO THE LOBBY
         Channel lobby = this.getChannelByChannelName("Lobby");
         Player[] pList = Bukkit.getOnlinePlayers();
         for (Player player : pList) {
+            TextUtils.sendSuccess(player, "You are now in the lobby.");
             this.updatePlayer(player, lobby);
         }
     }
@@ -70,7 +80,7 @@ public class ChannelManager {
     public boolean handleChat(Player player, String message) {
         Channel channel = this.getChannelOfPlayer(player);
         if (channel != null) {
-            channel.sendMessage(message);
+            channel.sendMessage(player, message);
             return true;
         } else {
             return false;

@@ -240,7 +240,7 @@ public class Core extends JavaPlugin {
                         new cmdMessage      ("/w",          "<PlayerName> <Message>",   "", recipients),
                         new cmdReply        ("/r",          "<Message>",                "", recipients),
                         new cmdMe           ("/me",         "<Message>",                ""),
-                        new cmdMute         ("/mute",       "<Player>",                 "", this.chatListener),
+                        new cmdMute         ("/mute",       "<Player>",                 "", this.channelManager),
 
                         // PUNISHMENTS
                         new cmdBan          ("/ban",        "<Playername>",             ""),

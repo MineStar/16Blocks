@@ -21,7 +21,11 @@ package de.minestar.sixteenblocks.Units;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import de.minestar.sixteenblocks.Core.Core;
+import de.minestar.sixteenblocks.Core.Settings;
 
 public class Channel {
 
@@ -70,12 +74,23 @@ public class Channel {
      * @param player
      * @param message
      */
-    public void sendMessage(String message) {
+    public void sendMessage(Player player, String message) {
         if (!this.sendMessage)
             return;
 
+        Location chatLocation = player.getLocation();
         for (Player thisPlayer : this.playerList) {
-            thisPlayer.sendMessage(message);
+            if (Core.isSupporter(thisPlayer) || this.isInArea(chatLocation, thisPlayer.getLocation())) {
+                thisPlayer.sendMessage(message);
+            }
         }
+    }
+
+    public boolean isInArea(Location base, Location other) {
+        if (other.getX() < base.getX() - Settings.getChatRadius() || other.getX() > base.getX() + Settings.getChatRadius())
+            return false;
+        if (other.getZ() < base.getZ() - Settings.getChatRadius() || other.getZ() > base.getZ() + Settings.getChatRadius())
+            return false;
+        return true;
     }
 }
