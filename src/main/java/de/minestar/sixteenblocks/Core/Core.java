@@ -71,6 +71,7 @@ import de.minestar.sixteenblocks.Manager.WorldManager;
 import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Threads.BlockThread;
 import de.minestar.sixteenblocks.Threads.BroadcastThread;
+import de.minestar.sixteenblocks.Threads.ChatThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
 import de.minestar.sixteenblocks.Threads.JSONThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
@@ -96,9 +97,9 @@ public class Core extends JavaPlugin {
     private BlockThread blockThread;
     private AFKThread afkThread;
     private BroadcastThread bThread;
+    private ChatThread chatThread;
 
-    private Timer timer = new Timer();
-    private Timer broadcastTimer = new Timer();
+    private Timer timer = new Timer(), broadcastTimer = new Timer(), chatTimer = new Timer();
 
     private CommandList commandList;
 
@@ -117,6 +118,7 @@ public class Core extends JavaPlugin {
         Settings.saveSettings(this.getDataFolder());
         timer.cancel();
         broadcastTimer.cancel();
+        chatTimer.cancel();
         TextUtils.logInfo("Disabled!");
     }
 
@@ -299,6 +301,9 @@ public class Core extends JavaPlugin {
         // Broadcasting information to player
         bThread = new BroadcastThread(this.getDataFolder(), this.areaManager);
         broadcastTimer.schedule(bThread, 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
+
+        this.chatThread = new ChatThread(this.chatListener, this.channelManager);
+        this.chatTimer.schedule(this.chatThread, 1000L * 30L, 1000L * 30L);
 
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20L * 10L, 20L * 30L);

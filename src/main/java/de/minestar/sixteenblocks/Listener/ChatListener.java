@@ -18,7 +18,6 @@ import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class ChatListener implements Listener {
 
-    // private ChatFilter filter;
     private HashMap<String, Long> lastChatList;
 
     private HashSet<String> mutedPlayers = new HashSet<String>();
@@ -88,5 +87,11 @@ public class ChatListener implements Listener {
 
         lastChatList.put(event.getPlayer().getName(), System.currentTimeMillis());
         event.setCancelled(this.channelManager.handleChat(event.getPlayer(), message));
+    }
+
+    public boolean hasWritten(Player player, long time) {
+        long lastChatEvent = this.lastChatList.get(player.getName());
+        long delta = time - lastChatEvent;
+        return (delta < Settings.getSupportTime());
     }
 }

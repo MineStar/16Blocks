@@ -23,6 +23,8 @@ public class Settings {
 
     private static long TIME = 6000;
 
+    private static long SUPPORT_TIME = 2 * 60 * 1000L;
+
     private static int MAX_BLOCKS_REPLACE_AT_ONCE = 100;
     private static long TICKS_BETWEEN_REPLACE = 5L;
     private static int CREATE_ROWS_AT_ONCE = 2;
@@ -95,6 +97,8 @@ public class Settings {
             SKINS_LEFT = config.getInt("Skins.left", SKINS_LEFT);
             SKINS_RIGHT = config.getInt("Skins.right", SKINS_RIGHT);
 
+            SUPPORT_TIME = config.getLong("Channel.supportTime", SUPPORT_TIME);
+
             OLD_SKINS_LEFT = config.getInt("Skins.oldLeft", SKINS_LEFT);
             OLD_SKINS_RIGHT = config.getInt("Skins.oldRight", SKINS_RIGHT);
 
@@ -151,6 +155,8 @@ public class Settings {
             config.set("Skins.oldLeft", SKINS_LEFT);
             config.set("Skins.oldRight", SKINS_RIGHT);
 
+            config.set("Channel.supportTime", SUPPORT_TIME);
+
             // SAVE COLORCODES
             config.set("ChatColor.AQUA", String.valueOf(ChatColor.AQUA.getChar()));
             config.set("ChatColor.BLACK", String.valueOf(ChatColor.BLACK.getChar()));
@@ -194,6 +200,10 @@ public class Settings {
 
     public static long getTime() {
         return TIME;
+    }
+
+    public static long getSupportTime() {
+        return SUPPORT_TIME;
     }
 
     public static int getMinimumBuildY() {

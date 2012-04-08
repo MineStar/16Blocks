@@ -19,6 +19,7 @@
 package de.minestar.sixteenblocks.Units;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -80,7 +81,10 @@ public class Channel {
 
         Location chatLocation = player.getLocation();
         boolean isSupporter = Core.isSupporter(player);
-        for (Player thisPlayer : this.playerList) {
+        Iterator<Player> iterator = this.playerList.iterator();
+        Player thisPlayer;
+        while (iterator.hasNext()) {
+            thisPlayer = iterator.next();
             if (isSupporter || Core.isSupporter(thisPlayer) || this.isInArea(chatLocation, thisPlayer.getLocation())) {
                 thisPlayer.sendMessage(message);
             }
@@ -94,4 +98,9 @@ public class Channel {
             return false;
         return true;
     }
+
+    public Set<Player> getPlayers() {
+        return this.playerList;
+    }
+
 }
