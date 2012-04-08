@@ -68,6 +68,7 @@ public class cmdStop extends AbstractExtendedCommand {
             ConsoleUtils.printError("Server is already marked as 'stop' or 'reloading'...");
             return;
         }
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/dynmap purgequeue");
 
         // SHUTDOWN / RELOAD
         Core.shutdownServer = true;

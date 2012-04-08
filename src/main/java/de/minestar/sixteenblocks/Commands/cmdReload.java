@@ -18,6 +18,7 @@
 
 package de.minestar.sixteenblocks.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -63,6 +64,7 @@ public class cmdReload extends AbstractExtendedCommand {
         // SHUTDOWN / RELOAD
         Core.shutdownServer = true;
         Core.isShutDown = false;
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/dynmap purgequeue");
         ConsoleUtils.printInfo("Server is marked as 'reloading'...");
     }
 }
