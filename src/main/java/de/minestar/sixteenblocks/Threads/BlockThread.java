@@ -6,8 +6,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
+import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Units.StructureBlock;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
@@ -57,8 +59,8 @@ public class BlockThread implements Runnable {
                 } else {
                     // SHUTDOWN
                     Bukkit.broadcastMessage("Saving world and stopping server!");
-                    Bukkit.savePlayers();
-                    Bukkit.getWorlds().get(0).save();
+//                    Bukkit.savePlayers();
+//                    Bukkit.getWorlds().get(0).save();
                     Bukkit.shutdown();
                 }
             }
@@ -71,6 +73,7 @@ public class BlockThread implements Runnable {
         // IF SERVER IS IN SHUTDOWN-MODE: REPLACE 50.000 BLOCKS AT ONCE
         if (Core.shutdownServer) {
             maxPlace = 50000;
+            ConsoleUtils.printInfo(Core.NAME, "Queue size = " + queue.size());
         }
 
         // RUN THE QUEUE
