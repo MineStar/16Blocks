@@ -2,9 +2,12 @@ name: 16Blocks
 main: de.minestar.sixteenblocks.Core.Core
 version: ${pom.version}
 commands:
-  fuckthatshit:
-    description: Fucks everybode and allthing
-    usage: /fuckthatshit
+  realstop:
+    description: Real stop
+    usage: /realstop
+  realreload:
+    description: Real reload
+    usage: /realreload
   support:
     description: Joins the support channel
     usage: /support [Player]

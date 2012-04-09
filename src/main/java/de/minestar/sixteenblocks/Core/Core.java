@@ -27,7 +27,7 @@ import de.minestar.sixteenblocks.Commands.cmdChat;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
-import de.minestar.sixteenblocks.Commands.cmdFuckThatShit;
+import de.minestar.sixteenblocks.Commands.RealStop;
 import de.minestar.sixteenblocks.Commands.cmdGive;
 import de.minestar.sixteenblocks.Commands.cmdHideChat;
 import de.minestar.sixteenblocks.Commands.cmdHome;
@@ -286,9 +286,10 @@ public class Core extends JavaPlugin {
                         new cmdHideChat     ("/hidechat",   "",                         "", this.channelManager),
                         new cmdHideChat     ("/nochat",     "",                         "", this.channelManager),
                         new cmdSupport      ("/support",    "",                         "", this.channelManager),
-                        
+
                         // MASTER OF DESASTER COMMAND
-                        new cmdFuckThatShit ("/fuckthatshit","",                         "")
+                        new RealStop ("/realstop",          "",                         ""),
+                        new RealStop ("/realreload",        "",                         "")
 
         );
         /* @formatter:on */

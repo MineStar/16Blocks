@@ -26,9 +26,9 @@ import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 
-public class cmdFuckThatShit extends AbstractCommand {
+public class RealStop extends AbstractCommand {
 
-    public cmdFuckThatShit(String syntax, String arguments, String node) {
+    public RealStop(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
     }
 
