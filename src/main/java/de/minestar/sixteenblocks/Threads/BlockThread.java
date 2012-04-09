@@ -57,6 +57,8 @@ public class BlockThread implements Runnable {
                     Bukkit.broadcastMessage("Reload finished!");
                 } else {
                     // SHUTDOWN
+                    Core.shutdownServer = false;
+                    Core.isShutDown = false;
                     Bukkit.broadcastMessage("Saving world and stopping server!");
 //                    Bukkit.savePlayers();
 //                    Bukkit.getWorlds().get(0).save();
