@@ -19,6 +19,7 @@
 package de.minestar.sixteenblocks.Commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -38,6 +39,11 @@ public class cmdFuckThatShit extends AbstractCommand {
         else
             TextUtils.sendError(player, "You are not allowed to do this!");
 
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        Bukkit.shutdown();
     }
 
 }
