@@ -38,6 +38,9 @@
 						<includes>
 							<include>de.minestar:minestarlibrary</include>
 							<include>javax.mail:mail</include>
+							<include>commons-httpclient:commons-httpclient</include>
+							<include>commons-logging:commons-logging</include>
+							<include>commons-codec:commons-codec</include>
 						</includes>
 					</artifactSet>
 				</configuration>
@@ -64,6 +67,11 @@
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
 			<version>1.2.4-R0.1-20120322.211246-3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
 		</dependency>
 	</dependencies>
 </project>
