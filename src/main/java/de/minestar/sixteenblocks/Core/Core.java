@@ -21,16 +21,17 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
+import de.minestar.sixteenblocks.Commands.RealStop;
 import de.minestar.sixteenblocks.Commands.cmdAdmin;
 import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdChat;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
-import de.minestar.sixteenblocks.Commands.RealStop;
 import de.minestar.sixteenblocks.Commands.cmdGive;
 import de.minestar.sixteenblocks.Commands.cmdHideChat;
 import de.minestar.sixteenblocks.Commands.cmdHome;
+import de.minestar.sixteenblocks.Commands.cmdImport;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
@@ -53,6 +54,7 @@ import de.minestar.sixteenblocks.Commands.cmdStop;
 import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdSupporter;
 import de.minestar.sixteenblocks.Commands.cmdTP;
+import de.minestar.sixteenblocks.Commands.cmdTeam;
 import de.minestar.sixteenblocks.Commands.cmdTicket;
 import de.minestar.sixteenblocks.Commands.cmdURL;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
@@ -62,7 +64,6 @@ import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.CommandListener;
 import de.minestar.sixteenblocks.Listener.LoginListener;
-import de.minestar.sixteenblocks.Listener.MovementListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
@@ -82,7 +83,7 @@ public class Core extends JavaPlugin {
     private static Core instance;
 
     // LISTENER
-    private Listener baseListener, blockListener, movementListener, loginListener, commandListener;
+    private Listener baseListener, blockListener, loginListener, commandListener;
     private ChatListener chatListener;
 
     // MANAGER
@@ -200,7 +201,7 @@ public class Core extends JavaPlugin {
         this.baseListener = new BaseListener(this.channelManager);
         this.blockListener = new ActionListener(this.areaManager, this.afkThread, this.channelManager);
         this.chatListener = new ChatListener(this.filter, this.afkThread, this.channelManager);
-        this.movementListener = new MovementListener(this.worldManager, this.afkThread);
+//        this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.loginListener = new LoginListener(this.afkThread);
         this.commandListener = new CommandListener();
 
@@ -208,7 +209,7 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
-        Bukkit.getPluginManager().registerEvents(this.movementListener, this);
+//        Bukkit.getPluginManager().registerEvents(this.movementListener, this);
         Bukkit.getPluginManager().registerEvents(this.loginListener, this);
         Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }
@@ -220,6 +221,7 @@ public class Core extends JavaPlugin {
         commandList = new CommandList(Core.NAME,
 
                         new cmdSpawn        ("/spawn",      "",                         ""),
+                        new cmdTeam         ("/team",      "",                          ""),
                         new cmdInfo         ("/info",       "",                         ""),
                         new cmdStartAuto    ("/start",      "",                         "", this.areaManager),
                         new cmdStartAuto    ("/startauto",  "",                         "", this.areaManager),
@@ -289,11 +291,14 @@ public class Core extends JavaPlugin {
 
                         // MASTER OF DESASTER COMMAND
                         new RealStop ("/realstop",          "",                         ""),
-                        new RealStop ("/realreload",        "",                         "")
-
+                        new RealStop ("/realreload",        "",                         ""),
+        
+                        // IMPORT COMMAND
+                        new cmdImport ("/import",           "",                         "", this.areaDatabaseManager)
         );
         /* @formatter:on */
     }
+
     private void createThreads(BukkitScheduler scheduler) {
         // Keep always day time
         scheduler.scheduleSyncRepeatingTask(this, new DayThread(Bukkit.getWorlds().get(0), Settings.getTime()), 0, 1);

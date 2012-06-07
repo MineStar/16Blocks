@@ -1,6 +1,9 @@
-#Thu Apr 05 22:00:04 CEST 2012
+#Thu Jun 07 11:23:08 CEST 2012
 eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+org.eclipse.jdt.core.compiler.compliance=1.6
 org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
+org.eclipse.jdt.core.compiler.source=1.6
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=0
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation=0

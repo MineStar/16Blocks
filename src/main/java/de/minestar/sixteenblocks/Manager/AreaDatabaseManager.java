@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import de.minestar.minestarlibrary.database.AbstractDatabaseHandler;
 import de.minestar.minestarlibrary.database.DatabaseConnection;
-import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
@@ -28,17 +25,7 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     @Override
     protected DatabaseConnection createConnection(String pluginName, File dataFolder) throws Exception {
-        File configFile = new File(dataFolder, "area_sqlconfig.yml");
-        YamlConfiguration config = new YamlConfiguration();
-
-        if (!configFile.exists()) {
-            DatabaseUtils.createDatabaseConfig(DatabaseType.MySQL, configFile, Core.getInstance().getDescription().getName());
-            return null;
-        }
-
-        config.load(configFile);
-        return new DatabaseConnection(pluginName, config.getString("Host"), config.getString("Port"), config.getString("Database"), config.getString("User"), config.getString("Password"));
-
+        return new DatabaseConnection(pluginName, "plugins/16Blocks/", "zones");
     }
 
     public ArrayList<SkinArea> createNotExistingAreas() {
@@ -91,6 +78,10 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
     @Override
     protected void createStructure(String pluginName, Connection connection) throws Exception {
         DatabaseUtils.createStructure(this.getClass().getResourceAsStream("/structure.sql"), connection, Core.getInstance().getDescription().getName());
+    }
+
+    public void importData() throws Exception {
+        DatabaseUtils.createStructure(new File("plugins/16Blocks/import.sql"), this.dbConnection.getConnection(), Core.NAME);
     }
 
     public List<SkinArea> loadZones() {

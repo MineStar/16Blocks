@@ -69,7 +69,7 @@ public class Settings {
     // Player who can join the server when server is full
     private static int SUPPORTER_BUFFER = 30;
 
-    private static Vector SPAWN_VECTOR = new Vector(0, 4, 0), INFOWALL_VECTOR = new Vector(0, 4, 0);
+    private static Vector SPAWN_VECTOR = new Vector(0, 4, 0), INFOWALL_VECTOR = new Vector(0, 4, 0), TEAM_VECTOR = new Vector(0, 4, 0);
 
     private static String JSON_PATH = "stats.json";
 
@@ -112,6 +112,7 @@ public class Settings {
 
             SPAWN_VECTOR = config.getVector("Locations.spawn", SPAWN_VECTOR);
             INFOWALL_VECTOR = config.getVector("Locations.infoWall", INFOWALL_VECTOR);
+            TEAM_VECTOR = config.getVector("Locations.team", TEAM_VECTOR);
 
             JSON_PATH = config.getString("general.JSON", JSON_PATH);
 
@@ -181,6 +182,7 @@ public class Settings {
 
             config.set("Locations.spawn", SPAWN_VECTOR);
             config.set("Locations.infoWall", INFOWALL_VECTOR);
+            config.set("Locations.team", TEAM_VECTOR);
 
             config.set("general.JSON", JSON_PATH);
 
@@ -232,6 +234,10 @@ public class Settings {
 
     public static Vector getInfoWallVector() {
         return INFOWALL_VECTOR;
+    }
+
+    public static Vector getTeamVector() {
+        return TEAM_VECTOR;
     }
 
     public static int getSkinsLeft() {

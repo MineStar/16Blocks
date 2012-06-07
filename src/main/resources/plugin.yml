@@ -26,6 +26,9 @@ commands:
   spawn:
     description: Takes you to the spawn
     usage: /spawn
+  team:
+    description: Takes you to the Team
+    usage: /team
   info:
     description: Takes you to the infowall
     usage: /info
@@ -86,9 +89,6 @@ commands:
   report:
     description: Send a bugreport
     usage: /report <Message>
-  reset:
-    description: Reset a skin
-    usage: /reset   
   m:
     description: Send a message to the player
     usage: /m <PlayerName> <Message>
@@ -116,9 +116,6 @@ commands:
   shutdown:
     description: Stop the server
     usage: /shutdown    
-  rebuild:
-    description: Rebuild a skin
-    usage: /rebuild    
   slots:
     description: Set Slots 
     usage: /slots <Number>
@@ -134,3 +131,6 @@ commands:
   admins:
     description: Show list of connected supporter
     usage: /admins
+  import:
+    description: Import the database
+    usage: /import    
