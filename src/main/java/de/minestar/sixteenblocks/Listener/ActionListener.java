@@ -15,18 +15,14 @@ import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.ChannelManager;
-import de.minestar.sixteenblocks.Threads.AFKThread;
 
 public class ActionListener implements Listener {
 
     private AreaManager areaManager;
     private ChannelManager channelManager;
 
-    private AFKThread afkThread;
-
-    public ActionListener(AreaManager areaManager, AFKThread afkThread, ChannelManager channelManager) {
+    public ActionListener(AreaManager areaManager, ChannelManager channelManager) {
         this.areaManager = areaManager;
-        this.afkThread = afkThread;
         this.channelManager = channelManager;
     }
 
@@ -53,8 +49,6 @@ public class ActionListener implements Listener {
             event.setCancelled(false);
             return;
         }
-
-        afkThread.takeAktion(event.getPlayer());
 
         if (event.hasBlock()) {
             if (!areaManager.isInArea(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()))) {

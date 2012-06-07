@@ -13,7 +13,6 @@ import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.ChannelManager;
-import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class ChatListener implements Listener {
@@ -22,17 +21,15 @@ public class ChatListener implements Listener {
 
     private HashSet<String> mutedPlayers = new HashSet<String>();
 
-    private AFKThread afkThread;
     private ChannelManager channelManager;
 
     private long chatPause = Settings.getChatPauseTimeInSeconds() * 1000;
 
     public static boolean radiusOff = false;
 
-    public ChatListener(ChatFilter filter, AFKThread afkThread, ChannelManager channelManager) {
+    public ChatListener(ChatFilter filter, ChannelManager channelManager) {
         // this.filter = filter;
         this.lastChatList = new HashMap<String, Long>();
-        this.afkThread = afkThread;
         this.channelManager = channelManager;
     }
 
@@ -59,8 +56,6 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-
-        afkThread.takeAktion(event.getPlayer());
 
         // FLOOD-CONTROL
         boolean isSupporter = Core.isSupporter(event.getPlayer());

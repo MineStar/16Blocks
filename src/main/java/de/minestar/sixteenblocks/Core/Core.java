@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -31,7 +30,6 @@ import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
 import de.minestar.sixteenblocks.Commands.cmdGive;
 import de.minestar.sixteenblocks.Commands.cmdHideChat;
 import de.minestar.sixteenblocks.Commands.cmdHome;
-import de.minestar.sixteenblocks.Commands.cmdImport;
 import de.minestar.sixteenblocks.Commands.cmdInfo;
 import de.minestar.sixteenblocks.Commands.cmdKick;
 import de.minestar.sixteenblocks.Commands.cmdMe;
@@ -63,7 +61,6 @@ import de.minestar.sixteenblocks.Listener.ActionListener;
 import de.minestar.sixteenblocks.Listener.BaseListener;
 import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.CommandListener;
-import de.minestar.sixteenblocks.Listener.LoginListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
@@ -71,12 +68,8 @@ import de.minestar.sixteenblocks.Manager.ChannelManager;
 import de.minestar.sixteenblocks.Manager.NumberManager;
 import de.minestar.sixteenblocks.Manager.StructureManager;
 import de.minestar.sixteenblocks.Manager.WorldManager;
-import de.minestar.sixteenblocks.Threads.AFKThread;
 import de.minestar.sixteenblocks.Threads.BlockThread;
-import de.minestar.sixteenblocks.Threads.BroadcastThread;
-import de.minestar.sixteenblocks.Threads.ChatThread;
 import de.minestar.sixteenblocks.Threads.DayThread;
-import de.minestar.sixteenblocks.Threads.JSONThread;
 import de.minestar.sixteenblocks.Units.ChatFilter;
 
 public class Core extends JavaPlugin {
@@ -98,11 +91,6 @@ public class Core extends JavaPlugin {
 
     // THREADS
     private BlockThread blockThread;
-    private AFKThread afkThread;
-    private BroadcastThread bThread;
-    private ChatThread chatThread;
-
-    private Timer timer = new Timer(), broadcastTimer = new Timer(), chatTimer = new Timer();
 
     private CommandList commandList;
 
@@ -119,9 +107,6 @@ public class Core extends JavaPlugin {
 //        this.ticketDatabaseManager.closeConnection();
 //        checkTread.saveCheckTickets();
         Settings.saveSettings(this.getDataFolder());
-        timer.cancel();
-        broadcastTimer.cancel();
-        chatTimer.cancel();
         TextUtils.logInfo("Disabled!");
     }
 
@@ -144,7 +129,6 @@ public class Core extends JavaPlugin {
         this.blockThread.initTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.blockThread, 0L, Settings.getTicksBetweenReplace()));
 
         // AFK THREAD
-        this.afkThread = new AFKThread();
 
         // STARTUP
         this.createManager();
@@ -199,10 +183,9 @@ public class Core extends JavaPlugin {
     private void registerListeners() {
         // CREATE LISTENERS
         this.baseListener = new BaseListener(this.channelManager);
-        this.blockListener = new ActionListener(this.areaManager, this.afkThread, this.channelManager);
-        this.chatListener = new ChatListener(this.filter, this.afkThread, this.channelManager);
+        this.blockListener = new ActionListener(this.areaManager, this.channelManager);
+        this.chatListener = new ChatListener(this.filter, this.channelManager);
 //        this.movementListener = new MovementListener(this.worldManager, this.afkThread);
-        this.loginListener = new LoginListener(this.afkThread);
         this.commandListener = new CommandListener();
 
         // REGISTER LISTENERS
@@ -210,7 +193,6 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
 //        Bukkit.getPluginManager().registerEvents(this.movementListener, this);
-        Bukkit.getPluginManager().registerEvents(this.loginListener, this);
         Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }
 
@@ -276,7 +258,7 @@ public class Core extends JavaPlugin {
                         new cmdAdmin        ("/admins",     "",                         "", this.channelManager),
 
                         // RELOAD CHATFILTER
-                        new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),
+                        new cmdReloadFilter ("/filter",     "",                         ""),
 
                         new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", ""),
 
@@ -291,10 +273,7 @@ public class Core extends JavaPlugin {
 
                         // MASTER OF DESASTER COMMAND
                         new RealStop ("/realstop",          "",                         ""),
-                        new RealStop ("/realreload",        "",                         ""),
-        
-                        // IMPORT COMMAND
-                        new cmdImport ("/import",           "",                         "", this.areaDatabaseManager)
+                        new RealStop ("/realreload",        "",                         "")
         );
         /* @formatter:on */
     }
@@ -309,18 +288,6 @@ public class Core extends JavaPlugin {
         // scheduler.scheduleSyncRepeatingTask(this, checkTread, 20L * 60L, 20L
         // * 60L * 10L);
 
-        // Writing JSON with online player
-        timer.schedule(new JSONThread(this.areaManager), 1000L * 5L, 1000L * 5L);
-
-        // Broadcasting information to player
-        bThread = new BroadcastThread(this.getDataFolder(), this.areaManager);
-        broadcastTimer.schedule(bThread, 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
-
-        this.chatThread = new ChatThread(this.chatListener, this.channelManager);
-        this.chatTimer.schedule(this.chatThread, 1000L * 30L, 1000L * 30L);
-
-        // AFK Thread
-        scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20L * 10L, 20L * 30L);
     }
 
     @Override

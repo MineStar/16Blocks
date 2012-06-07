@@ -540,21 +540,21 @@ public class AreaManager {
     }
 
     public void checkForZoneExtension() {
-        if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * Settings.getCreateRowsAtOnce()) {
-            while (true) {
-                if (this.unusedAreaList.containsKey(lastRow + ":0") || this.usedAreaList.containsKey(lastRow + ":0")) {
-                    ++lastRow;
-                    this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ() + 1));
-                    continue;
-                } else {
-                    for (int i = 0; i < Settings.getCreateRowsAtOnce(); i++) {
-                        this.createRow(lastRow + i);
-                    }
-                    this.worldManager.setMaxZ((lastRow + Settings.getCreateRowsAtOnce()) * (Settings.getAreaSizeZ()));
-                    return;
-                }
-            }
-        }
+//        if (this.unusedAreaList.size() <= (Settings.getSkinsLeft() + Settings.getSkinsRight()) * Settings.getCreateRowsAtOnce()) {
+//            while (true) {
+//                if (this.unusedAreaList.containsKey(lastRow + ":0") || this.usedAreaList.containsKey(lastRow + ":0")) {
+//                    ++lastRow;
+//                    this.worldManager.setMaxZ((lastRow + 1) * (Settings.getAreaSizeZ() + 1));
+//                    continue;
+//                } else {
+//                    for (int i = 0; i < Settings.getCreateRowsAtOnce(); i++) {
+//                        this.createRow(lastRow + i);
+//                    }
+//                    this.worldManager.setMaxZ((lastRow + Settings.getCreateRowsAtOnce()) * (Settings.getAreaSizeZ()));
+//                    return;
+//                }
+//            }
+//        }
     }
 
     private void initMaximumZ() {

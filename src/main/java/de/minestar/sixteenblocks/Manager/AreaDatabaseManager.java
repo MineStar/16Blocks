@@ -77,11 +77,17 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
     @Override
     protected void createStructure(String pluginName, Connection connection) throws Exception {
-        DatabaseUtils.createStructure(this.getClass().getResourceAsStream("/structure.sql"), connection, Core.getInstance().getDescription().getName());
+//        DatabaseUtils.createStructure(this.getClass().getResourceAsStream("/structure.sql"), connection, Core.getInstance().getDescription().getName());
+//        this.importData();
     }
 
     public void importData() throws Exception {
-        DatabaseUtils.createStructure(new File("plugins/16Blocks/import.sql"), this.dbConnection.getConnection(), Core.NAME);
+        File newFile = new File("plugins/16Blocks/import.sql");
+        if (!newFile.exists()) {
+            return;
+        }
+        DatabaseUtils.createStructure(newFile, this.dbConnection.getConnection(), Core.NAME);
+        newFile.delete();
     }
 
     public List<SkinArea> loadZones() {

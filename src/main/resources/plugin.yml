@@ -32,21 +32,12 @@ commands:
   info:
     description: Takes you to the infowall
     usage: /info
-  start:
-    description: Gives you an random zone
-    usage: /start  
   numberize:
     description: Numberize the rows
     usage: /numberize      
   me:
     description: Fix it
     usage: /me     
-  startauto:
-    description: Gives you an random zone
-    usage: /startauto      
-  starthere:
-    description: Gives you the current zone
-    usage: /starthere
   home:
     description: Takes you to your area
     usage: /home [Player]    
@@ -130,7 +121,4 @@ commands:
     usage: /cast <Message>
   admins:
     description: Show list of connected supporter
-    usage: /admins
-  import:
-    description: Import the database
-    usage: /import    
+    usage: /admins 
