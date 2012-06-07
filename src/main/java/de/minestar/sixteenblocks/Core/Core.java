@@ -59,7 +59,6 @@ import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Commands.cmdVip;
 import de.minestar.sixteenblocks.Listener.ActionListener;
 import de.minestar.sixteenblocks.Listener.BaseListener;
-import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.CommandListener;
 import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
@@ -77,7 +76,6 @@ public class Core extends JavaPlugin {
 
     // LISTENER
     private Listener baseListener, blockListener, loginListener, commandListener;
-    private ChatListener chatListener;
 
     // MANAGER
     private AreaDatabaseManager areaDatabaseManager;
@@ -184,14 +182,12 @@ public class Core extends JavaPlugin {
         // CREATE LISTENERS
         this.baseListener = new BaseListener(this.channelManager);
         this.blockListener = new ActionListener(this.areaManager, this.channelManager);
-        this.chatListener = new ChatListener(this.filter, this.channelManager);
 //        this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.commandListener = new CommandListener();
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
-        Bukkit.getPluginManager().registerEvents(this.chatListener, this);
 //        Bukkit.getPluginManager().registerEvents(this.movementListener, this);
         Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }

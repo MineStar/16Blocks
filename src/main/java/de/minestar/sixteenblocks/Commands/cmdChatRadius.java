@@ -6,7 +6,6 @@ import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Core.TextUtils;
-import de.minestar.sixteenblocks.Listener.ChatListener;
 
 public class cmdChatRadius extends AbstractCommand {
 
@@ -25,11 +24,6 @@ public class cmdChatRadius extends AbstractCommand {
         try {
             int radius = Integer.valueOf(arguments[0]);
             Settings.setChatRadius(radius);
-            if (radius < 1) {
-                ChatListener.radiusOff = true;
-            } else {
-                ChatListener.radiusOff = false;
-            }
             TextUtils.sendInfo(player, "Chatradius set to: " + radius);
         } catch (Exception e) {
             TextUtils.sendError(player, "Wrong Syntax! Please use /chatradius <Number>");
