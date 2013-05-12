@@ -77,7 +77,7 @@ public class Core extends JavaPlugin {
     private static Core instance;
 
     // LISTENER
-    private Listener baseListener, blockListener, movementListener, loginListener, commandListener;
+    private Listener baseListener, blockListener, movementListener, commandListener;
     private ChatListener chatListener;
 
     // MANAGER
@@ -201,7 +201,6 @@ public class Core extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
         Bukkit.getPluginManager().registerEvents(this.chatListener, this);
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
-        Bukkit.getPluginManager().registerEvents(this.loginListener, this);
         Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }
 
