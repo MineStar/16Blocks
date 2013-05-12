@@ -124,7 +124,7 @@ public class BaseListener implements Listener {
         TextUtils.sendInfo(event.getPlayer(), ChatColor.RED + "WELCOME TO YOUAREMINECRAFT!");
         TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get into the chat, type /chat");
         TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get into the support chat, type /support");
-        TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get back here, type /nochat or /hidechat"); 
+        TextUtils.sendInfo(event.getPlayer(), ChatColor.LIGHT_PURPLE + "To get back here, type /nochat or /hidechat");
     }
 
     @EventHandler

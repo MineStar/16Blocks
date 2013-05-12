@@ -23,9 +23,9 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
@@ -45,7 +45,7 @@ public class LoginListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPreLogin(PlayerPreLoginEvent event) {
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         if (Core.isShutDown) {
             event.disallow(Result.KICK_OTHER, "Server is shutting down...");
             return;

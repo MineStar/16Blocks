@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.server.Packet130UpdateSign;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import de.minestar.sixteenblocks.Core.Core;
@@ -479,10 +476,10 @@ public class AreaManager {
         signBlock.update(true);
 
         // SEND UPDATE => NEED HELP OF ORIGINAL MC-SERVERSOFTWARE
-        CraftPlayer cPlayer = (CraftPlayer) player;
-        Packet130UpdateSign signPacket = null;
-        signPacket = new Packet130UpdateSign(signBlock.getX(), signBlock.getY(), signBlock.getZ(), signBlock.getLines());
-        cPlayer.getHandle().netServerHandler.sendPacket(signPacket);
+//        CraftPlayer cPlayer = (CraftPlayer) player;
+//        Packet130UpdateSign signPacket = null;
+//        signPacket = new Packet130UpdateSign(signBlock.getX(), signBlock.getY(), signBlock.getZ(), signBlock.getLines());
+//        cPlayer.getHandle().server.getsendPacket(signPacket);
     }
 
     public boolean removePlayerArea(ZoneXZ thisZone) {

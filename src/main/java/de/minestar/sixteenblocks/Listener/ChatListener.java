@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
@@ -58,7 +58,7 @@ public class ChatListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
 
         afkThread.takeAktion(event.getPlayer());
 

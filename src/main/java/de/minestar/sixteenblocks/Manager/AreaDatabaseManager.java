@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.minestar.minestarlibrary.database.AbstractDatabaseHandler;
+import de.minestar.minestarlibrary.database.AbstractMySQLHandler;
 import de.minestar.minestarlibrary.database.DatabaseConnection;
 import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
@@ -18,17 +18,20 @@ import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
 import de.minestar.sixteenblocks.Units.ZoneXZ;
 
-public class AreaDatabaseManager extends AbstractDatabaseHandler {
+public class AreaDatabaseManager extends AbstractMySQLHandler {
 
     private PreparedStatement loadAreas, insertArea, updateArea, checkExistance;
 
+    private final File dataFolder;
+
     public AreaDatabaseManager(String pluginName, File dataFolder) {
         super(pluginName, dataFolder);
+        this.dataFolder = dataFolder;
     }
 
     @Override
-    protected DatabaseConnection createConnection(String pluginName, File dataFolder) throws Exception {
-        File configFile = new File(dataFolder, "area_sqlconfig.yml");
+    protected DatabaseConnection createConnection(File SQLConfigFile, DatabaseType type) throws Exception {
+        File configFile = new File(this.dataFolder, "area_sqlconfig.yml");
         YamlConfiguration config = new YamlConfiguration();
 
         if (!configFile.exists()) {
@@ -38,7 +41,6 @@ public class AreaDatabaseManager extends AbstractDatabaseHandler {
 
         config.load(configFile);
         return new DatabaseConnection(pluginName, config.getString("Host"), config.getString("Port"), config.getString("Database"), config.getString("User"), config.getString("Password"));
-
     }
 
     public ArrayList<SkinArea> createNotExistingAreas() {

@@ -85,8 +85,12 @@ public class ActionListener implements Listener {
                 case FISHING_ROD :
                 case PAINTING :
                 case BOW :
-                case BUCKET :
+                case BUCKET : {
                     event.setCancelled(true);
+                    return;
+                }
+                default :
+                    break;
             }
         }
     }

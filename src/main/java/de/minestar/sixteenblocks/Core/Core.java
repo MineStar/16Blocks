@@ -21,13 +21,13 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
+import de.minestar.sixteenblocks.Commands.RealStop;
 import de.minestar.sixteenblocks.Commands.cmdAdmin;
 import de.minestar.sixteenblocks.Commands.cmdBan;
 import de.minestar.sixteenblocks.Commands.cmdChat;
 import de.minestar.sixteenblocks.Commands.cmdChatRadius;
 import de.minestar.sixteenblocks.Commands.cmdCreateRow;
 import de.minestar.sixteenblocks.Commands.cmdDeleteArea;
-import de.minestar.sixteenblocks.Commands.RealStop;
 import de.minestar.sixteenblocks.Commands.cmdGive;
 import de.minestar.sixteenblocks.Commands.cmdHideChat;
 import de.minestar.sixteenblocks.Commands.cmdHome;
@@ -45,7 +45,6 @@ import de.minestar.sixteenblocks.Commands.cmdReset;
 import de.minestar.sixteenblocks.Commands.cmdRow;
 import de.minestar.sixteenblocks.Commands.cmdSaveArea;
 import de.minestar.sixteenblocks.Commands.cmdSay;
-import de.minestar.sixteenblocks.Commands.cmdSlots;
 import de.minestar.sixteenblocks.Commands.cmdSpawn;
 import de.minestar.sixteenblocks.Commands.cmdStartAuto;
 import de.minestar.sixteenblocks.Commands.cmdStartHere;
@@ -53,8 +52,6 @@ import de.minestar.sixteenblocks.Commands.cmdStop;
 import de.minestar.sixteenblocks.Commands.cmdSupport;
 import de.minestar.sixteenblocks.Commands.cmdSupporter;
 import de.minestar.sixteenblocks.Commands.cmdTP;
-import de.minestar.sixteenblocks.Commands.cmdTicket;
-import de.minestar.sixteenblocks.Commands.cmdURL;
 import de.minestar.sixteenblocks.Commands.cmdUnban;
 import de.minestar.sixteenblocks.Commands.cmdVip;
 import de.minestar.sixteenblocks.Listener.ActionListener;
@@ -63,7 +60,6 @@ import de.minestar.sixteenblocks.Listener.ChatListener;
 import de.minestar.sixteenblocks.Listener.CommandListener;
 import de.minestar.sixteenblocks.Listener.LoginListener;
 import de.minestar.sixteenblocks.Listener.MovementListener;
-import de.minestar.sixteenblocks.Mail.MailHandler;
 import de.minestar.sixteenblocks.Manager.AreaDatabaseManager;
 import de.minestar.sixteenblocks.Manager.AreaManager;
 import de.minestar.sixteenblocks.Manager.ChannelManager;
@@ -92,7 +88,6 @@ public class Core extends JavaPlugin {
     private StructureManager structureManager;
     private ChannelManager channelManager;
     private NumberManager numberManager;
-    private MailHandler mHandler;
     private ChatFilter filter;
 
     // THREADS
@@ -189,7 +184,6 @@ public class Core extends JavaPlugin {
         this.structureManager = new StructureManager();
         this.worldManager = new WorldManager();
         this.areaManager = new AreaManager(this.areaDatabaseManager, this.worldManager, this.structureManager);
-        this.mHandler = new MailHandler(getDataFolder());
         this.filter = new ChatFilter(getDataFolder());
         this.numberManager = new NumberManager();
         this.channelManager = new ChannelManager();
@@ -257,14 +251,6 @@ public class Core extends JavaPlugin {
                         new cmdSupporter    ("/supporter",  "<Playername>",             ""),
                         new cmdVip          ("/vip",        "<Playername>",             ""),
 
-                        // BUG REPORTS
-                        new cmdTicket       ("/ticket",     "<Text>",                   "", mHandler),
-                        new cmdTicket       ("/bug",        "<Text>",                   "", mHandler),
-                        new cmdTicket       ("/report",     "<Text>",                   "", mHandler),
-
-                        // SET SLOTS
-                        new cmdSlots        ("/slots",      "<Number>",                 ""),
-
                         // BROADCASTS
                         new cmdSay          ("/say",        "<Message>",                ""),
                         new cmdSay          ("/cast",       "<Message>",                ""),
@@ -277,9 +263,6 @@ public class Core extends JavaPlugin {
                         new cmdReloadFilter ("/filter",     "",                         "", this.filter, bThread),
 
                         new cmdGive         ("/give",       "<Player> <Item[:SubID]> [Amount]", ""),
-
-                        // URL TO LIVE MAP
-                        new cmdURL          ("/livemap",    "[Player]",                 "", this.areaManager),
 
                         // CHAT HANDELING
                         new cmdChat         ("/chat",       "",                         "", this.channelManager),
@@ -449,6 +432,7 @@ public class Core extends JavaPlugin {
                     set.add(line.toLowerCase());
                 }
             }
+            bReader.close();
             ConsoleUtils.printInfo(NAME, "Loaded " + set.size() + " users from '" + fileName + "'!");
         } catch (Exception e) {
             ConsoleUtils.printException(e, NAME, "Error while reading file: '" + fileName + "'");
