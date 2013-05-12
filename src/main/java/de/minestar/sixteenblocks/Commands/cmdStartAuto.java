@@ -34,8 +34,8 @@ public class cmdStartAuto extends AbstractCommand {
             TextUtils.sendLine(player, ChatColor.GRAY, "Go there with '/home'");
             return;
         }
-
-        TextUtils.sendError(player, "The event is nearly over and you are not able to start a new skin. Sorry for that :/");
+//
+//        TextUtils.sendError(player, "The event is nearly over and you are not able to start a new skin. Sorry for that :/");
 
 //        // TAKE THIS AREA
         SkinArea randomArea = this.areaManager.getRandomUnusedArea();

@@ -100,7 +100,6 @@ public class Core extends JavaPlugin {
     private CommandList commandList;
 
     // GLOBAL VARIABLES
-
     public final static String NAME = "16Blocks";
 
     public static boolean shutdownServer = false;
