@@ -22,16 +22,13 @@ public class AreaDatabaseManager extends AbstractMySQLHandler {
 
     private PreparedStatement loadAreas, insertArea, updateArea, checkExistance;
 
-    private final File dataFolder;
-
     public AreaDatabaseManager(String pluginName, File dataFolder) {
         super(pluginName, dataFolder);
-        this.dataFolder = dataFolder;
     }
 
     @Override
     protected DatabaseConnection createConnection(File SQLConfigFile, DatabaseType type) throws Exception {
-        File configFile = new File(this.dataFolder, "area_sqlconfig.yml");
+        File configFile = new File("16Blocks", "area_sqlconfig.yml");
         YamlConfiguration config = new YamlConfiguration();
 
         if (!configFile.exists()) {

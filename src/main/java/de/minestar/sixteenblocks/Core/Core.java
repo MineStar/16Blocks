@@ -177,7 +177,7 @@ public class Core extends JavaPlugin {
     }
 
     private void createManager() {
-        this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), this.getDataFolder());
+        this.areaDatabaseManager = new AreaDatabaseManager(this.getDescription().getName(), new File(this.getDataFolder(), "area_sqlconfig.yml"));
         // this.ticketDatabaseManager = new TicketDatabaseManager(NAME,
         // getDataFolder());
         this.structureManager = new StructureManager();
