@@ -78,7 +78,7 @@ public class Core extends JavaPlugin {
 
     // LISTENER
     private Listener baseListener, blockListener, movementListener, commandListener;
-    private ChatListener chatListener;
+//    private ChatListener chatListener;
 
     // MANAGER
     private AreaDatabaseManager areaDatabaseManager;
@@ -93,7 +93,7 @@ public class Core extends JavaPlugin {
     private BlockThread blockThread;
     private AFKThread afkThread;
     private BroadcastThread bThread;
-    private ChatThread chatThread;
+//    private ChatThread chatThread;
 
     private Timer timer = new Timer(), broadcastTimer = new Timer(), chatTimer = new Timer();
 
@@ -192,14 +192,14 @@ public class Core extends JavaPlugin {
         // CREATE LISTENERS
         this.baseListener = new BaseListener(this.channelManager);
         this.blockListener = new ActionListener(this.areaManager, this.afkThread, this.channelManager);
-        this.chatListener = new ChatListener(this.filter, this.afkThread, this.channelManager);
+//        this.chatListener = new ChatListener(this.filter, this.afkThread, this.channelManager);
         this.movementListener = new MovementListener(this.worldManager, this.afkThread);
         this.commandListener = new CommandListener();
 
         // REGISTER LISTENERS
         Bukkit.getPluginManager().registerEvents(this.baseListener, this);
         Bukkit.getPluginManager().registerEvents(this.blockListener, this);
-        Bukkit.getPluginManager().registerEvents(this.chatListener, this);
+//        Bukkit.getPluginManager().registerEvents(this.chatListener, this);
         Bukkit.getPluginManager().registerEvents(this.movementListener, this);
         Bukkit.getPluginManager().registerEvents(this.commandListener, this);
     }
@@ -291,8 +291,8 @@ public class Core extends JavaPlugin {
         bThread = new BroadcastThread(this.getDataFolder(), this.areaManager);
         broadcastTimer.schedule(bThread, 1000L * 60L, 1000L * 60L * Settings.getJAMES_INTERVAL());
 
-        this.chatThread = new ChatThread(this.chatListener, this.channelManager);
-        this.chatTimer.schedule(this.chatThread, 1000L * 30L, 1000L * 30L);
+//        this.chatThread = new ChatThread(this.chatListener, this.channelManager);
+//        this.chatTimer.schedule(this.chatThread, 1000L * 30L, 1000L * 30L);
 
         // AFK Thread
         scheduler.scheduleSyncRepeatingTask(this, this.afkThread, 20L * 10L, 20L * 30L);

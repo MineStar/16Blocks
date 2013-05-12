@@ -7,6 +7,7 @@ import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.TextUtils;
 import de.minestar.sixteenblocks.Manager.AreaManager;
+import de.minestar.sixteenblocks.Manager.SkinArea;
 
 public class cmdStartAuto extends AbstractCommand {
 
@@ -37,11 +38,11 @@ public class cmdStartAuto extends AbstractCommand {
         TextUtils.sendError(player, "The event is nearly over and you are not able to start a new skin. Sorry for that :/");
 
 //        // TAKE THIS AREA
-//        SkinArea randomArea = this.areaManager.getRandomUnusedArea();
-//        this.areaManager.createPlayerArea(new SkinArea(randomArea.getZoneXZ().getX(), randomArea.getZoneXZ().getZ(), player.getName()), true, player);
-//        TextUtils.sendSuccess(player, "You are now owner of this area: [ " + randomArea.getZoneXZ().getX() + " / " + randomArea.getZoneXZ().getZ() + " ]");
-//
-//        // TELEPORT TO HOME-POINT
-//        player.teleport(randomArea.getZoneXZ().getSpawnLocation());
+        SkinArea randomArea = this.areaManager.getRandomUnusedArea();
+        this.areaManager.createPlayerArea(new SkinArea(randomArea.getZoneXZ().getX(), randomArea.getZoneXZ().getZ(), player.getName()), true, player);
+        TextUtils.sendSuccess(player, "You are now owner of this area: [ " + randomArea.getZoneXZ().getX() + " / " + randomArea.getZoneXZ().getZ() + " ]");
+
+        // TELEPORT TO HOME-POINT
+        player.teleport(randomArea.getZoneXZ().getSpawnLocation());
     }
 }
