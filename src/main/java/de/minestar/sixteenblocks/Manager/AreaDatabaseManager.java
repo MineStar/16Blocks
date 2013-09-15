@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+//import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.minestarlibrary.database.AbstractMySQLHandler;
-import de.minestar.minestarlibrary.database.DatabaseConnection;
-import de.minestar.minestarlibrary.database.DatabaseType;
+//import de.minestar.minestarlibrary.database.DatabaseConnection;
+//import de.minestar.minestarlibrary.database.DatabaseType;
 import de.minestar.minestarlibrary.database.DatabaseUtils;
 import de.minestar.sixteenblocks.Core.Core;
 import de.minestar.sixteenblocks.Core.Settings;
@@ -26,19 +26,18 @@ public class AreaDatabaseManager extends AbstractMySQLHandler {
         super(pluginName, dataFolder);
     }
 
-    @Override
-    protected DatabaseConnection createConnection(File SQLConfigFile, DatabaseType type) throws Exception {
-        File configFile = new File("16Blocks", "area_sqlconfig.yml");
-        YamlConfiguration config = new YamlConfiguration();
-
-        if (!configFile.exists()) {
-            DatabaseUtils.createDatabaseConfig(DatabaseType.MySQL, configFile, Core.getInstance().getDescription().getName());
-            return null;
-        }
-
-        config.load(configFile);
-        return new DatabaseConnection(pluginName, config.getString("Host"), config.getString("Port"), config.getString("Database"), config.getString("User"), config.getString("Password"));
-    }
+//    protected DatabaseConnection createConnection(File SQLConfigFile, DatabaseType type) throws Exception {
+//        File configFile = new File("16Blocks", "area_sqlconfig.yml");
+//        YamlConfiguration config = new YamlConfiguration();
+//
+//        if (!configFile.exists()) {
+//            DatabaseUtils.createDatabaseConfig(DatabaseType.MySQL, configFile, Core.getInstance().getDescription().getName());
+//            return null;
+//        }
+//
+//        config.load(configFile);
+//        return new DatabaseConnection(Core.NAME, config.getString("Host"), config.getString("Port"), config.getString("Database"), config.getString("User"), config.getString("Password"));
+//    }
 
     public ArrayList<SkinArea> createNotExistingAreas() {
         List<SkinArea> currentZones = this.loadZones();
